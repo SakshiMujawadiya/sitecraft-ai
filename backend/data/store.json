@@ -2578,20 +2578,20 @@
         }
       },
       "analytics": {
-        "totalViews": 4,
+        "totalViews": 6,
         "uniqueVisitors": 1,
         "devices": {
-          "desktop": 4,
+          "desktop": 6,
           "mobile": 0,
           "tablet": 0
         },
         "referrers": {
-          "http://localhost:3000/dashboard/settings": 4
+          "http://localhost:3000/dashboard/settings": 6
         },
         "dailyViews": [
           {
             "date": "2026-09-18",
-            "views": 4,
+            "views": 6,
             "visitors": 1
           }
         ]
