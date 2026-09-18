@@ -1,0 +1,2623 @@
+{
+  "users": {
+    "demo-user-1": {
+      "id": "demo-user-1",
+      "email": "demo@ailpbuilder.io",
+      "name": "Alex Designer",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 30,
+      "createdAt": "2026-09-15T15:59:10.312Z"
+    },
+    "user-1789489459818-xodm5": {
+      "id": "user-1789489459818-xodm5",
+      "email": "evaluator@ailpbuilder.io",
+      "name": "evaluator",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=evaluator%40ailpbuilder.io",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 44,
+      "createdAt": "2026-09-15T16:24:19.818Z"
+    },
+    "user-1789489800285-6azrt": {
+      "id": "user-1789489800285-6azrt",
+      "email": "alex.google@example.com",
+      "name": "Alex Rivera",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 50,
+      "createdAt": "2026-09-15T16:30:00.285Z"
+    },
+    "user-1789489822373-24w70": {
+      "id": "user-1789489822373-24w70",
+      "email": "eme@gmail.com",
+      "name": "eme",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=eme%40gmail.com",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 32,
+      "createdAt": "2026-09-15T16:30:22.373Z"
+    },
+    "user-1789742485692-o2dp6": {
+      "id": "user-1789742485692-o2dp6",
+      "email": "test.mvp@example.com",
+      "name": "test.mvp",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=test.mvp%40example.com",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 45,
+      "createdAt": "2026-09-18T14:41:25.692Z"
+    },
+    "user-1789743745353-wdmpv": {
+      "id": "user-1789743745353-wdmpv",
+      "email": "test.user.1789743745016@example.com",
+      "name": "Morgan Reader",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=test.user.1789743745016%40example.com",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 49,
+      "passwordHash": "e30a975aa064d2541746ebca183bb5cc69a528f9c855fa562d8750e4a8032ee5afb8997ad822832f0e11a0c94193405a79bd9b79344de8cbda9cbaeadc6cbb0a",
+      "salt": "2f13bce30363fd4382895e9f09573edc",
+      "createdAt": "2026-09-18T15:02:25.353Z"
+    },
+    "user-1789744776823-1abfp": {
+      "id": "user-1789744776823-1abfp",
+      "email": "test.user.1789744776629@example.com",
+      "name": "Morgan Reader",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=test.user.1789744776629%40example.com",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 49,
+      "passwordHash": "648d0618f37a8d7f04957a719e41f394deffbdfa29203c9b4219a162058df1aa8b9793aca5b70f42d169b97b6dae091530f55052c2d129a7eb770ce96819c4e5",
+      "salt": "22f948d4a59c96bbbfad2c010099ee8d",
+      "createdAt": "2026-09-18T15:19:36.823Z"
+    },
+    "user-1789747297536-7wgt0": {
+      "id": "user-1789747297536-7wgt0",
+      "email": "test.user.1789747297380@example.com",
+      "name": "Morgan Reader",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=test.user.1789747297380%40example.com",
+      "role": "user",
+      "subscriptionTier": "pro",
+      "credits": 49,
+      "passwordHash": "159f489ecc10e6e40401de0cf7f9571f1637de604158d03df48d9947dc0eb395c4d02c77c9904f44d68c648008e6458a96bb6faee982daba01c0255f34f1cb62",
+      "salt": "7b516d205836dd5ac01cd7c932c6159e",
+      "createdAt": "2026-09-18T16:01:37.536Z"
+    }
+  },
+  "otps": {},
+  "projects": {
+    "proj-demo-1": {
+      "id": "proj-demo-1",
+      "userId": "demo-user-1",
+      "name": "CloudScale AI Platform",
+      "slug": "cloudscale-ai",
+      "isPublished": true,
+      "publishedAt": "2026-09-15T15:59:10.316Z",
+      "status": "published",
+      "websiteData": {
+        "businessName": "CloudScale AI",
+        "tagline": "Autonomous Cloud Infrastructure Orchestration",
+        "description": "Scale distributed GPU workloads and serverless clusters across multi-cloud regions with zero config.",
+        "targetAudience": "Engineering teams, DevOps architects, and AI researchers",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Electric Indigo",
+          "fontFamily": "Plus Jakarta Sans",
+          "borderRadius": "lg",
+          "animation": "Modern",
+          "style": "Glassmorphism"
+        },
+        "sections": [
+          {
+            "id": "cs-hero",
+            "type": "Hero",
+            "badge": "Announcing CloudScale 3.0 with GPU Auto-tuning",
+            "title": "Scale Cloud Workloads With Autonomous AI",
+            "subtitle": "Deploy, monitor, and optimize your cloud instances automatically. Reduce AWS & GCP cloud spend by up to 48% with predictive capacity scaling.",
+            "ctaText": "Start Building Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Read Technical Whitepaper",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80",
+            "items": [
+              {
+                "title": "48%",
+                "description": "Average Cloud Bill Reduction"
+              },
+              {
+                "title": "99.999%",
+                "description": "Multi-region SLA Uptime"
+              },
+              {
+                "title": "< 1ms",
+                "description": "Edge Router Overhead"
+              }
+            ]
+          },
+          {
+            "id": "cs-features",
+            "type": "Features",
+            "badge": "Built for Mission-Critical Production",
+            "title": "Intelligent Infrastructure Without the Chaos",
+            "subtitle": "Everything modern DevOps and platform teams need to run compute at planet scale.",
+            "items": [
+              {
+                "id": "csf-1",
+                "title": "GPU Spot Auto-Failover",
+                "description": "Zero-downtime hot migration across regions whenever spot compute nodes are recalled.",
+                "icon": "Cpu"
+              },
+              {
+                "id": "csf-2",
+                "title": "Predictive Autoscaling",
+                "description": "Machine-learning traffic forecasting scales cluster capacity 2 minutes before traffic spikes hit.",
+                "icon": "TrendingUp"
+              },
+              {
+                "id": "csf-3",
+                "title": "Universal Telemetry",
+                "description": "Real-time metrics, OpenTelemetry traces, and distributed logs visualized in one pane.",
+                "icon": "Activity"
+              },
+              {
+                "id": "csf-4",
+                "title": "Zero-Trust Mesh",
+                "description": "Automated mutual TLS encryption, short-lived tokens, and strict microsegmentation by default.",
+                "icon": "Shield"
+              }
+            ]
+          },
+          {
+            "id": "cs-pricing",
+            "type": "Pricing",
+            "badge": "Predictable Pricing",
+            "title": "Simple, Transparent Infrastructure Plans",
+            "subtitle": "Scale your compute with confidence. No opaque per-seat penalties.",
+            "items": [
+              {
+                "id": "csp-1",
+                "title": "Developer",
+                "price": "$49",
+                "period": "/mo",
+                "description": "For early stage startups and staging test environments.",
+                "popular": false,
+                "features": [
+                  "Up to 10 nodes",
+                  "2 multi-cloud regions",
+                  "Community support",
+                  "Basic metric storage"
+                ],
+                "buttonText": "Deploy Free Sandbox"
+              },
+              {
+                "id": "csp-2",
+                "title": "Growth",
+                "price": "$199",
+                "period": "/mo",
+                "description": "The gold standard for high-growth tech companies.",
+                "popular": true,
+                "features": [
+                  "Up to 200 nodes",
+                  "All global regions",
+                  "Sub-minute auto-tuning",
+                  "24/7 Slack engineers"
+                ],
+                "buttonText": "Start 14-Day Pro Trial"
+              },
+              {
+                "id": "csp-3",
+                "title": "Enterprise",
+                "price": "$599",
+                "period": "/mo",
+                "description": "Dedicated clusters, VPC peering, and customized SLA.",
+                "popular": false,
+                "features": [
+                  "Unlimited nodes",
+                  "Dedicated TAM",
+                  "99.999% SLA guarantee",
+                  "Custom hardware isolation"
+                ],
+                "buttonText": "Schedule Architecture Call"
+              }
+            ]
+          },
+          {
+            "id": "cs-cta",
+            "type": "CTA",
+            "badge": "Get Started In 60 Seconds",
+            "title": "Stop Overpaying for Idle Cloud Servers",
+            "subtitle": "Connect your AWS, GCP, or Azure account in three CLI commands and see instant savings.",
+            "ctaText": "Get Started Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Talk to Solutions Architect",
+            "secondaryCtaLink": "#contact"
+          },
+          {
+            "id": "cs-footer",
+            "type": "Footer",
+            "title": "CloudScale AI",
+            "description": "Autonomous cloud capacity orchestration for forward-thinking engineering organizations."
+          }
+        ],
+        "seo": {
+          "title": "CloudScale AI — Autonomous Cloud Infrastructure Orchestration",
+          "metaDescription": "Scale GPU workloads and reduce cloud spend by up to 48% with predictive AI capacity scaling.",
+          "keywords": [
+            "Cloud Infrastructure",
+            "Kubernetes",
+            "DevOps",
+            "AI Cloud"
+          ]
+        }
+      },
+      "templateId": "tmpl-saas-cloudscale",
+      "analytics": {
+        "totalViews": 390,
+        "uniqueVisitors": 217,
+        "devices": {
+          "desktop": 246,
+          "mobile": 110,
+          "tablet": 34
+        },
+        "referrers": {
+          "Twitter / X": 140,
+          "Direct": 95,
+          "Google": 85,
+          "LinkedIn": 64,
+          "Direct (Custom Domain)": 4,
+          "http://localhost:3000/d/cloudscale.ai": 2
+        },
+        "dailyViews": [
+          {
+            "date": "2025-09-10",
+            "views": 45,
+            "visitors": 28
+          },
+          {
+            "date": "2025-09-11",
+            "views": 62,
+            "visitors": 39
+          },
+          {
+            "date": "2025-09-12",
+            "views": 58,
+            "visitors": 34
+          },
+          {
+            "date": "2025-09-13",
+            "views": 74,
+            "visitors": 48
+          },
+          {
+            "date": "2025-09-14",
+            "views": 85,
+            "visitors": 51
+          },
+          {
+            "date": "2025-09-15",
+            "views": 60,
+            "visitors": 35
+          },
+          {
+            "date": "2026-09-17",
+            "views": 6,
+            "visitors": 2
+          }
+        ]
+      },
+      "createdAt": "2026-09-10T15:59:10.316Z",
+      "updatedAt": "2026-09-18T13:50:55.337Z",
+      "customDomain": {
+        "domain": "cloudscale.ai",
+        "verified": false,
+        "status": "invalid",
+        "recordType": "A",
+        "expectedTarget": "76.76.21.21",
+        "verificationToken": "sitecraft-verify=d577f445e4ecf07605cba3d3",
+        "sslActive": false,
+        "sslStatus": "pending",
+        "configuredAt": "2026-09-18T13:50:55.336Z",
+        "lastCheckedAt": "2026-09-18T13:50:55.337Z",
+        "dnsDiagnostics": {
+          "foundRecords": [
+            "76.223.54.146",
+            "13.248.169.48",
+            "v=spf1 -all"
+          ],
+          "message": "Records found (76.223.54.146, 13.248.169.48, v=spf1 -all), but do not match expected target: 76.76.21.21"
+        }
+      }
+    },
+    "proj-1789489460062-gbgj": {
+      "id": "proj-1789489460062-gbgj",
+      "userId": "user-1789489459818-xodm5",
+      "name": "NovaScale AI Project",
+      "slug": "novascale-ai-project-f4b3",
+      "isPublished": true,
+      "status": "published",
+      "websiteData": {
+        "businessName": "NovaScale AI",
+        "tagline": "Next-Gen SaaS Experience",
+        "description": "Intelligent distributed cloud automation for modern engineering teams.",
+        "targetAudience": "DevOps architects and platform engineers",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Electric Indigo",
+          "customPalette": {
+            "primary": "#6366f1",
+            "secondary": "#4f46e5",
+            "accent": "#a855f7",
+            "background": "#09090b",
+            "surface": "#18181b",
+            "text": "#fafafa",
+            "mutedText": "#a1a1aa",
+            "border": "#27272a"
+          },
+          "fontFamily": "Plus Jakarta Sans",
+          "borderRadius": "lg",
+          "animation": "Modern",
+          "style": "Modern"
+        },
+        "sections": [
+          {
+            "id": "sec-hero",
+            "type": "Hero",
+            "badge": "Next-Gen SaaS Platform",
+            "title": "Empower Your Future With NovaScale AI",
+            "subtitle": "The intelligent platform built exclusively for DevOps architects and platform engineers. Accelerate growth, simplify complexity, and achieve unmatched results.",
+            "ctaText": "Start Free Trial",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Watch Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
+            "imageAlt": "NovaScale AI Dashboard Preview",
+            "items": [
+              {
+                "title": "99.99%",
+                "description": "Uptime Guaranteed"
+              },
+              {
+                "title": "10x",
+                "description": "Faster Performance"
+              },
+              {
+                "title": "25k+",
+                "description": "Active Customers"
+              }
+            ]
+          },
+          {
+            "id": "sec-features",
+            "type": "Features",
+            "badge": "Key Capabilities",
+            "title": "Everything You Need to Scale Effortlessly",
+            "subtitle": "Designed from the ground up to solve the most pressing challenges faced by DevOps architects and platform engineers.",
+            "items": [
+              {
+                "id": "feat-1",
+                "title": "Autonomous Intelligence",
+                "description": "Automate repetitive workflows and unlock deep contextual insights with AI tailored to your domain.",
+                "icon": "Sparkles"
+              },
+              {
+                "id": "feat-2",
+                "title": "Real-time Collaboration",
+                "description": "Collaborate synchronously with your team with multi-cursor editing, comments, and role-based permissions.",
+                "icon": "Users"
+              },
+              {
+                "id": "feat-3",
+                "title": "Enterprise Security",
+                "description": "End-to-end data encryption, SOC 2 compliance, and granular audit logs protecting every transaction.",
+                "icon": "ShieldCheck"
+              },
+              {
+                "id": "feat-4",
+                "title": "Lightning Fast Analytics",
+                "description": "Gain immediate clarity into performance metrics with interactive visual dashboards updated in sub-seconds.",
+                "icon": "BarChart3"
+              },
+              {
+                "id": "feat-5",
+                "title": "Custom Integrations",
+                "description": "Connect effortlessly with 100+ native APIs, webhooks, and your existing enterprise toolchain.",
+                "icon": "Zap"
+              },
+              {
+                "id": "feat-6",
+                "title": "Global Edge Delivery",
+                "description": "Sub-50ms latency across 320+ edge locations worldwide for a flawless customer experience.",
+                "icon": "Globe"
+              }
+            ]
+          },
+          {
+            "id": "sec-testimonials",
+            "type": "Testimonials",
+            "badge": "Social Proof",
+            "title": "Loved by Industry Leaders Worldwide",
+            "subtitle": "See how NovaScale AI is transforming how DevOps architects and platform engineers works every day.",
+            "items": [
+              {
+                "id": "test-1",
+                "title": "Exceptional Return on Investment",
+                "description": "\"NovaScale AI has completely revolutionized our workflow. We cut our turnaround time by 65% in the first 30 days alone.\"",
+                "author": "Sarah Jenkins",
+                "role": "VP of Product at Horizon Labs",
+                "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-2",
+                "title": "The Standard in Modern Software",
+                "description": "\"The visual polish and sheer performance are simply unmatched. Our entire leadership team relies on it daily.\"",
+                "author": "Marcus Vance",
+                "role": "Chief Technology Officer at Apex",
+                "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-3",
+                "title": "Incredible Speed & Simplicity",
+                "description": "\"Setting up took minutes, and our team immediately adopted it without any formal training. Truly a 10/10 experience.\"",
+                "author": "Elena Rostova",
+                "role": "Founder & CEO, Studio Nova",
+                "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              }
+            ]
+          },
+          {
+            "id": "sec-pricing",
+            "type": "Pricing",
+            "badge": "Transparent Pricing",
+            "title": "Simple, Predictable Plans for Every Scale",
+            "subtitle": "No hidden fees. Upgrade or cancel anytime with our 14-day money-back guarantee.",
+            "items": [
+              {
+                "id": "price-starter",
+                "title": "Starter",
+                "price": "$29",
+                "period": "/month",
+                "description": "Ideal for solo creators and emerging DevOps architects and platform engineers.",
+                "popular": false,
+                "features": [
+                  "Up to 3 active projects",
+                  "1,000 AI generation credits",
+                  "Standard SSL & custom domain",
+                  "Community Discord support",
+                  "Basic analytics suite"
+                ],
+                "buttonText": "Get Started",
+                "link": "#checkout-starter"
+              },
+              {
+                "id": "price-pro",
+                "title": "Pro Growth",
+                "price": "$79",
+                "period": "/month",
+                "description": "The most popular plan for fast-scaling organizations.",
+                "popular": true,
+                "features": [
+                  "Unlimited active projects",
+                  "15,000 AI generation credits",
+                  "Priority edge CDN delivery",
+                  "Custom domains with auto-renew",
+                  "Real-time team collaboration",
+                  "Dedicated 24/7 chat support"
+                ],
+                "buttonText": "Start 14-Day Free Trial",
+                "link": "#checkout-pro"
+              },
+              {
+                "id": "price-enterprise",
+                "title": "Enterprise",
+                "price": "$199",
+                "period": "/month",
+                "description": "Full compliance, dedicated infrastructure and SLA.",
+                "popular": false,
+                "features": [
+                  "Everything in Pro included",
+                  "Unlimited AI generation",
+                  "Custom SSO / SAML integration",
+                  "Dedicated Account Strategist",
+                  "99.99% uptime SLA guarantee",
+                  "Custom security audits & reports"
+                ],
+                "buttonText": "Contact Sales",
+                "link": "#contact"
+              }
+            ]
+          },
+          {
+            "id": "sec-faq",
+            "type": "FAQ",
+            "badge": "Got Questions?",
+            "title": "Frequently Asked Questions",
+            "subtitle": "Have a question that isn't answered here? Reach out to our 24/7 team.",
+            "items": [
+              {
+                "id": "faq-1",
+                "question": "How does NovaScale AI differ from traditional alternatives?",
+                "answer": "NovaScale AI combines cutting-edge AI generation with visual real-time customizability, delivering finished, high-converting landing pages in seconds instead of weeks."
+              },
+              {
+                "id": "faq-2",
+                "question": "Can I connect my own custom domain?",
+                "answer": "Yes! All paid and trial tiers include one-click custom domain configuration with automatic free SSL certificate provisioning."
+              },
+              {
+                "id": "faq-3",
+                "question": "Can I export or host the websites myself?",
+                "answer": "Absolutely. You can publish directly to our ultra-fast global edge network or export structured code at any time."
+              },
+              {
+                "id": "faq-4",
+                "question": "Is there a long-term contract or cancellation fee?",
+                "answer": "None at all. You can cancel your subscription at any time directly from your billing portal with zero penalties."
+              }
+            ]
+          },
+          {
+            "id": "sec-cta",
+            "type": "CTA",
+            "badge": "Get Started Now",
+            "title": "Ready to Elevate Your SaaS Experience?",
+            "subtitle": "Join thousands of satisfied DevOps architects and platform engineers who achieve more with NovaScale AI. Start your 14-day free trial today.",
+            "ctaText": "Get Started for Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Schedule a Demo",
+            "secondaryCtaLink": "#contact"
+          },
+          {
+            "id": "sec-footer",
+            "type": "Footer",
+            "title": "NovaScale AI",
+            "description": "The premier platform for DevOps architects and platform engineers to achieve extraordinary results with speed and confidence.",
+            "items": [
+              {
+                "title": "Product",
+                "description": "Features, Integrations, Pricing, Changelog, Roadmap"
+              },
+              {
+                "title": "Resources",
+                "description": "Documentation, Tutorials, API Reference, Community"
+              },
+              {
+                "title": "Company",
+                "description": "About Us, Careers, Press Kit, Contact, Privacy Policy"
+              }
+            ]
+          }
+        ],
+        "seo": {
+          "title": "NovaScale AI — The Intelligent SaaS for DevOps architects and platform engineers",
+          "metaDescription": "Intelligent distributed cloud automation for modern engineering teams.",
+          "keywords": [
+            "NovaScale AI",
+            "SaaS",
+            "DevOps architects and platform engineers",
+            "Landing Page",
+            "SaaS"
+          ]
+        }
+      },
+      "analytics": {
+        "totalViews": 1,
+        "uniqueVisitors": 1,
+        "devices": {
+          "desktop": 1,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {
+          "Twitter": 1
+        },
+        "dailyViews": [
+          {
+            "date": "2026-09-15",
+            "views": 1,
+            "visitors": 1
+          }
+        ]
+      },
+      "createdAt": "2026-09-15T16:24:20.062Z",
+      "updatedAt": "2026-09-15T16:24:20.135Z",
+      "publishedAt": "2026-09-15T16:24:20.135Z"
+    },
+    "proj-1789490629944-b69z": {
+      "id": "proj-1789490629944-b69z",
+      "userId": "user-1789489822373-24w70",
+      "name": "yg Landing Page",
+      "slug": "yg-landing-page-onym",
+      "isPublished": true,
+      "status": "published",
+      "websiteData": {
+        "businessName": "yg",
+        "tagline": "Next-Gen SaaS Experience",
+        "description": "jb",
+        "targetAudience": "hh",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Electric Indigo",
+          "customPalette": {
+            "primary": "#6366f1",
+            "secondary": "#4f46e5",
+            "accent": "#a855f7",
+            "background": "#09090b",
+            "surface": "#18181b",
+            "text": "#fafafa",
+            "mutedText": "#a1a1aa",
+            "border": "#27272a"
+          },
+          "fontFamily": "Plus Jakarta Sans",
+          "borderRadius": "lg",
+          "animation": "Subtle",
+          "style": "Modern"
+        },
+        "sections": [
+          {
+            "id": "sec-hero",
+            "type": "Hero",
+            "badge": "Next-Gen SaaS Platform",
+            "title": "Empower Your Future With yg",
+            "subtitle": "The intelligent platform built exclusively for hh. Accelerate growth, simplify complexity, and achieve unmatched results.",
+            "ctaText": "Start Free Trial",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Watch Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
+            "imageAlt": "yg Dashboard Preview",
+            "items": [
+              {
+                "title": "99.99%",
+                "description": "Uptime Guaranteed"
+              },
+              {
+                "title": "10x",
+                "description": "Faster Performance"
+              },
+              {
+                "title": "25k+",
+                "description": "Active Customers"
+              }
+            ]
+          },
+          {
+            "id": "sec-features",
+            "type": "Features",
+            "badge": "Key Capabilities",
+            "title": "Everything You Need to Scale Effortlessly",
+            "subtitle": "Designed from the ground up to solve the most pressing challenges faced by hh.",
+            "items": [
+              {
+                "id": "feat-1",
+                "title": "Autonomous Intelligence",
+                "description": "Automate repetitive workflows and unlock deep contextual insights with AI tailored to your domain.",
+                "icon": "Sparkles"
+              },
+              {
+                "id": "feat-2",
+                "title": "Real-time Collaboration",
+                "description": "Collaborate synchronously with your team with multi-cursor editing, comments, and role-based permissions.",
+                "icon": "Users"
+              },
+              {
+                "id": "feat-3",
+                "title": "Enterprise Security",
+                "description": "End-to-end data encryption, SOC 2 compliance, and granular audit logs protecting every transaction.",
+                "icon": "ShieldCheck"
+              },
+              {
+                "id": "feat-4",
+                "title": "Lightning Fast Analytics",
+                "description": "Gain immediate clarity into performance metrics with interactive visual dashboards updated in sub-seconds.",
+                "icon": "BarChart3"
+              },
+              {
+                "id": "feat-5",
+                "title": "Custom Integrations",
+                "description": "Connect effortlessly with 100+ native APIs, webhooks, and your existing enterprise toolchain.",
+                "icon": "Zap"
+              },
+              {
+                "id": "feat-6",
+                "title": "Global Edge Delivery",
+                "description": "Sub-50ms latency across 320+ edge locations worldwide for a flawless customer experience.",
+                "icon": "Globe"
+              }
+            ]
+          },
+          {
+            "id": "sec-testimonials",
+            "type": "Testimonials",
+            "badge": "Social Proof",
+            "title": "Loved by Industry Leaders Worldwide",
+            "subtitle": "See how yg is transforming how hh works every day.",
+            "items": [
+              {
+                "id": "test-1",
+                "title": "Exceptional Return on Investment",
+                "description": "\"yg has completely revolutionized our workflow. We cut our turnaround time by 65% in the first 30 days alone.\"",
+                "author": "Sarah Jenkins",
+                "role": "VP of Product at Horizon Labs",
+                "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-2",
+                "title": "The Standard in Modern Software",
+                "description": "\"The visual polish and sheer performance are simply unmatched. Our entire leadership team relies on it daily.\"",
+                "author": "Marcus Vance",
+                "role": "Chief Technology Officer at Apex",
+                "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-3",
+                "title": "Incredible Speed & Simplicity",
+                "description": "\"Setting up took minutes, and our team immediately adopted it without any formal training. Truly a 10/10 experience.\"",
+                "author": "Elena Rostova",
+                "role": "Founder & CEO, Studio Nova",
+                "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              }
+            ]
+          },
+          {
+            "id": "sec-pricing",
+            "type": "Pricing",
+            "badge": "Transparent Pricing",
+            "title": "Simple, Predictable Plans for Every Scale",
+            "subtitle": "No hidden fees. Upgrade or cancel anytime with our 14-day money-back guarantee.",
+            "items": [
+              {
+                "id": "price-starter",
+                "title": "Starter",
+                "price": "$29",
+                "period": "/month",
+                "description": "Ideal for solo creators and emerging hh.",
+                "popular": false,
+                "features": [
+                  "Up to 3 active projects",
+                  "1,000 AI generation credits",
+                  "Standard SSL & custom domain",
+                  "Community Discord support",
+                  "Basic analytics suite"
+                ],
+                "buttonText": "Get Started",
+                "link": "#checkout-starter"
+              },
+              {
+                "id": "price-pro",
+                "title": "Pro Growth",
+                "price": "$79",
+                "period": "/month",
+                "description": "The most popular plan for fast-scaling organizations.",
+                "popular": true,
+                "features": [
+                  "Unlimited active projects",
+                  "15,000 AI generation credits",
+                  "Priority edge CDN delivery",
+                  "Custom domains with auto-renew",
+                  "Real-time team collaboration",
+                  "Dedicated 24/7 chat support"
+                ],
+                "buttonText": "Start 14-Day Free Trial",
+                "link": "#checkout-pro"
+              },
+              {
+                "id": "price-enterprise",
+                "title": "Enterprise",
+                "price": "$199",
+                "period": "/month",
+                "description": "Full compliance, dedicated infrastructure and SLA.",
+                "popular": false,
+                "features": [
+                  "Everything in Pro included",
+                  "Unlimited AI generation",
+                  "Custom SSO / SAML integration",
+                  "Dedicated Account Strategist",
+                  "99.99% uptime SLA guarantee",
+                  "Custom security audits & reports"
+                ],
+                "buttonText": "Contact Sales",
+                "link": "#contact"
+              }
+            ]
+          },
+          {
+            "id": "sec-faq",
+            "type": "FAQ",
+            "badge": "Got Questions?",
+            "title": "Frequently Asked Questions",
+            "subtitle": "Have a question that isn't answered here? Reach out to our 24/7 team.",
+            "items": [
+              {
+                "id": "faq-1",
+                "question": "How does yg differ from traditional alternatives?",
+                "answer": "yg combines cutting-edge AI generation with visual real-time customizability, delivering finished, high-converting landing pages in seconds instead of weeks."
+              },
+              {
+                "id": "faq-2",
+                "question": "Can I connect my own custom domain?",
+                "answer": "Yes! All paid and trial tiers include one-click custom domain configuration with automatic free SSL certificate provisioning."
+              },
+              {
+                "id": "faq-3",
+                "question": "Can I export or host the websites myself?",
+                "answer": "Absolutely. You can publish directly to our ultra-fast global edge network or export structured code at any time."
+              },
+              {
+                "id": "faq-4",
+                "question": "Is there a long-term contract or cancellation fee?",
+                "answer": "None at all. You can cancel your subscription at any time directly from your billing portal with zero penalties."
+              }
+            ]
+          },
+          {
+            "id": "sec-cta",
+            "type": "CTA",
+            "badge": "Get Started Now",
+            "title": "Ready to Elevate Your SaaS Experience?",
+            "subtitle": "Join thousands of satisfied hh who achieve more with yg. Start your 14-day free trial today.",
+            "ctaText": "Get Started for Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Schedule a Demo",
+            "secondaryCtaLink": "#contact"
+          },
+          {
+            "id": "sec-footer",
+            "type": "Footer",
+            "title": "yg",
+            "description": "The premier platform for hh to achieve extraordinary results with speed and confidence.",
+            "items": [
+              {
+                "title": "Product",
+                "description": "Features, Integrations, Pricing, Changelog, Roadmap"
+              },
+              {
+                "title": "Resources",
+                "description": "Documentation, Tutorials, API Reference, Community"
+              },
+              {
+                "title": "Company",
+                "description": "About Us, Careers, Press Kit, Contact, Privacy Policy"
+              }
+            ]
+          }
+        ],
+        "seo": {
+          "title": "yg — The Intelligent SaaS for hh",
+          "metaDescription": "jb",
+          "keywords": [
+            "yg",
+            "SaaS",
+            "hh",
+            "Landing Page",
+            "SaaS"
+          ]
+        }
+      },
+      "analytics": {
+        "totalViews": 2,
+        "uniqueVisitors": 1,
+        "devices": {
+          "desktop": 2,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {
+          "http://localhost:3000/editor/proj-1789490629944-b69z": 2
+        },
+        "dailyViews": [
+          {
+            "date": "2026-09-15",
+            "views": 2,
+            "visitors": 1
+          }
+        ]
+      },
+      "createdAt": "2026-09-15T16:43:49.945Z",
+      "updatedAt": "2026-09-15T16:45:15.787Z",
+      "publishedAt": "2026-09-15T16:45:15.786Z"
+    },
+    "proj-1789739365283-oawl": {
+      "id": "proj-1789739365283-oawl",
+      "userId": "demo-user-1",
+      "name": "ft Landing Page",
+      "slug": "ft-landing-page-wu5o",
+      "isPublished": true,
+      "status": "published",
+      "websiteData": {
+        "businessName": "ft",
+        "tagline": "Next-Gen SaaS Experience",
+        "description": "ert",
+        "targetAudience": "tertd",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Electric Indigo",
+          "customPalette": {
+            "primary": "#6366f1",
+            "secondary": "#4f46e5",
+            "accent": "#a855f7",
+            "background": "#09090b",
+            "surface": "#18181b",
+            "text": "#fafafa",
+            "mutedText": "#a1a1aa",
+            "border": "#27272a"
+          },
+          "fontFamily": "Plus Jakarta Sans",
+          "borderRadius": "lg",
+          "animation": "Modern",
+          "style": "Modern"
+        },
+        "sections": [
+          {
+            "id": "sec-hero",
+            "type": "Hero",
+            "badge": "Next-Gen SaaS Platform",
+            "title": "Empower Your Future With ft",
+            "subtitle": "The intelligent platform built exclusively for tertd. Accelerate growth, simplify complexity, and achieve unmatched results.",
+            "ctaText": "Start Free Trial",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Watch Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
+            "imageAlt": "ft Dashboard Preview",
+            "items": [
+              {
+                "title": "99.99%",
+                "description": "Uptime Guaranteed"
+              },
+              {
+                "title": "10x",
+                "description": "Faster Performance"
+              },
+              {
+                "title": "25k+",
+                "description": "Active Customers"
+              }
+            ]
+          },
+          {
+            "id": "sec-features",
+            "type": "Features",
+            "badge": "Key Capabilities",
+            "title": "Everything You Need to Scale Effortlessly",
+            "subtitle": "Designed from the ground up to solve the most pressing challenges faced by tertd.",
+            "items": [
+              {
+                "id": "feat-1",
+                "title": "Autonomous Intelligence",
+                "description": "Automate repetitive workflows and unlock deep contextual insights with AI tailored to your domain.",
+                "icon": "Sparkles"
+              },
+              {
+                "id": "feat-2",
+                "title": "Real-time Collaboration",
+                "description": "Collaborate synchronously with your team with multi-cursor editing, comments, and role-based permissions.",
+                "icon": "Users"
+              },
+              {
+                "id": "feat-3",
+                "title": "Enterprise Security",
+                "description": "End-to-end data encryption, SOC 2 compliance, and granular audit logs protecting every transaction.",
+                "icon": "ShieldCheck"
+              },
+              {
+                "id": "feat-4",
+                "title": "Lightning Fast Analytics",
+                "description": "Gain immediate clarity into performance metrics with interactive visual dashboards updated in sub-seconds.",
+                "icon": "BarChart3"
+              },
+              {
+                "id": "feat-5",
+                "title": "Custom Integrations",
+                "description": "Connect effortlessly with 100+ native APIs, webhooks, and your existing enterprise toolchain.",
+                "icon": "Zap"
+              },
+              {
+                "id": "feat-6",
+                "title": "Global Edge Delivery",
+                "description": "Sub-50ms latency across 320+ edge locations worldwide for a flawless customer experience.",
+                "icon": "Globe"
+              }
+            ]
+          },
+          {
+            "id": "sec-testimonials",
+            "type": "Testimonials",
+            "badge": "Social Proof",
+            "title": "Loved by Industry Leaders Worldwide",
+            "subtitle": "See how ft is transforming how tertd works every day.",
+            "items": [
+              {
+                "id": "test-1",
+                "title": "Exceptional Return on Investment",
+                "description": "\"ft has completely revolutionized our workflow. We cut our turnaround time by 65% in the first 30 days alone.\"",
+                "author": "Sarah Jenkins",
+                "role": "VP of Product at Horizon Labs",
+                "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-2",
+                "title": "The Standard in Modern Software",
+                "description": "\"The visual polish and sheer performance are simply unmatched. Our entire leadership team relies on it daily.\"",
+                "author": "Marcus Vance",
+                "role": "Chief Technology Officer at Apex",
+                "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-3",
+                "title": "Incredible Speed & Simplicity",
+                "description": "\"Setting up took minutes, and our team immediately adopted it without any formal training. Truly a 10/10 experience.\"",
+                "author": "Elena Rostova",
+                "role": "Founder & CEO, Studio Nova",
+                "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              }
+            ]
+          },
+          {
+            "id": "sec-pricing",
+            "type": "Pricing",
+            "badge": "Transparent Pricing",
+            "title": "Simple, Predictable Plans for Every Scale",
+            "subtitle": "No hidden fees. Upgrade or cancel anytime with our 14-day money-back guarantee.",
+            "items": [
+              {
+                "id": "price-starter",
+                "title": "Starter",
+                "price": "$29",
+                "period": "/month",
+                "description": "Ideal for solo creators and emerging tertd.",
+                "popular": false,
+                "features": [
+                  "Up to 3 active projects",
+                  "1,000 AI generation credits",
+                  "Standard SSL & custom domain",
+                  "Community Discord support",
+                  "Basic analytics suite"
+                ],
+                "buttonText": "Get Started",
+                "link": "#checkout-starter"
+              },
+              {
+                "id": "price-pro",
+                "title": "Pro Growth",
+                "price": "$79",
+                "period": "/month",
+                "description": "The most popular plan for fast-scaling organizations.",
+                "popular": true,
+                "features": [
+                  "Unlimited active projects",
+                  "15,000 AI generation credits",
+                  "Priority edge CDN delivery",
+                  "Custom domains with auto-renew",
+                  "Real-time team collaboration",
+                  "Dedicated 24/7 chat support"
+                ],
+                "buttonText": "Start 14-Day Free Trial",
+                "link": "#checkout-pro"
+              },
+              {
+                "id": "price-enterprise",
+                "title": "Enterprise",
+                "price": "$199",
+                "period": "/month",
+                "description": "Full compliance, dedicated infrastructure and SLA.",
+                "popular": false,
+                "features": [
+                  "Everything in Pro included",
+                  "Unlimited AI generation",
+                  "Custom SSO / SAML integration",
+                  "Dedicated Account Strategist",
+                  "99.99% uptime SLA guarantee",
+                  "Custom security audits & reports"
+                ],
+                "buttonText": "Contact Sales",
+                "link": "#contact"
+              }
+            ]
+          },
+          {
+            "id": "sec-faq",
+            "type": "FAQ",
+            "badge": "Got Questions?",
+            "title": "Frequently Asked Questions",
+            "subtitle": "Have a question that isn't answered here? Reach out to our 24/7 team.",
+            "items": [
+              {
+                "id": "faq-1",
+                "question": "How does ft differ from traditional alternatives?",
+                "answer": "ft combines cutting-edge AI generation with visual real-time customizability, delivering finished, high-converting landing pages in seconds instead of weeks."
+              },
+              {
+                "id": "faq-2",
+                "question": "Can I connect my own custom domain?",
+                "answer": "Yes! All paid and trial tiers include one-click custom domain configuration with automatic free SSL certificate provisioning."
+              },
+              {
+                "id": "faq-3",
+                "question": "Can I export or host the websites myself?",
+                "answer": "Absolutely. You can publish directly to our ultra-fast global edge network or export structured code at any time."
+              },
+              {
+                "id": "faq-4",
+                "question": "Is there a long-term contract or cancellation fee?",
+                "answer": "None at all. You can cancel your subscription at any time directly from your billing portal with zero penalties."
+              }
+            ]
+          },
+          {
+            "id": "sec-cta",
+            "type": "CTA",
+            "badge": "Get Started Now",
+            "title": "Ready to Elevate Your SaaS Experience?",
+            "subtitle": "Join thousands of satisfied tertd who achieve more with ft. Start your 14-day free trial today.",
+            "ctaText": "Get Started for Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Schedule a Demo",
+            "secondaryCtaLink": "#contact"
+          },
+          {
+            "id": "sec-footer",
+            "type": "Footer",
+            "title": "ft",
+            "description": "The premier platform for tertd to achieve extraordinary results with speed and confidence.",
+            "items": [
+              {
+                "title": "Product",
+                "description": "Features, Integrations, Pricing, Changelog, Roadmap"
+              },
+              {
+                "title": "Resources",
+                "description": "Documentation, Tutorials, API Reference, Community"
+              },
+              {
+                "title": "Company",
+                "description": "About Us, Careers, Press Kit, Contact, Privacy Policy"
+              }
+            ]
+          }
+        ],
+        "seo": {
+          "title": "ft — The Intelligent SaaS for tertd",
+          "metaDescription": "ert",
+          "keywords": [
+            "ft",
+            "SaaS",
+            "tertd",
+            "Landing Page",
+            "SaaS"
+          ]
+        }
+      },
+      "analytics": {
+        "totalViews": 0,
+        "uniqueVisitors": 0,
+        "devices": {
+          "desktop": 0,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {},
+        "dailyViews": []
+      },
+      "createdAt": "2026-09-18T13:49:25.284Z",
+      "updatedAt": "2026-09-18T13:49:53.919Z",
+      "publishedAt": "2026-09-18T13:49:53.919Z"
+    },
+    "proj-1789740977497-swnr": {
+      "id": "proj-1789740977497-swnr",
+      "userId": "user-1789489822373-24w70",
+      "name": "hello Landing Page",
+      "slug": "hello-landing-page-coev",
+      "isPublished": true,
+      "status": "published",
+      "websiteData": {
+        "businessName": "hello",
+        "tagline": "Next-Gen SaaS Experience",
+        "description": "yghb",
+        "targetAudience": "bb",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Electric Indigo",
+          "customPalette": {
+            "primary": "#6366f1",
+            "secondary": "#4f46e5",
+            "accent": "#a855f7",
+            "background": "#09090b",
+            "surface": "#18181b",
+            "text": "#fafafa",
+            "mutedText": "#a1a1aa",
+            "border": "#27272a"
+          },
+          "fontFamily": "Plus Jakarta Sans",
+          "borderRadius": "lg",
+          "animation": "Modern",
+          "style": "Modern"
+        },
+        "sections": [
+          {
+            "id": "sec-hero",
+            "type": "Hero",
+            "badge": "Next-Gen SaaS Platform",
+            "title": "Empower Your Future With hello",
+            "subtitle": "The intelligent platform built exclusively for bb. Accelerate growth, simplify complexity, and achieve unmatched results.",
+            "ctaText": "Start Free Trial",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Watch Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
+            "imageAlt": "hello Dashboard Preview",
+            "items": [
+              {
+                "title": "99.99%",
+                "description": "Uptime Guaranteed"
+              },
+              {
+                "title": "10x",
+                "description": "Faster Performance"
+              },
+              {
+                "title": "25k+",
+                "description": "Active Customers"
+              }
+            ]
+          },
+          {
+            "id": "sec-features",
+            "type": "Features",
+            "badge": "Key Capabilities",
+            "title": "Everything You Need to Scale Effortlessly",
+            "subtitle": "Designed from the ground up to solve the most pressing challenges faced by bb.",
+            "items": [
+              {
+                "id": "feat-1",
+                "title": "Autonomous Intelligence",
+                "description": "Automate repetitive workflows and unlock deep contextual insights with AI tailored to your domain.",
+                "icon": "Sparkles"
+              },
+              {
+                "id": "feat-2",
+                "title": "Real-time Collaboration",
+                "description": "Collaborate synchronously with your team with multi-cursor editing, comments, and role-based permissions.",
+                "icon": "Users"
+              },
+              {
+                "id": "feat-3",
+                "title": "Enterprise Security",
+                "description": "End-to-end data encryption, SOC 2 compliance, and granular audit logs protecting every transaction.",
+                "icon": "ShieldCheck"
+              },
+              {
+                "id": "feat-4",
+                "title": "Lightning Fast Analytics",
+                "description": "Gain immediate clarity into performance metrics with interactive visual dashboards updated in sub-seconds.",
+                "icon": "BarChart3"
+              },
+              {
+                "id": "feat-5",
+                "title": "Custom Integrations",
+                "description": "Connect effortlessly with 100+ native APIs, webhooks, and your existing enterprise toolchain.",
+                "icon": "Zap"
+              },
+              {
+                "id": "feat-6",
+                "title": "Global Edge Delivery",
+                "description": "Sub-50ms latency across 320+ edge locations worldwide for a flawless customer experience.",
+                "icon": "Globe"
+              }
+            ]
+          },
+          {
+            "id": "sec-testimonials",
+            "type": "Testimonials",
+            "badge": "Social Proof",
+            "title": "Loved by Industry Leaders Worldwide",
+            "subtitle": "See how hello is transforming how bb works every day.",
+            "items": [
+              {
+                "id": "test-1",
+                "title": "Exceptional Return on Investment",
+                "description": "\"hello has completely revolutionized our workflow. We cut our turnaround time by 65% in the first 30 days alone.\"",
+                "author": "Sarah Jenkins",
+                "role": "VP of Product at Horizon Labs",
+                "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-2",
+                "title": "The Standard in Modern Software",
+                "description": "\"The visual polish and sheer performance are simply unmatched. Our entire leadership team relies on it daily.\"",
+                "author": "Marcus Vance",
+                "role": "Chief Technology Officer at Apex",
+                "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-3",
+                "title": "Incredible Speed & Simplicity",
+                "description": "\"Setting up took minutes, and our team immediately adopted it without any formal training. Truly a 10/10 experience.\"",
+                "author": "Elena Rostova",
+                "role": "Founder & CEO, Studio Nova",
+                "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              }
+            ]
+          },
+          {
+            "id": "sec-pricing",
+            "type": "Pricing",
+            "badge": "Transparent Pricing",
+            "title": "Simple, Predictable Plans for Every Scale",
+            "subtitle": "No hidden fees. Upgrade or cancel anytime with our 14-day money-back guarantee.",
+            "items": [
+              {
+                "id": "price-starter",
+                "title": "Starter",
+                "price": "$29",
+                "period": "/month",
+                "description": "Ideal for solo creators and emerging bb.",
+                "popular": false,
+                "features": [
+                  "Up to 3 active projects",
+                  "1,000 AI generation credits",
+                  "Standard SSL & custom domain",
+                  "Community Discord support",
+                  "Basic analytics suite"
+                ],
+                "buttonText": "Get Started",
+                "link": "#checkout-starter"
+              },
+              {
+                "id": "price-pro",
+                "title": "Pro Growth",
+                "price": "$79",
+                "period": "/month",
+                "description": "The most popular plan for fast-scaling organizations.",
+                "popular": true,
+                "features": [
+                  "Unlimited active projects",
+                  "15,000 AI generation credits",
+                  "Priority edge CDN delivery",
+                  "Custom domains with auto-renew",
+                  "Real-time team collaboration",
+                  "Dedicated 24/7 chat support"
+                ],
+                "buttonText": "Start 14-Day Free Trial",
+                "link": "#checkout-pro"
+              },
+              {
+                "id": "price-enterprise",
+                "title": "Enterprise",
+                "price": "$199",
+                "period": "/month",
+                "description": "Full compliance, dedicated infrastructure and SLA.",
+                "popular": false,
+                "features": [
+                  "Everything in Pro included",
+                  "Unlimited AI generation",
+                  "Custom SSO / SAML integration",
+                  "Dedicated Account Strategist",
+                  "99.99% uptime SLA guarantee",
+                  "Custom security audits & reports"
+                ],
+                "buttonText": "Contact Sales",
+                "link": "#contact"
+              }
+            ]
+          },
+          {
+            "id": "sec-faq",
+            "type": "FAQ",
+            "badge": "Got Questions?",
+            "title": "Frequently Asked Questions",
+            "subtitle": "Have a question that isn't answered here? Reach out to our 24/7 team.",
+            "items": [
+              {
+                "id": "faq-1",
+                "question": "How does hello differ from traditional alternatives?",
+                "answer": "hello combines cutting-edge AI generation with visual real-time customizability, delivering finished, high-converting landing pages in seconds instead of weeks."
+              },
+              {
+                "id": "faq-2",
+                "question": "Can I connect my own custom domain?",
+                "answer": "Yes! All paid and trial tiers include one-click custom domain configuration with automatic free SSL certificate provisioning."
+              },
+              {
+                "id": "faq-3",
+                "question": "Can I export or host the websites myself?",
+                "answer": "Absolutely. You can publish directly to our ultra-fast global edge network or export structured code at any time."
+              },
+              {
+                "id": "faq-4",
+                "question": "Is there a long-term contract or cancellation fee?",
+                "answer": "None at all. You can cancel your subscription at any time directly from your billing portal with zero penalties."
+              }
+            ]
+          },
+          {
+            "id": "sec-cta",
+            "type": "CTA",
+            "badge": "Get Started Now",
+            "title": "Ready to Elevate Your SaaS Experience?",
+            "subtitle": "Join thousands of satisfied bb who achieve more with hello. Start your 14-day free trial today.",
+            "ctaText": "Get Started for Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Schedule a Demo",
+            "secondaryCtaLink": "#contact"
+          },
+          {
+            "id": "sec-footer",
+            "type": "Footer",
+            "title": "hello",
+            "description": "The premier platform for bb to achieve extraordinary results with speed and confidence.",
+            "items": [
+              {
+                "title": "Product",
+                "description": "Features, Integrations, Pricing, Changelog, Roadmap"
+              },
+              {
+                "title": "Resources",
+                "description": "Documentation, Tutorials, API Reference, Community"
+              },
+              {
+                "title": "Company",
+                "description": "About Us, Careers, Press Kit, Contact, Privacy Policy"
+              }
+            ]
+          }
+        ],
+        "seo": {
+          "title": "hello — The Intelligent SaaS for bb",
+          "metaDescription": "yghb",
+          "keywords": [
+            "hello",
+            "SaaS",
+            "bb",
+            "Landing Page",
+            "SaaS"
+          ]
+        }
+      },
+      "analytics": {
+        "totalViews": 2,
+        "uniqueVisitors": 1,
+        "devices": {
+          "desktop": 2,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {
+          "http://localhost:3000/dashboard/settings": 2
+        },
+        "dailyViews": [
+          {
+            "date": "2026-09-18",
+            "views": 2,
+            "visitors": 1
+          }
+        ]
+      },
+      "createdAt": "2026-09-18T14:16:17.498Z",
+      "updatedAt": "2026-09-18T14:27:14.009Z",
+      "publishedAt": "2026-09-18T14:18:01.361Z",
+      "customDomain": {
+        "domain": "sakshi.com",
+        "verified": true,
+        "status": "verified",
+        "recordType": "A",
+        "expectedTarget": "76.76.21.21",
+        "verificationToken": "sitecraft-verify=dff1bf08f477b16c77dd71a6",
+        "sslActive": true,
+        "sslStatus": "active",
+        "configuredAt": "2026-09-18T14:26:59.592Z",
+        "lastCheckedAt": "2026-09-18T14:27:14.009Z",
+        "dnsDiagnostics": {
+          "foundRecords": [
+            "76.76.21.21"
+          ],
+          "message": "Development simulation: DNS records and SSL successfully validated."
+        }
+      }
+    },
+    "proj-1789742485732-x3uw": {
+      "id": "proj-1789742485732-x3uw",
+      "userId": "user-1789742485692-o2dp6",
+      "name": "ApexFlow Website",
+      "slug": "apexflow-website-4l7q",
+      "isPublished": true,
+      "status": "published",
+      "websiteData": {
+        "businessName": "ApexFlow",
+        "tagline": "Next-Gen SaaS Experience",
+        "description": "Autonomous revenue intelligence for high-growth tech startups.",
+        "targetAudience": "Founders and CFOs",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Electric Indigo",
+          "customPalette": {
+            "primary": "#6366f1",
+            "secondary": "#4f46e5",
+            "accent": "#a855f7",
+            "background": "#09090b",
+            "surface": "#18181b",
+            "text": "#fafafa",
+            "mutedText": "#a1a1aa",
+            "border": "#27272a"
+          },
+          "fontFamily": "Plus Jakarta Sans",
+          "borderRadius": "lg",
+          "animation": "Modern",
+          "style": "Modern"
+        },
+        "sections": [
+          {
+            "id": "sec-hero",
+            "type": "Hero",
+            "badge": "Next-Gen SaaS Platform",
+            "title": "Empower Your Future With ApexFlow",
+            "subtitle": "The intelligent platform built exclusively for Founders and CFOs. Accelerate growth, simplify complexity, and achieve unmatched results.",
+            "ctaText": "Start Free Trial",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Watch Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
+            "imageAlt": "ApexFlow Dashboard Preview",
+            "items": [
+              {
+                "title": "99.99%",
+                "description": "Uptime Guaranteed"
+              },
+              {
+                "title": "10x",
+                "description": "Faster Performance"
+              },
+              {
+                "title": "25k+",
+                "description": "Active Customers"
+              }
+            ]
+          },
+          {
+            "id": "sec-features",
+            "type": "Features",
+            "badge": "Key Capabilities",
+            "title": "Everything You Need to Scale Effortlessly",
+            "subtitle": "Designed from the ground up to solve the most pressing challenges faced by Founders and CFOs.",
+            "items": [
+              {
+                "id": "feat-1",
+                "title": "Autonomous Intelligence",
+                "description": "Automate repetitive workflows and unlock deep contextual insights with AI tailored to your domain.",
+                "icon": "Sparkles"
+              },
+              {
+                "id": "feat-2",
+                "title": "Real-time Collaboration",
+                "description": "Collaborate synchronously with your team with multi-cursor editing, comments, and role-based permissions.",
+                "icon": "Users"
+              },
+              {
+                "id": "feat-3",
+                "title": "Enterprise Security",
+                "description": "End-to-end data encryption, SOC 2 compliance, and granular audit logs protecting every transaction.",
+                "icon": "ShieldCheck"
+              },
+              {
+                "id": "feat-4",
+                "title": "Lightning Fast Analytics",
+                "description": "Gain immediate clarity into performance metrics with interactive visual dashboards updated in sub-seconds.",
+                "icon": "BarChart3"
+              },
+              {
+                "id": "feat-5",
+                "title": "Custom Integrations",
+                "description": "Connect effortlessly with 100+ native APIs, webhooks, and your existing enterprise toolchain.",
+                "icon": "Zap"
+              },
+              {
+                "id": "feat-6",
+                "title": "Global Edge Delivery",
+                "description": "Sub-50ms latency across 320+ edge locations worldwide for a flawless customer experience.",
+                "icon": "Globe"
+              }
+            ]
+          },
+          {
+            "id": "sec-pricing",
+            "type": "Pricing",
+            "badge": "Transparent Pricing",
+            "title": "Simple, Predictable Plans for Every Scale",
+            "subtitle": "No hidden fees. Upgrade or cancel anytime with our 14-day money-back guarantee.",
+            "items": [
+              {
+                "id": "price-starter",
+                "title": "Starter",
+                "price": "$29",
+                "period": "/month",
+                "description": "Ideal for solo creators and emerging Founders and CFOs.",
+                "popular": false,
+                "features": [
+                  "Up to 3 active projects",
+                  "1,000 AI generation credits",
+                  "Standard SSL & custom domain",
+                  "Community Discord support",
+                  "Basic analytics suite"
+                ],
+                "buttonText": "Get Started",
+                "link": "#checkout-starter"
+              },
+              {
+                "id": "price-pro",
+                "title": "Pro Growth",
+                "price": "$79",
+                "period": "/month",
+                "description": "The most popular plan for fast-scaling organizations.",
+                "popular": true,
+                "features": [
+                  "Unlimited active projects",
+                  "15,000 AI generation credits",
+                  "Priority edge CDN delivery",
+                  "Custom domains with auto-renew",
+                  "Real-time team collaboration",
+                  "Dedicated 24/7 chat support"
+                ],
+                "buttonText": "Start 14-Day Free Trial",
+                "link": "#checkout-pro"
+              },
+              {
+                "id": "price-enterprise",
+                "title": "Enterprise",
+                "price": "$199",
+                "period": "/month",
+                "description": "Full compliance, dedicated infrastructure and SLA.",
+                "popular": false,
+                "features": [
+                  "Everything in Pro included",
+                  "Unlimited AI generation",
+                  "Custom SSO / SAML integration",
+                  "Dedicated Account Strategist",
+                  "99.99% uptime SLA guarantee",
+                  "Custom security audits & reports"
+                ],
+                "buttonText": "Contact Sales",
+                "link": "#contact"
+              }
+            ]
+          },
+          {
+            "id": "sec-footer",
+            "type": "Footer",
+            "title": "ApexFlow",
+            "description": "The premier platform for Founders and CFOs to achieve extraordinary results with speed and confidence.",
+            "items": [
+              {
+                "title": "Product",
+                "description": "Features, Integrations, Pricing, Changelog, Roadmap"
+              },
+              {
+                "title": "Resources",
+                "description": "Documentation, Tutorials, API Reference, Community"
+              },
+              {
+                "title": "Company",
+                "description": "About Us, Careers, Press Kit, Contact, Privacy Policy"
+              }
+            ]
+          }
+        ],
+        "seo": {
+          "title": "ApexFlow — The Intelligent SaaS for Founders and CFOs",
+          "metaDescription": "Autonomous revenue intelligence for high-growth tech startups.",
+          "keywords": [
+            "ApexFlow",
+            "SaaS",
+            "Founders and CFOs",
+            "Landing Page",
+            "SaaS"
+          ]
+        }
+      },
+      "analytics": {
+        "totalViews": 1,
+        "uniqueVisitors": 1,
+        "devices": {
+          "desktop": 1,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {
+          "Direct": 1
+        },
+        "dailyViews": [
+          {
+            "date": "2026-09-18",
+            "views": 1,
+            "visitors": 1
+          }
+        ]
+      },
+      "createdAt": "2026-09-18T14:41:25.733Z",
+      "updatedAt": "2026-09-18T14:41:25.745Z",
+      "publishedAt": "2026-09-18T14:41:25.745Z"
+    },
+    "proj-1789744994420-deb9": {
+      "id": "proj-1789744994420-deb9",
+      "userId": "demo-user-1",
+      "name": "Ai Landing Page",
+      "slug": "ai-landing-page-h2of",
+      "isPublished": true,
+      "status": "published",
+      "websiteData": {
+        "businessName": "Ai",
+        "tagline": "Next-Gen SaaS Experience",
+        "description": "Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.\n\nFor small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.\n\nAt the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.",
+        "targetAudience": "software developer",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Ocean Azure",
+          "customPalette": {
+            "primary": "#ffffff",
+            "secondary": "#e2e8f0",
+            "accent": "#94a3b8",
+            "background": "#000000",
+            "surface": "#111111",
+            "text": "#ffffff",
+            "mutedText": "#888888",
+            "border": "#222222"
+          },
+          "fontFamily": "Playfair Display",
+          "borderRadius": "sm",
+          "animation": "Subtle",
+          "style": "Luxury"
+        },
+        "sections": [
+          {
+            "id": "sec-hero",
+            "type": "Hero",
+            "badge": "Next-Gen SaaS Platform",
+            "title": "Empower Your Future With Ai",
+            "subtitle": "The intelligent platform built exclusively for software developer. Accelerate growth, simplify complexity, and achieve unmatched results.",
+            "ctaText": "Start Free Trial",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Watch Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80",
+            "imageAlt": "Ai Dashboard Preview",
+            "items": [
+              {
+                "title": "99.99%",
+                "description": "Uptime Guaranteed"
+              },
+              {
+                "title": "10x",
+                "description": "Faster Performance"
+              },
+              {
+                "title": "25k+",
+                "description": "Active Customers"
+              }
+            ]
+          },
+          {
+            "id": "sec-features",
+            "type": "Features",
+            "badge": "Key Capabilities",
+            "title": "Everything You Need to Scale Effortlessly",
+            "subtitle": "Designed from the ground up to solve the most pressing challenges faced by software developer.",
+            "items": [
+              {
+                "id": "feat-1",
+                "title": "Autonomous Intelligence",
+                "description": "Automate repetitive workflows and unlock deep contextual insights with AI tailored to your domain.",
+                "icon": "Sparkles"
+              },
+              {
+                "id": "feat-2",
+                "title": "Real-time Collaboration",
+                "description": "Collaborate synchronously with your team with multi-cursor editing, comments, and role-based permissions.",
+                "icon": "Users"
+              },
+              {
+                "id": "feat-3",
+                "title": "Enterprise Security",
+                "description": "End-to-end data encryption, SOC 2 compliance, and granular audit logs protecting every transaction.",
+                "icon": "ShieldCheck"
+              },
+              {
+                "id": "feat-4",
+                "title": "Lightning Fast Analytics",
+                "description": "Gain immediate clarity into performance metrics with interactive visual dashboards updated in sub-seconds.",
+                "icon": "BarChart3"
+              },
+              {
+                "id": "feat-5",
+                "title": "Custom Integrations",
+                "description": "Connect effortlessly with 100+ native APIs, webhooks, and your existing enterprise toolchain.",
+                "icon": "Zap"
+              },
+              {
+                "id": "feat-6",
+                "title": "Global Edge Delivery",
+                "description": "Sub-50ms latency across 320+ edge locations worldwide for a flawless customer experience.",
+                "icon": "Globe"
+              }
+            ]
+          },
+          {
+            "id": "sec-about",
+            "type": "About",
+            "badge": "Our Mission",
+            "title": "Crafting the Future of SaaS",
+            "description": "Ai was founded with a singular conviction: Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.\n\nFor small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.\n\nAt the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.. Today, we help organizations of all sizes conquer friction and unleash their full potential.",
+            "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&auto=format&fit=crop&q=80",
+            "imageAlt": "Team collaboration",
+            "items": [
+              {
+                "title": "Customer Obsessed",
+                "description": "Every feature we ship starts with direct customer feedback."
+              },
+              {
+                "title": "Relentless Speed",
+                "description": "We ship iterations rapidly to keep you ahead of the market."
+              }
+            ]
+          },
+          {
+            "id": "sec-testimonials",
+            "type": "Testimonials",
+            "badge": "Social Proof",
+            "title": "Loved by Industry Leaders Worldwide",
+            "subtitle": "See how Ai is transforming how software developer works every day.",
+            "items": [
+              {
+                "id": "test-1",
+                "title": "Exceptional Return on Investment",
+                "description": "\"Ai has completely revolutionized our workflow. We cut our turnaround time by 65% in the first 30 days alone.\"",
+                "author": "Sarah Jenkins",
+                "role": "VP of Product at Horizon Labs",
+                "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-2",
+                "title": "The Standard in Modern Software",
+                "description": "\"The visual polish and sheer performance are simply unmatched. Our entire leadership team relies on it daily.\"",
+                "author": "Marcus Vance",
+                "role": "Chief Technology Officer at Apex",
+                "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-3",
+                "title": "Incredible Speed & Simplicity",
+                "description": "\"Setting up took minutes, and our team immediately adopted it without any formal training. Truly a 10/10 experience.\"",
+                "author": "Elena Rostova",
+                "role": "Founder & CEO, Studio Nova",
+                "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              }
+            ]
+          },
+          {
+            "id": "sec-pricing",
+            "type": "Pricing",
+            "badge": "Transparent Pricing",
+            "title": "Simple, Predictable Plans for Every Scale",
+            "subtitle": "No hidden fees. Upgrade or cancel anytime with our 14-day money-back guarantee.",
+            "items": [
+              {
+                "id": "price-starter",
+                "title": "Starter",
+                "price": "$29",
+                "period": "/month",
+                "description": "Ideal for solo creators and emerging software developer.",
+                "popular": false,
+                "features": [
+                  "Up to 3 active projects",
+                  "1,000 AI generation credits",
+                  "Standard SSL & custom domain",
+                  "Community Discord support",
+                  "Basic analytics suite"
+                ],
+                "buttonText": "Get Started",
+                "link": "#checkout-starter"
+              },
+              {
+                "id": "price-pro",
+                "title": "Pro Growth",
+                "price": "$79",
+                "period": "/month",
+                "description": "The most popular plan for fast-scaling organizations.",
+                "popular": true,
+                "features": [
+                  "Unlimited active projects",
+                  "15,000 AI generation credits",
+                  "Priority edge CDN delivery",
+                  "Custom domains with auto-renew",
+                  "Real-time team collaboration",
+                  "Dedicated 24/7 chat support"
+                ],
+                "buttonText": "Start 14-Day Free Trial",
+                "link": "#checkout-pro"
+              },
+              {
+                "id": "price-enterprise",
+                "title": "Enterprise",
+                "price": "$199",
+                "period": "/month",
+                "description": "Full compliance, dedicated infrastructure and SLA.",
+                "popular": false,
+                "features": [
+                  "Everything in Pro included",
+                  "Unlimited AI generation",
+                  "Custom SSO / SAML integration",
+                  "Dedicated Account Strategist",
+                  "99.99% uptime SLA guarantee",
+                  "Custom security audits & reports"
+                ],
+                "buttonText": "Contact Sales",
+                "link": "#contact"
+              }
+            ]
+          },
+          {
+            "id": "sec-faq",
+            "type": "FAQ",
+            "badge": "Got Questions?",
+            "title": "Frequently Asked Questions",
+            "subtitle": "Have a question that isn't answered here? Reach out to our 24/7 team.",
+            "items": [
+              {
+                "id": "faq-1",
+                "question": "How does Ai differ from traditional alternatives?",
+                "answer": "Ai combines cutting-edge AI generation with visual real-time customizability, delivering finished, high-converting landing pages in seconds instead of weeks."
+              },
+              {
+                "id": "faq-2",
+                "question": "Can I connect my own custom domain?",
+                "answer": "Yes! All paid and trial tiers include one-click custom domain configuration with automatic free SSL certificate provisioning."
+              },
+              {
+                "id": "faq-3",
+                "question": "Can I export or host the websites myself?",
+                "answer": "Absolutely. You can publish directly to our ultra-fast global edge network or export structured code at any time."
+              },
+              {
+                "id": "faq-4",
+                "question": "Is there a long-term contract or cancellation fee?",
+                "answer": "None at all. You can cancel your subscription at any time directly from your billing portal with zero penalties."
+              }
+            ]
+          },
+          {
+            "id": "sec-cta",
+            "type": "CTA",
+            "badge": "Get Started Now",
+            "title": "Ready to Elevate Your SaaS Experience?",
+            "subtitle": "Join thousands of satisfied software developer who achieve more with Ai. Start your 14-day free trial today.",
+            "ctaText": "Get Started for Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Schedule a Demo",
+            "secondaryCtaLink": "#contact"
+          },
+          {
+            "id": "sec-contact",
+            "type": "Contact",
+            "badge": "Get in Touch",
+            "title": "We'd Love to Hear From You",
+            "subtitle": "Have questions about our enterprise plans, custom integrations, or partnerships?",
+            "description": "Our dedicated advisory team responds in less than 2 hours during standard business hours.",
+            "items": [
+              {
+                "title": "Email Us",
+                "description": "support@ai.com"
+              },
+              {
+                "title": "Office Location",
+                "description": "San Francisco, CA • London, UK"
+              },
+              {
+                "title": "Live Chat",
+                "description": "Available 24/7 directly within your dashboard"
+              }
+            ]
+          },
+          {
+            "id": "sec-footer",
+            "type": "Footer",
+            "title": "Ai",
+            "description": "The premier platform for software developer to achieve extraordinary results with speed and confidence.",
+            "items": [
+              {
+                "title": "Product",
+                "description": "Features, Integrations, Pricing, Changelog, Roadmap"
+              },
+              {
+                "title": "Resources",
+                "description": "Documentation, Tutorials, API Reference, Community"
+              },
+              {
+                "title": "Company",
+                "description": "About Us, Careers, Press Kit, Contact, Privacy Policy"
+              }
+            ]
+          }
+        ],
+        "seo": {
+          "title": "Ai — The Intelligent SaaS for software developer",
+          "metaDescription": "Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve ",
+          "keywords": [
+            "Ai",
+            "SaaS",
+            "software developer",
+            "Landing Page",
+            "SaaS"
+          ]
+        }
+      },
+      "analytics": {
+        "totalViews": 2,
+        "uniqueVisitors": 1,
+        "devices": {
+          "desktop": 2,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {
+          "http://localhost:3000/dashboard/settings": 2
+        },
+        "dailyViews": [
+          {
+            "date": "2026-09-18",
+            "views": 2,
+            "visitors": 1
+          }
+        ]
+      },
+      "createdAt": "2026-09-18T15:23:14.420Z",
+      "updatedAt": "2026-09-18T15:27:24.570Z",
+      "publishedAt": "2026-09-18T15:26:55.440Z",
+      "customDomain": {
+        "domain": "artificialintelligence.com",
+        "verified": true,
+        "status": "verified",
+        "recordType": "A",
+        "expectedTarget": "76.76.21.21",
+        "verificationToken": "sitecraft-verify=eb2068909997447f188cfad3",
+        "sslActive": true,
+        "sslStatus": "active",
+        "configuredAt": "2026-09-18T15:27:16.193Z",
+        "lastCheckedAt": "2026-09-18T15:27:24.570Z",
+        "dnsDiagnostics": {
+          "foundRecords": [
+            "76.76.21.21"
+          ],
+          "message": "Development simulation: DNS records and SSL successfully validated."
+        }
+      }
+    },
+    "proj-1789746882279-gqn3": {
+      "id": "proj-1789746882279-gqn3",
+      "userId": "user-1789489822373-24w70",
+      "name": "SaaSFlow Metrics Website",
+      "slug": "saasflow-metrics-website-kipo",
+      "isPublished": false,
+      "status": "draft",
+      "websiteData": {
+        "businessName": "SaaSFlow Metrics",
+        "tagline": "Subscription Revenue Intelligence for Founders",
+        "description": "Real-time MRR tracking, churn prediction, and subscriber lifetime value analytics.",
+        "targetAudience": "B2B SaaS founders, finance executives, and product leaders",
+        "websiteType": "SaaS",
+        "theme": {
+          "colorTheme": "Ocean Azure",
+          "fontFamily": "Inter",
+          "borderRadius": "md",
+          "animation": "Subtle",
+          "style": "Modern"
+        },
+        "sections": [
+          {
+            "id": "sf-hero",
+            "type": "Hero",
+            "badge": "Revenue Intelligence Platform",
+            "title": "Know Exactly Where Your Revenue Is Flowing",
+            "subtitle": "SaaSFlow connects with Stripe, Paddle, and Chargebee to deliver crystal-clear cohort retention, expansion MRR, and predictive churn analytics in real time.",
+            "ctaText": "Connect Your Billing Account",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Explore Interactive Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=80",
+            "items": [
+              {
+                "title": "$1.2B+",
+                "description": "Tracked Annual Run-rate"
+              },
+              {
+                "title": "1,400+",
+                "description": "SaaS Companies Onboarded"
+              },
+              {
+                "title": "99.4%",
+                "description": "Churn Forecast Accuracy"
+              }
+            ]
+          },
+          {
+            "id": "sf-features",
+            "type": "Features",
+            "badge": "Unrivaled Clarity",
+            "title": "Stop Guessing Your Growth Levers",
+            "subtitle": "Drill down into any subscriber cohort with sub-second queries and automated executive summaries.",
+            "items": [
+              {
+                "id": "sff-1",
+                "title": "Smart Churn Early Warning",
+                "description": "Identifies usage drops 30 days before cancellations happen so your team can intervene.",
+                "icon": "AlertTriangle"
+              },
+              {
+                "id": "sff-2",
+                "title": "Automated LTV:CAC Ratios",
+                "description": "Blends attribution spend with stripe revenue to reveal your most profitable acquisition channels.",
+                "icon": "PieChart"
+              },
+              {
+                "id": "sff-3",
+                "title": "Real-time Slack Alerts",
+                "description": "Celebrate new upgrades, large expansions, and monitor failed cards directly in your team channels.",
+                "icon": "Bell"
+              }
+            ]
+          },
+          {
+            "id": "sf-testimonials",
+            "type": "Testimonials",
+            "badge": "Founder Testimonials",
+            "title": "Trusted by Fast-Growing SaaS Brands",
+            "items": [
+              {
+                "id": "sft-1",
+                "title": "Invaluable for Board Meetings",
+                "description": "SaaSFlow became our single source of truth within 24 hours. The cohort retention charts alone saved our Series A pitch.",
+                "author": "Miriam Hoffman",
+                "role": "Co-Founder & CEO, HyperScale",
+                "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80"
+              }
+            ]
+          },
+          {
+            "id": "sf-pricing",
+            "type": "Pricing",
+            "badge": "Fair Scaled Pricing",
+            "title": "Priced by Tracked Revenue",
+            "items": [
+              {
+                "id": "sfp-1",
+                "title": "Seed",
+                "price": "$39",
+                "period": "/mo",
+                "description": "Up to $25k MRR",
+                "features": [
+                  "Full cohort analytics",
+                  "1 Stripe account",
+                  "Email support"
+                ]
+              },
+              {
+                "id": "sfp-2",
+                "title": "Growth",
+                "price": "$99",
+                "period": "/mo",
+                "popular": true,
+                "description": "Up to $100k MRR",
+                "features": [
+                  "Unlimited payment gateways",
+                  "Slack alerts",
+                  "Benchmark comparison"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "sf-footer",
+            "type": "Footer",
+            "title": "SaaSFlow Metrics",
+            "description": "The definitive subscription financial intelligence suite."
+          }
+        ],
+        "seo": {
+          "title": "SaaSFlow Metrics — Subscription Revenue Intelligence",
+          "metaDescription": "Real-time MRR tracking, churn prediction, and subscriber lifetime value analytics.",
+          "keywords": [
+            "SaaS Metrics",
+            "MRR",
+            "Stripe Analytics",
+            "Churn Prevention"
+          ]
+        }
+      },
+      "templateId": "tmpl-saas-saasflow",
+      "analytics": {
+        "totalViews": 0,
+        "uniqueVisitors": 0,
+        "devices": {
+          "desktop": 0,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {},
+        "dailyViews": []
+      },
+      "createdAt": "2026-09-18T15:54:42.279Z",
+      "updatedAt": "2026-09-18T15:54:42.279Z"
+    },
+    "proj-1789746937569-a5kv": {
+      "id": "proj-1789746937569-a5kv",
+      "userId": "user-1789489822373-24w70",
+      "name": "Artificial intelligence  Landing Page",
+      "slug": "artificial-intelligence-landing-page-k051",
+      "isPublished": true,
+      "status": "published",
+      "websiteData": {
+        "businessName": "Artificial intelligence ",
+        "tagline": "Next-Gen Portfolio Experience",
+        "description": "# Artificial intelligence\nReading Mode: comprehensive | Word Count: 119 | Est. Read Time: 1m\n\n## Executive Summary\nThis piece delivers a thorough exploration centered on key conceptual pillars. At its foundation, it establishes: \"Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption...\"\n\nFurthermore, the discourse examines operational dynamics and nuances: \"For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on ...\", underscoring that effective execution demands proactive synthesis across all involved layers.\n\nUltimately, it concludes with a decisive mandate: \"At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can he\", providing readers with a cogent foundation for subsequent inquiry.\n\n## Key Themes & Concepts\n- [Primary Anchor] Businesses & Core Trajectory: Constitutes the central intellectual driver across the narrative, shaping the contextual boundaries and guiding core deductions.\n- [Mechanisms] Data Interdependencies: Highlights how feedback loops and interdependent components influence overall efficacy and downstream outcomes.\n- [Methodology] Customer Frameworks: Provides actionable perspective on structuring execution, minimizing operational friction, and establishing sustainable momentum.\n- [Forward Horizon] More & Horizon Planning: Addresses longitudinal sustainability, contingency planning, and mitigating systemic volatility over extended cycles.\n\n## In-Depth Analysis\n### 1. Problem Space & Contextual Framing\nArtificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.\n* Explicit articulation of underlying assumptions and parameters\n* Identification of initial boundary conditions and constraints\n* Clarification of target outcomes versus secondary noise\n\n### 2. Mechanistic Exploration & Thematic Synthesis\nFor small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.\n* Rigorous mapping of causality across key decision nodes\n* Analysis of compounding trade-offs and opportunity costs\n* Validation through qualitative indicators and real-world correlates\n\n### 3. Strategic Implications & Paradigm Synthesis\nAt the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.\n* Establishment of adaptive metrics to verify ongoing efficacy\n* Mitigation strategies for operational edge cases\n* Clear guidance on long-term stewardship and sustainable scaling\n\n## Actionable Takeaways\n1. Audit existing baseline workflows to ensure assumptions align with current environmental realities.\n2. Establish clear, quantified feedback channels to surface operational friction before it compounds.\n3. Foster high-trust communicative norms so team members can challenge assumptions safely.\n4. Conduct recurring retrospectives on critical milestones to recalibrate priorities systematically.\n5. Deploy rapid low-cost experiments before committing extensive resources to speculative initiatives.\n\n## Critical Perspectives\n- What latent edge cases or stress points might test the boundaries of these conclusions?\n- How does this paradigm adapt if resource or timeline constraints become 50% more restrictive?\n- What counter-arguments would a sophisticated skeptic raise against this core thesis?\n- Where is the boundary line between intentional simplicity and hazardous oversimplification?\n- What algorithmic or automated dependencies create potential single points of failure in this architecture?",
+        "targetAudience": "Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.",
+        "websiteType": "Portfolio",
+        "theme": {
+          "colorTheme": "Ocean Azure",
+          "customPalette": {
+            "primary": "#0284c7",
+            "secondary": "#0369a1",
+            "accent": "#38bdf8",
+            "background": "#081325",
+            "surface": "#0f1f38",
+            "text": "#f0f9ff",
+            "mutedText": "#7dd3fc",
+            "border": "#1e3a5f"
+          },
+          "fontFamily": "Playfair Display",
+          "borderRadius": "none",
+          "animation": "None",
+          "style": "Neon"
+        },
+        "sections": [
+          {
+            "id": "sec-hero",
+            "type": "Hero",
+            "badge": "Next-Gen Portfolio Platform",
+            "title": "Empower Your Future With Artificial intelligence ",
+            "subtitle": "The intelligent platform built exclusively for Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.. Accelerate growth, simplify complexity, and achieve unmatched results.",
+            "ctaText": "Start Free Trial",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Watch Demo",
+            "secondaryCtaLink": "#features",
+            "imageUrl": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1000&auto=format&fit=crop&q=80",
+            "imageAlt": "Artificial intelligence  Dashboard Preview",
+            "items": [
+              {
+                "title": "99.99%",
+                "description": "Uptime Guaranteed"
+              },
+              {
+                "title": "10x",
+                "description": "Faster Performance"
+              },
+              {
+                "title": "25k+",
+                "description": "Active Customers"
+              }
+            ]
+          },
+          {
+            "id": "sec-features",
+            "type": "Features",
+            "badge": "Key Capabilities",
+            "title": "Everything You Need to Scale Effortlessly",
+            "subtitle": "Designed from the ground up to solve the most pressing challenges faced by Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results..",
+            "items": [
+              {
+                "id": "feat-1",
+                "title": "Autonomous Intelligence",
+                "description": "Automate repetitive workflows and unlock deep contextual insights with AI tailored to your domain.",
+                "icon": "Sparkles"
+              },
+              {
+                "id": "feat-2",
+                "title": "Real-time Collaboration",
+                "description": "Collaborate synchronously with your team with multi-cursor editing, comments, and role-based permissions.",
+                "icon": "Users"
+              },
+              {
+                "id": "feat-3",
+                "title": "Enterprise Security",
+                "description": "End-to-end data encryption, SOC 2 compliance, and granular audit logs protecting every transaction.",
+                "icon": "ShieldCheck"
+              },
+              {
+                "id": "feat-4",
+                "title": "Lightning Fast Analytics",
+                "description": "Gain immediate clarity into performance metrics with interactive visual dashboards updated in sub-seconds.",
+                "icon": "BarChart3"
+              },
+              {
+                "id": "feat-5",
+                "title": "Custom Integrations",
+                "description": "Connect effortlessly with 100+ native APIs, webhooks, and your existing enterprise toolchain.",
+                "icon": "Zap"
+              },
+              {
+                "id": "feat-6",
+                "title": "Global Edge Delivery",
+                "description": "Sub-50ms latency across 320+ edge locations worldwide for a flawless customer experience.",
+                "icon": "Globe"
+              }
+            ]
+          },
+          {
+            "id": "sec-about",
+            "type": "About",
+            "badge": "Our Mission",
+            "title": "Crafting the Future of Portfolio",
+            "description": "Artificial intelligence  was founded with a singular conviction: # Artificial intelligence\nReading Mode: comprehensive | Word Count: 119 | Est. Read Time: 1m\n\n## Executive Summary\nThis piece delivers a thorough exploration centered on key conceptual pillars. At its foundation, it establishes: \"Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption...\"\n\nFurthermore, the discourse examines operational dynamics and nuances: \"For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on ...\", underscoring that effective execution demands proactive synthesis across all involved layers.\n\nUltimately, it concludes with a decisive mandate: \"At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can he\", providing readers with a cogent foundation for subsequent inquiry.\n\n## Key Themes & Concepts\n- [Primary Anchor] Businesses & Core Trajectory: Constitutes the central intellectual driver across the narrative, shaping the contextual boundaries and guiding core deductions.\n- [Mechanisms] Data Interdependencies: Highlights how feedback loops and interdependent components influence overall efficacy and downstream outcomes.\n- [Methodology] Customer Frameworks: Provides actionable perspective on structuring execution, minimizing operational friction, and establishing sustainable momentum.\n- [Forward Horizon] More & Horizon Planning: Addresses longitudinal sustainability, contingency planning, and mitigating systemic volatility over extended cycles.\n\n## In-Depth Analysis\n### 1. Problem Space & Contextual Framing\nArtificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.\n* Explicit articulation of underlying assumptions and parameters\n* Identification of initial boundary conditions and constraints\n* Clarification of target outcomes versus secondary noise\n\n### 2. Mechanistic Exploration & Thematic Synthesis\nFor small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.\n* Rigorous mapping of causality across key decision nodes\n* Analysis of compounding trade-offs and opportunity costs\n* Validation through qualitative indicators and real-world correlates\n\n### 3. Strategic Implications & Paradigm Synthesis\nAt the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.\n* Establishment of adaptive metrics to verify ongoing efficacy\n* Mitigation strategies for operational edge cases\n* Clear guidance on long-term stewardship and sustainable scaling\n\n## Actionable Takeaways\n1. Audit existing baseline workflows to ensure assumptions align with current environmental realities.\n2. Establish clear, quantified feedback channels to surface operational friction before it compounds.\n3. Foster high-trust communicative norms so team members can challenge assumptions safely.\n4. Conduct recurring retrospectives on critical milestones to recalibrate priorities systematically.\n5. Deploy rapid low-cost experiments before committing extensive resources to speculative initiatives.\n\n## Critical Perspectives\n- What latent edge cases or stress points might test the boundaries of these conclusions?\n- How does this paradigm adapt if resource or timeline constraints become 50% more restrictive?\n- What counter-arguments would a sophisticated skeptic raise against this core thesis?\n- Where is the boundary line between intentional simplicity and hazardous oversimplification?\n- What algorithmic or automated dependencies create potential single points of failure in this architecture?. Today, we help organizations of all sizes conquer friction and unleash their full potential.",
+            "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&auto=format&fit=crop&q=80",
+            "imageAlt": "Team collaboration",
+            "items": [
+              {
+                "title": "Customer Obsessed",
+                "description": "Every feature we ship starts with direct customer feedback."
+              },
+              {
+                "title": "Relentless Speed",
+                "description": "We ship iterations rapidly to keep you ahead of the market."
+              }
+            ]
+          },
+          {
+            "id": "sec-testimonials",
+            "type": "Testimonials",
+            "badge": "Social Proof",
+            "title": "Loved by Industry Leaders Worldwide",
+            "subtitle": "See how Artificial intelligence  is transforming how Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results. works every day.",
+            "items": [
+              {
+                "id": "test-1",
+                "title": "Exceptional Return on Investment",
+                "description": "\"Artificial intelligence  has completely revolutionized our workflow. We cut our turnaround time by 65% in the first 30 days alone.\"",
+                "author": "Sarah Jenkins",
+                "role": "VP of Product at Horizon Labs",
+                "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-2",
+                "title": "The Standard in Modern Software",
+                "description": "\"The visual polish and sheer performance are simply unmatched. Our entire leadership team relies on it daily.\"",
+                "author": "Marcus Vance",
+                "role": "Chief Technology Officer at Apex",
+                "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              },
+              {
+                "id": "test-3",
+                "title": "Incredible Speed & Simplicity",
+                "description": "\"Setting up took minutes, and our team immediately adopted it without any formal training. Truly a 10/10 experience.\"",
+                "author": "Elena Rostova",
+                "role": "Founder & CEO, Studio Nova",
+                "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+                "rating": 5
+              }
+            ]
+          },
+          {
+            "id": "sec-pricing",
+            "type": "Pricing",
+            "badge": "Transparent Pricing",
+            "title": "Simple, Predictable Plans for Every Scale",
+            "subtitle": "No hidden fees. Upgrade or cancel anytime with our 14-day money-back guarantee.",
+            "items": [
+              {
+                "id": "price-starter",
+                "title": "Starter",
+                "price": "$29",
+                "period": "/month",
+                "description": "Ideal for solo creators and emerging Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results..",
+                "popular": false,
+                "features": [
+                  "Up to 3 active projects",
+                  "1,000 AI generation credits",
+                  "Standard SSL & custom domain",
+                  "Community Discord support",
+                  "Basic analytics suite"
+                ],
+                "buttonText": "Get Started",
+                "link": "#checkout-starter"
+              },
+              {
+                "id": "price-pro",
+                "title": "Pro Growth",
+                "price": "$79",
+                "period": "/month",
+                "description": "The most popular plan for fast-scaling organizations.",
+                "popular": true,
+                "features": [
+                  "Unlimited active projects",
+                  "15,000 AI generation credits",
+                  "Priority edge CDN delivery",
+                  "Custom domains with auto-renew",
+                  "Real-time team collaboration",
+                  "Dedicated 24/7 chat support"
+                ],
+                "buttonText": "Start 14-Day Free Trial",
+                "link": "#checkout-pro"
+              },
+              {
+                "id": "price-enterprise",
+                "title": "Enterprise",
+                "price": "$199",
+                "period": "/month",
+                "description": "Full compliance, dedicated infrastructure and SLA.",
+                "popular": false,
+                "features": [
+                  "Everything in Pro included",
+                  "Unlimited AI generation",
+                  "Custom SSO / SAML integration",
+                  "Dedicated Account Strategist",
+                  "99.99% uptime SLA guarantee",
+                  "Custom security audits & reports"
+                ],
+                "buttonText": "Contact Sales",
+                "link": "#contact"
+              }
+            ]
+          },
+          {
+            "id": "sec-faq",
+            "type": "FAQ",
+            "badge": "Got Questions?",
+            "title": "Frequently Asked Questions",
+            "subtitle": "Have a question that isn't answered here? Reach out to our 24/7 team.",
+            "items": [
+              {
+                "id": "faq-1",
+                "question": "How does Artificial intelligence  differ from traditional alternatives?",
+                "answer": "Artificial intelligence  combines cutting-edge AI generation with visual real-time customizability, delivering finished, high-converting landing pages in seconds instead of weeks."
+              },
+              {
+                "id": "faq-2",
+                "question": "Can I connect my own custom domain?",
+                "answer": "Yes! All paid and trial tiers include one-click custom domain configuration with automatic free SSL certificate provisioning."
+              },
+              {
+                "id": "faq-3",
+                "question": "Can I export or host the websites myself?",
+                "answer": "Absolutely. You can publish directly to our ultra-fast global edge network or export structured code at any time."
+              },
+              {
+                "id": "faq-4",
+                "question": "Is there a long-term contract or cancellation fee?",
+                "answer": "None at all. You can cancel your subscription at any time directly from your billing portal with zero penalties."
+              }
+            ]
+          },
+          {
+            "id": "sec-cta",
+            "type": "CTA",
+            "badge": "Get Started Now",
+            "title": "Ready to Elevate Your Portfolio Experience?",
+            "subtitle": "Join thousands of satisfied Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results. who achieve more with Artificial intelligence . Start your 14-day free trial today.",
+            "ctaText": "Get Started for Free",
+            "ctaLink": "#pricing",
+            "secondaryCtaText": "Schedule a Demo",
+            "secondaryCtaLink": "#contact"
+          },
+          {
+            "id": "sec-contact",
+            "type": "Contact",
+            "badge": "Get in Touch",
+            "title": "We'd Love to Hear From You",
+            "subtitle": "Have questions about our enterprise plans, custom integrations, or partnerships?",
+            "description": "Our dedicated advisory team responds in less than 2 hours during standard business hours.",
+            "items": [
+              {
+                "title": "Email Us",
+                "description": "support@artificialintelligence.com"
+              },
+              {
+                "title": "Office Location",
+                "description": "San Francisco, CA • London, UK"
+              },
+              {
+                "title": "Live Chat",
+                "description": "Available 24/7 directly within your dashboard"
+              }
+            ]
+          },
+          {
+            "id": "sec-footer",
+            "type": "Footer",
+            "title": "Artificial intelligence ",
+            "description": "The premier platform for Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results. to achieve extraordinary results with speed and confidence.",
+            "items": [
+              {
+                "title": "Product",
+                "description": "Features, Integrations, Pricing, Changelog, Roadmap"
+              },
+              {
+                "title": "Resources",
+                "description": "Documentation, Tutorials, API Reference, Community"
+              },
+              {
+                "title": "Company",
+                "description": "About Us, Careers, Press Kit, Contact, Privacy Policy"
+              }
+            ]
+          }
+        ],
+        "seo": {
+          "title": "Artificial intelligence  — The Intelligent Portfolio for Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.",
+          "metaDescription": "# Artificial intelligence\nReading Mode: comprehensive | Word Count: 119 | Est. Read Time: 1m\n\n## Executive Summary\nThis piece delivers a thorough exploration ce",
+          "keywords": [
+            "Artificial intelligence ",
+            "Portfolio",
+            "Artificial intelligence is transforming the way businesses operate. Companies are using AI to automate repetitive tasks, analyze large amounts of data, improve customer experiences, and make faster decisions. However, successful AI adoption requires more than just technology. Businesses need clear goals, quality data, skilled teams, and responsible implementation.  For small businesses, AI can be especially useful in areas such as customer support, marketing, sales, content creation, and business analytics. AI-powered tools can help teams save time and focus on more strategic work.  At the same time, organizations should consider challenges such as data privacy, security, accuracy, and the impact of automation on employees. A balanced approach that combines AI capabilities with human judgment can help businesses achieve sustainable results.",
+            "Landing Page",
+            "SaaS"
+          ]
+        }
+      },
+      "analytics": {
+        "totalViews": 4,
+        "uniqueVisitors": 1,
+        "devices": {
+          "desktop": 4,
+          "mobile": 0,
+          "tablet": 0
+        },
+        "referrers": {
+          "http://localhost:3000/dashboard/settings": 4
+        },
+        "dailyViews": [
+          {
+            "date": "2026-09-18",
+            "views": 4,
+            "visitors": 1
+          }
+        ]
+      },
+      "createdAt": "2026-09-18T15:55:37.569Z",
+      "updatedAt": "2026-09-18T15:59:19.334Z",
+      "publishedAt": "2026-09-18T15:57:32.903Z",
+      "customDomain": {
+        "domain": "artificial.com",
+        "verified": true,
+        "status": "verified",
+        "recordType": "A",
+        "expectedTarget": "76.76.21.21",
+        "verificationToken": "sitecraft-verify=83a50fe8468ad888c8317e65",
+        "sslActive": true,
+        "sslStatus": "active",
+        "configuredAt": "2026-09-18T15:58:17.672Z",
+        "lastCheckedAt": "2026-09-18T15:58:33.576Z",
+        "dnsDiagnostics": {
+          "foundRecords": [
+            "76.76.21.21"
+          ],
+          "message": "Development simulation: DNS records and SSL successfully validated."
+        }
+      }
+    }
+  },
+  "media": {}
+}
