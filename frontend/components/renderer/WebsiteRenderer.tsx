@@ -411,6 +411,7 @@ export default function WebsiteRenderer({
           return (
             <div
               id={`canvas-section-${section.id}`}
+              data-section-id={section.id}
               key={section.id || `sec-${idx}`}
               onClick={(e) => {
                 e.stopPropagation();
@@ -581,43 +582,58 @@ function renderSectionByType(
   faqOpen?: Record<string, boolean>,
   toggleFaq?: (id: string) => void
 ) {
-  switch (section.type) {
-    case "Hero":
-      return renderHero(section, colors, radius, style, websiteType, businessName);
-    case "Features":
-      return renderFeatures(section, colors, radius, style, websiteType);
-    case "About":
-      return renderAbout(section, colors, radius);
-    case "Services":
-      return renderServices(section, colors, radius);
-    case "Team":
-      return renderTeam(section, colors, radius);
-    case "Stats":
-      return renderStats(section, colors, radius);
-    case "Logo Cloud":
-      return renderLogoCloud(section, colors, radius);
-    case "Process":
-      return renderProcess(section, colors, radius);
-    case "Gallery":
-    case "Product Showcase":
-      return renderProductShowcase(section, colors, radius);
-    case "Newsletter":
-      return renderNewsletter(section, colors, radius);
-    case "Testimonials":
-      return renderTestimonials(section, colors, radius);
-    case "Pricing":
-      return renderPricing(section, colors, radius);
-    case "FAQ":
-      return renderFAQ(section, colors, radius, faqOpen || {}, toggleFaq || (() => {}));
-    case "CTA":
-      return renderCTA(section, colors, radius);
-    case "Contact":
-      return renderContact(section, colors, radius);
-    case "Footer":
-      return renderFooter(section, colors, businessName || "");
-    default:
-      return renderFeatures(section, colors, radius, style, websiteType);
+  const typeKey = (section.type || "").trim().toLowerCase();
+
+  if (typeKey.includes("hero")) {
+    return renderHero(section, colors, radius, style, websiteType, businessName);
   }
+  if (typeKey.includes("feature")) {
+    return renderFeatures(section, colors, radius, style, websiteType);
+  }
+  if (typeKey.includes("about")) {
+    return renderAbout(section, colors, radius);
+  }
+  if (typeKey.includes("service")) {
+    return renderServices(section, colors, radius);
+  }
+  if (typeKey.includes("team")) {
+    return renderTeam(section, colors, radius);
+  }
+  if (typeKey.includes("stat")) {
+    return renderStats(section, colors, radius);
+  }
+  if (typeKey.includes("logo") || typeKey.includes("partner") || typeKey.includes("client")) {
+    return renderLogoCloud(section, colors, radius);
+  }
+  if (typeKey.includes("process") || typeKey.includes("step") || typeKey.includes("how it works")) {
+    return renderProcess(section, colors, radius);
+  }
+  if (typeKey.includes("gallery") || typeKey.includes("product") || typeKey.includes("showcase")) {
+    return renderProductShowcase(section, colors, radius);
+  }
+  if (typeKey.includes("newsletter") || typeKey.includes("subscribe")) {
+    return renderNewsletter(section, colors, radius);
+  }
+  if (typeKey.includes("testimonial") || typeKey.includes("review")) {
+    return renderTestimonials(section, colors, radius);
+  }
+  if (typeKey.includes("pricing") || typeKey.includes("plan")) {
+    return renderPricing(section, colors, radius);
+  }
+  if (typeKey.includes("faq") || typeKey.includes("question")) {
+    return renderFAQ(section, colors, radius, faqOpen || {}, toggleFaq || (() => {}));
+  }
+  if (typeKey.includes("cta") || typeKey.includes("call to action")) {
+    return renderCTA(section, colors, radius);
+  }
+  if (typeKey.includes("contact")) {
+    return renderContact(section, colors, radius);
+  }
+  if (typeKey.includes("footer")) {
+    return renderFooter(section, colors, businessName || "");
+  }
+
+  return renderFeatures(section, colors, radius, style, websiteType);
 }
 
 /* ================= SAFE IMAGE COMPONENT ================= */
@@ -724,11 +740,12 @@ function renderHero(
   businessName?: string
 ) {
   const variant = section.variant || section.layout;
+  const v = (section.variant || section.layout || "").trim().toLowerCase();
   const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
   const bgStyle = getSectionBackgroundStyle(section);
 
   // Variant A: Centered Hero
-  if (variant === "Centered") {
+  if (v === "centered" || variant === "Centered") {
     return (
       <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} text-center overflow-hidden`} style={bgStyle}>
         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
@@ -890,7 +907,7 @@ function renderHero(
   }
 
   // Variant C: Product Preview / Cyber Spotlight (Neon, Dark, AI Tool)
-  if (variant === "Product Preview" || (!variant && (style === "Neon" || style === "Dark" || websiteType === "AI Tool"))) {
+  if (v === "product preview" || v === "productpreview" || (!v && (style === "Neon" || style === "Dark" || websiteType === "AI Tool"))) {
     return (
       <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} text-center overflow-hidden`} style={bgStyle}>
         <div
@@ -977,7 +994,7 @@ function renderHero(
   }
 
   // Variant D: Full Width Banner (Restaurant, Gym, Ecommerce, Agency)
-  if (variant === "Full Width" || (!variant && (websiteType === "Restaurant" || websiteType === "Gym" || websiteType === "Ecommerce" || websiteType === "Agency"))) {
+  if (v === "full width" || v === "fullwidth" || (!v && (websiteType === "Restaurant" || websiteType === "Gym" || websiteType === "Ecommerce" || websiteType === "Agency"))) {
     return (
       <section className={`relative min-h-[500px] flex items-center justify-center px-4 sm:px-6 lg:px-8 ${paddingClass} overflow-hidden`} style={bgStyle}>
         {section.imageUrl && (
@@ -1048,8 +1065,8 @@ function renderHero(
   }
 
   // Variant E: Image Left or Image Right
-  if (variant === "Image Left" || variant === "Image Right") {
-    const isImageLeft = variant === "Image Left";
+  if (v === "image left" || v === "imageleft" || v === "image right" || v === "imageright") {
+    const isImageLeft = v.includes("left");
     return (
       <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} overflow-hidden`} style={bgStyle}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -1181,17 +1198,17 @@ function renderHero(
 
 /* 2. FEATURES COMPONENT (Polymorphic Layouts) */
 function renderFeatures(section: SectionContent, colors: any, radius: string, style: WebsiteStyle, websiteType?: string) {
-  const variant = section.variant || section.layout;
+  const v = (section.variant || section.layout || "").trim().toLowerCase();
   const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
   const bgStyle = getSectionBackgroundStyle(section);
   const items = section.items && section.items.length > 0 ? section.items : [
-    { title: "Intelligent Synthesis", description: "Harness modern AI to generate tailored copy, layout, and visual hierarchy." },
-    { title: "Real-time Visual Customizer", description: "Fine-tune every headline, button, and layout variant in seconds." },
-    { title: "Instant Edge Deployment", description: "Publish instantly with ultra-fast latency and custom domain routing." },
+    { title: "Intelligent Synthesis", description: "Harness modern AI to generate tailored copy, layout, and visual hierarchy.", icon: "Sparkles" },
+    { title: "Real-time Visual Customizer", description: "Fine-tune every headline, button, and layout variant in seconds.", icon: "Zap" },
+    { title: "Instant Edge Deployment", description: "Publish instantly with ultra-fast latency and custom domain routing.", icon: "Globe" },
   ];
 
   // Variant A: Bento Grid
-  if (variant === "Bento" || (!variant && (style === "Modern" || style === "Glassmorphism" || websiteType === "SaaS"))) {
+  if (v === "bento") {
     const flagship = items[0];
     const subItems = items.slice(1);
     return (
@@ -1265,8 +1282,8 @@ function renderFeatures(section: SectionContent, colors: any, radius: string, st
     );
   }
 
-  // Variant B: Numbered Editorial List (Minimal, Luxury, Portfolio)
-  if (variant === "Vertical" || variant === "Numbered" || (!variant && (style === "Minimal" || style === "Luxury" || websiteType === "Portfolio"))) {
+  // Variant B: Numbered Editorial List
+  if (v === "vertical" || v === "numbered") {
     return (
       <section id="features" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
         <div className="max-w-5xl mx-auto">
@@ -1304,7 +1321,122 @@ function renderFeatures(section: SectionContent, colors: any, radius: string, st
     );
   }
 
-  // Variant C: Standard Grid Cards (Default)
+  // Variant C: Horizontal Alternating Split
+  if (v === "horizontal" || v === "split") {
+    return (
+      <section id="features" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            {section.badge && (
+              <span
+                className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
+                style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
+              >
+                {section.badge}
+              </span>
+            )}
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 break-words">{section.title || "Powerful Modular Features"}</h2>
+            <p className="text-base sm:text-lg break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "Seamlessly integrated components designed to accelerate your project deployment."}
+            </p>
+          </div>
+
+          <div className="space-y-10">
+            {items.map((item, idx) => {
+              const isEven = idx % 2 === 0;
+              return (
+                <div
+                  key={idx}
+                  className={`p-8 border rounded-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center ${radius}`}
+                  style={{ borderColor: colors.border, backgroundColor: colors.surface }}
+                >
+                  <div className={`lg:col-span-6 ${isEven ? "order-1" : "order-1 lg:order-2"}`}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white mb-4 shadow-md"
+                      style={{ backgroundColor: colors.primary }}
+                    >
+                      {ICON_MAP[item.icon || ""] || <Zap className="w-5 h-5" />}
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-3 break-words">{item.title}</h3>
+                    <p className="text-sm sm:text-base leading-relaxed break-words" style={{ color: colors.muted }}>
+                      {item.description}
+                    </p>
+                  </div>
+                  <div className={`lg:col-span-6 ${isEven ? "order-2" : "order-2 lg:order-1"}`}>
+                    <div className="p-3 border rounded-xl bg-black/40" style={{ borderColor: colors.border }}>
+                      <SafeImage
+                        src={section.imageUrl || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80"}
+                        alt={item.title || "Feature Image"}
+                        className="w-full h-48 sm:h-56 object-cover rounded-lg"
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Variant D: Showcase
+  if (v === "showcase") {
+    return (
+      <section id="features" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            {section.badge && (
+              <span
+                className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
+                style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
+              >
+                {section.badge}
+              </span>
+            )}
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 break-words">{section.title || "Interactive Capability Showcase"}</h2>
+            <p className="text-base sm:text-lg break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "Explore our key capabilities through a modern interactive spotlight."}
+            </p>
+          </div>
+
+          <div className={`p-8 border rounded-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-2xl ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
+            <div className="lg:col-span-5 space-y-4">
+              {items.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-xl border bg-zinc-900/60 transition-all hover:border-indigo-500 cursor-pointer"
+                  style={{ borderColor: colors.border }}
+                >
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white text-xs shrink-0" style={{ backgroundColor: colors.primary }}>
+                      {idx + 1}
+                    </div>
+                    <h4 className="font-bold text-base text-white truncate">{item.title}</h4>
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{ color: colors.muted }}>
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="p-3 border rounded-xl bg-black/60 shadow-inner" style={{ borderColor: colors.border }}>
+                <SafeImage
+                  src={section.imageUrl || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&auto=format&fit=crop&q=80"}
+                  alt="Feature Showcase Preview"
+                  className="w-full h-72 sm:h-80 object-cover rounded-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Variant E: Standard Grid Cards (Default for "grid", "cards", or fallback)
   return (
     <section id="features" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
       <div className="max-w-6xl mx-auto">
