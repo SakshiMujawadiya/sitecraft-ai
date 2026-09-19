@@ -62,6 +62,37 @@ export interface ColorPaletteConfig {
   button?: string;
 }
 
+export interface ElementStyle {
+  fontFamily?: string;
+  fontSize?: string;
+  fontWeight?: string | number;
+  lineHeight?: string;
+  letterSpacing?: string;
+  color?: string;
+  backgroundColor?: string;
+  textAlign?: "left" | "center" | "right" | "justify";
+  margin?: string;
+  marginTop?: string;
+  marginBottom?: string;
+  padding?: string;
+  paddingTop?: string;
+  paddingBottom?: string;
+  borderRadius?: string;
+  border?: string;
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  display?: string;
+  opacity?: number;
+}
+
+export interface ElementContent {
+  id?: string;
+  text?: string;
+  link?: string;
+  icon?: string;
+  imageUrl?: string;
+  style?: ElementStyle;
+}
+
 export interface SectionContent {
   id: string;
   type: SectionType;
@@ -78,6 +109,7 @@ export interface SectionContent {
   secondaryCtaLink?: string;
   imageUrl?: string;
   imageAlt?: string;
+  elements?: Record<string, ElementContent>;
   items?: Array<{
     id?: string;
     title?: string;

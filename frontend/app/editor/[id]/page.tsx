@@ -8,6 +8,8 @@ import { apiRequest } from "@/lib/api-client";
 import {
   Project,
   SectionContent,
+  ElementContent,
+  ElementStyle,
   SectionType,
   ColorTheme,
   WebsiteStyle,
@@ -223,6 +225,7 @@ export default function EditorPage({ params }: EditorPageProps) {
   // Inspector Tabs
   const [activeTab, setActiveTab] = useState<"content" | "typography" | "styling" | "ai">("content");
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
+  const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
 
   // Modals & Export State
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
@@ -565,6 +568,78 @@ export default function EditorPage({ params }: EditorPageProps) {
             }
           : sec
       ),
+    }));
+  };
+
+  const getSelectedElement = (): ElementContent | null => {
+    const sec = getSelectedSection();
+    if (!sec || !selectedElementId) return null;
+
+    const elem = sec.elements?.[selectedElementId];
+    if (elem) return elem;
+
+    let text = "";
+    let link = "";
+    if (selectedElementId === "heading") text = sec.title || "";
+    else if (selectedElementId === "subtitle") text = sec.subtitle || "";
+    else if (selectedElementId === "description") text = sec.description || sec.subtitle || "";
+    else if (selectedElementId === "badge") text = sec.badge || "";
+    else if (selectedElementId === "cta") {
+      text = sec.ctaText || "";
+      link = sec.ctaLink || "";
+    } else if (selectedElementId === "secondaryCta") {
+      text = sec.secondaryCtaText || "";
+      link = sec.secondaryCtaLink || "";
+    } else if (selectedElementId.startsWith("item-title-")) {
+      const idx = parseInt(selectedElementId.replace("item-title-", ""), 10);
+      text = sec.items?.[idx]?.title || sec.items?.[idx]?.question || "";
+    } else if (selectedElementId.startsWith("item-desc-")) {
+      const idx = parseInt(selectedElementId.replace("item-desc-", ""), 10);
+      text = sec.items?.[idx]?.description || sec.items?.[idx]?.answer || "";
+    } else if (selectedElementId.startsWith("item-price-")) {
+      const idx = parseInt(selectedElementId.replace("item-price-", ""), 10);
+      text = sec.items?.[idx]?.price || "";
+    } else if (selectedElementId.startsWith("item-button-")) {
+      const idx = parseInt(selectedElementId.replace("item-button-", ""), 10);
+      text = sec.items?.[idx]?.buttonText || "";
+      link = sec.items?.[idx]?.link || "";
+    }
+
+    return {
+      text,
+      link,
+      style: {},
+    };
+  };
+
+  const updateSelectedElement = (elementId: string, updates: Partial<ElementContent>) => {
+    if (!selectedSectionId) return;
+
+    updateWebsiteData((prev) => ({
+      ...prev,
+      sections: prev.sections.map((sec) => {
+        if (sec.id !== selectedSectionId) return sec;
+
+        const existingElements = sec.elements || {};
+        const existingElement = existingElements[elementId] || {};
+
+        const updatedElement: ElementContent = {
+          ...existingElement,
+          ...updates,
+          style: {
+            ...existingElement.style,
+            ...updates.style,
+          },
+        };
+
+        return {
+          ...sec,
+          elements: {
+            ...existingElements,
+            [elementId]: updatedElement,
+          },
+        };
+      }),
     }));
   };
 
@@ -1156,11 +1231,19 @@ export default function EditorPage({ params }: EditorPageProps) {
               data={project.websiteData}
               isEditable={!isPreviewMode}
               selectedSectionId={selectedSectionId}
+              selectedElementId={selectedElementId}
               aiUpdatedSectionId={aiUpdatedSectionId}
               onSelectSection={(id) => {
                 setSelectedSectionId(id);
+                setSelectedElementId(null);
                 setActiveTab("content");
                 scrollToCanvasSection(id);
+              }}
+              onSelectElement={(secId, elemId) => {
+                setSelectedSectionId(secId);
+                setSelectedElementId(elemId);
+                setActiveTab("content");
+                scrollToCanvasSection(secId);
               }}
               onMoveSection={moveSection}
               onDuplicateSection={duplicateSection}
@@ -1214,7 +1297,383 @@ export default function EditorPage({ params }: EditorPageProps) {
             {activeTab === "content" && (
               <div ref={inspectorScrollRef} className="p-4 space-y-5 overflow-y-auto flex-1 text-xs">
                 {selectedSection ? (
-                  <>
+                  selectedElementId ? (
+                    /* ELEMENT-LEVEL INSPECTOR CONTROLS */
+                    <div className="space-y-4">
+                      {/* Banner Header */}
+                      <div className="flex items-center justify-between pb-3 border-b border-zinc-800 bg-indigo-950/40 p-2.5 rounded-xl border border-indigo-500/50">
+                        <div>
+                          <div className="flex items-center space-x-2">
+                            <span className="font-bold text-white text-xs uppercase tracking-wider block">
+                              {selectedElementId.replace(/-/g, " ")}
+                            </span>
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-600 text-white animate-pulse">
+                              Targeted Element
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-indigo-300 font-mono">
+                            Section: {selectedSection.type} ({selectedSection.id})
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedElementId(null)}
+                          className="px-2.5 py-1 rounded bg-zinc-800 border border-zinc-700 text-zinc-200 font-semibold hover:bg-zinc-700 transition-colors text-[11px]"
+                        >
+                          ← Section Controls
+                        </button>
+                      </div>
+
+                      {/* Content Section */}
+                      <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 space-y-3">
+                        <span className="font-bold text-zinc-300 block text-[11px]">Element Content</span>
+                        <div>
+                          <label className="text-[10px] text-zinc-400 mb-1 block">Text Content</label>
+                          <textarea
+                            rows={3}
+                            value={getSelectedElement()?.text || ""}
+                            onChange={(e) =>
+                              updateSelectedElement(selectedElementId, {
+                                text: e.target.value,
+                              })
+                            }
+                            placeholder="Element text content..."
+                            className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none focus:border-indigo-500"
+                          />
+                        </div>
+                        {(selectedElementId === "cta" ||
+                          selectedElementId === "secondaryCta" ||
+                          selectedElementId.includes("button")) && (
+                          <div>
+                            <label className="text-[10px] text-zinc-400 mb-1 block">Link URL</label>
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.link || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  link: e.target.value,
+                                })
+                              }
+                              placeholder="#pricing"
+                              className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none focus:border-indigo-500"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Typography Section */}
+                      <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 space-y-3">
+                        <span className="font-bold text-zinc-300 block text-[11px]">Typography</span>
+
+                        <div>
+                          <label className="text-[10px] text-zinc-400 mb-1 block">Font Family</label>
+                          <select
+                            value={getSelectedElement()?.style?.fontFamily || ""}
+                            onChange={(e) =>
+                              updateSelectedElement(selectedElementId, {
+                                style: { fontFamily: e.target.value },
+                              })
+                            }
+                            className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none focus:border-indigo-500"
+                          >
+                            <option value="">(Inherit Theme Font)</option>
+                            <option value="'Inter', sans-serif">Inter</option>
+                            <option value="'Outfit', sans-serif">Outfit</option>
+                            <option value="Georgia, Cambria, serif">Playfair Display (Serif)</option>
+                            <option value="'Space Grotesk', monospace">Space Grotesk</option>
+                            <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                            <option value="'Geist', sans-serif">Geist</option>
+                            <option value="'Poppins', sans-serif">Poppins</option>
+                            <option value="'Roboto', sans-serif">Roboto</option>
+                            <option value="'DM Sans', sans-serif">DM Sans</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="text-[10px] text-zinc-400">Font Size</label>
+                            <span className="text-[10px] font-mono text-indigo-400">
+                              {getSelectedElement()?.style?.fontSize || "default"}
+                            </span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="range"
+                              min="10"
+                              max="96"
+                              step="1"
+                              value={parseInt(getSelectedElement()?.style?.fontSize || "16", 10)}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { fontSize: `${e.target.value}px` },
+                                })
+                              }
+                              className="flex-1 accent-indigo-500 cursor-pointer"
+                            />
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.fontSize || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { fontSize: e.target.value },
+                                })
+                              }
+                              placeholder="48px"
+                              className="w-16 px-2 py-1 bg-zinc-900 border border-zinc-700 rounded text-white text-xs text-center font-mono outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] text-zinc-400 mb-1 block">Font Weight</label>
+                          <select
+                            value={getSelectedElement()?.style?.fontWeight || ""}
+                            onChange={(e) =>
+                              updateSelectedElement(selectedElementId, {
+                                style: { fontWeight: e.target.value },
+                              })
+                            }
+                            className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none focus:border-indigo-500 font-semibold"
+                          >
+                            <option value="">(Default Weight)</option>
+                            <option value="300">300 - Light</option>
+                            <option value="400">400 - Regular</option>
+                            <option value="500">500 - Medium</option>
+                            <option value="600">600 - SemiBold</option>
+                            <option value="700">700 - Bold</option>
+                            <option value="800">800 - ExtraBold</option>
+                            <option value="900">900 - Black</option>
+                          </select>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] text-zinc-400 mb-1 block">Line Height</label>
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.lineHeight || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { lineHeight: e.target.value },
+                                })
+                              }
+                              placeholder="1.2"
+                              className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-zinc-400 mb-1 block">Letter Spacing</label>
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.letterSpacing || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { letterSpacing: e.target.value },
+                                })
+                              }
+                              placeholder="-0.02em"
+                              className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] text-zinc-400 mb-1 block">Text Alignment</label>
+                          <div className="grid grid-cols-4 gap-1">
+                            {(["left", "center", "right", "justify"] as const).map((a) => {
+                              const isActive = getSelectedElement()?.style?.textAlign === a;
+                              return (
+                                <button
+                                  key={a}
+                                  type="button"
+                                  onClick={() =>
+                                    updateSelectedElement(selectedElementId, {
+                                      style: { textAlign: a },
+                                    })
+                                  }
+                                  className={`py-1 text-center rounded capitalize font-medium text-[10px] border ${
+                                    isActive
+                                      ? "bg-indigo-600/30 border-indigo-500 text-white"
+                                      : "border-zinc-800 hover:bg-zinc-800 text-zinc-400"
+                                  }`}
+                                >
+                                  {a}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] text-zinc-400 mb-1 block">Text Transform</label>
+                          <div className="grid grid-cols-4 gap-1">
+                            {(["none", "uppercase", "lowercase", "capitalize"] as const).map((t) => {
+                              const isActive = getSelectedElement()?.style?.textTransform === t;
+                              return (
+                                <button
+                                  key={t}
+                                  type="button"
+                                  onClick={() =>
+                                    updateSelectedElement(selectedElementId, {
+                                      style: { textTransform: t },
+                                    })
+                                  }
+                                  className={`py-1 text-center rounded capitalize font-medium text-[9px] border ${
+                                    isActive
+                                      ? "bg-indigo-600/30 border-indigo-500 text-white"
+                                      : "border-zinc-800 hover:bg-zinc-800 text-zinc-400"
+                                  }`}
+                                >
+                                  {t}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Colors Section */}
+                      <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 space-y-3">
+                        <span className="font-bold text-zinc-300 block text-[11px]">Colors</span>
+
+                        <div>
+                          <label className="text-[10px] text-zinc-400 mb-1 block">Text Color</label>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="color"
+                              value={getSelectedElement()?.style?.color || "#ffffff"}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { color: e.target.value },
+                                })
+                              }
+                              className="w-8 h-8 rounded border border-zinc-700 bg-transparent cursor-pointer shrink-0"
+                            />
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.color || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { color: e.target.value },
+                                })
+                              }
+                              placeholder="#ffffff"
+                              className="flex-1 px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs font-mono outline-none"
+                            />
+                          </div>
+                          <div className="flex items-center space-x-1.5 mt-2 overflow-x-auto pb-1">
+                            {["#ffffff", "#fafafa", "#a1a1aa", "#6366f1", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#ec4899", "#000000"].map((c) => (
+                              <button
+                                key={c}
+                                type="button"
+                                onClick={() =>
+                                  updateSelectedElement(selectedElementId, {
+                                    style: { color: c },
+                                  })
+                                }
+                                className="w-5 h-5 rounded-full border border-zinc-700 transition-transform hover:scale-110 shrink-0"
+                                style={{ backgroundColor: c }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] text-zinc-400 mb-1 block">Background Color</label>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="color"
+                              value={getSelectedElement()?.style?.backgroundColor || "#6366f1"}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { backgroundColor: e.target.value },
+                                })
+                              }
+                              className="w-8 h-8 rounded border border-zinc-700 bg-transparent cursor-pointer shrink-0"
+                            />
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.backgroundColor || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { backgroundColor: e.target.value },
+                                })
+                              }
+                              placeholder="transparent or #6366f1"
+                              className="flex-1 px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs font-mono outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Spacing & Border Section */}
+                      <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 space-y-3">
+                        <span className="font-bold text-zinc-300 block text-[11px]">Spacing & Border</span>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] text-zinc-400 mb-1 block">Margin (CSS)</label>
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.margin || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { margin: e.target.value },
+                                })
+                              }
+                              placeholder="0px 0px 16px 0px"
+                              className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-zinc-400 mb-1 block">Padding (CSS)</label>
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.padding || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { padding: e.target.value },
+                                })
+                              }
+                              placeholder="8px 16px"
+                              className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] text-zinc-400 mb-1 block">Border Radius</label>
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.borderRadius || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { borderRadius: e.target.value },
+                                })
+                              }
+                              placeholder="8px or 9999px"
+                              className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-zinc-400 mb-1 block">Border (CSS)</label>
+                            <input
+                              type="text"
+                              value={getSelectedElement()?.style?.border || ""}
+                              onChange={(e) =>
+                                updateSelectedElement(selectedElementId, {
+                                  style: { border: e.target.value },
+                                })
+                              }
+                              placeholder="1px solid #374151"
+                              className="w-full px-2 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-white text-xs outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* SECTION-LEVEL INSPECTOR CONTROLS */
+                    <>
                     <div className="flex items-center justify-between pb-3 border-b border-zinc-800 bg-indigo-950/20 p-2.5 rounded-xl border border-indigo-900/40">
                       <div>
                         <div className="flex items-center space-x-2">
@@ -1453,7 +1912,8 @@ export default function EditorPage({ params }: EditorPageProps) {
                       </div>
                     )}
                   </>
-                ) : (
+                )
+              ) : (
                   <div className="text-center py-12 text-zinc-500">
                     Click any section on the canvas to inspect its layout and properties.
                   </div>
