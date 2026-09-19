@@ -426,8 +426,16 @@ export default function WebsiteRenderer({
                 </div>
               )}
 
+              {/* Active Section Selection Ring Badge */}
+              {isEditable && isSelected && (
+                <div className="absolute top-3 left-4 z-40 bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl flex items-center space-x-2 border border-indigo-400/40">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span>Editing {section.type} Section</span>
+                </div>
+              )}
+
               {/* Editable badge indicator on hover */}
-              {isEditable && (
+              {isEditable && !isSelected && (
                 <div
                   onClick={(e) => {
                     e.stopPropagation();

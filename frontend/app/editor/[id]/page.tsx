@@ -245,16 +245,25 @@ export default function EditorPage({ params }: EditorPageProps) {
   const scrollToCanvasSection = useCallback((secId: string | null) => {
     if (!secId) return;
 
-    // Reset Right Inspector panel scroll position to top on selection
+    // Reset Right Inspector panel scroll position to top on section selection
     if (inspectorScrollRef.current) {
       inspectorScrollRef.current.scrollTop = 0;
     }
 
     setTimeout(() => {
-      let targetId = `canvas-section-${secId}`;
-      if (secId === "header") targetId = "canvas-header";
-      if (secId === "footer") targetId = "canvas-section-footer";
+      if (secId === "header") {
+        canvasContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      if (secId === "footer") {
+        const container = canvasContainerRef.current;
+        if (container) {
+          container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+        }
+        return;
+      }
 
+      const targetId = `canvas-section-${secId}`;
       const elem = document.getElementById(targetId);
       const container = canvasContainerRef.current;
 
@@ -262,9 +271,8 @@ export default function EditorPage({ params }: EditorPageProps) {
         const containerRect = container.getBoundingClientRect();
         const elemRect = elem.getBoundingClientRect();
 
-        // Calculate exact scroll offset relative to canvas container
-        const targetScrollTop =
-          container.scrollTop + (elemRect.top - containerRect.top) - (secId === "header" ? 0 : 20);
+        // Calculate exact scroll offset to align section top directly under sticky website navbar (64px clearance)
+        const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 64;
 
         container.scrollTo({
           top: Math.max(0, targetScrollTop),
