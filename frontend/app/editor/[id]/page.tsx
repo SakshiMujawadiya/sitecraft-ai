@@ -238,18 +238,11 @@ export default function EditorPage({ params }: EditorPageProps) {
   const canvasContainerRef = useRef<HTMLElement | null>(null);
   const inspectorScrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Auto-scroll the sidebar layer row to keep it visible when selection changes
-  useEffect(() => {
-    if (selectedSidebarRef.current) {
-      selectedSidebarRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  }, [selectedSectionId]);
-
-  const scrollToCanvasSection = useCallback((secId: string | null) => {
+  const scrollToCanvasSection = useCallback((secId: string | null, elemId?: string | null) => {
     if (!secId) return;
 
-    // Reset Right Inspector panel scroll position to top on section selection
-    if (inspectorScrollRef.current) {
+    // Reset Right Inspector panel scroll position to top on section selection (unless inspecting inner element)
+    if (inspectorScrollRef.current && !elemId) {
       inspectorScrollRef.current.scrollTop = 0;
     }
 
@@ -259,31 +252,41 @@ export default function EditorPage({ params }: EditorPageProps) {
         return;
       }
       if (secId === "footer") {
-        const container = canvasContainerRef.current;
-        if (container) {
-          container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+        const footerElem = document.getElementById("canvas-section-footer");
+        if (footerElem) {
+          footerElem.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (canvasContainerRef.current) {
+          canvasContainerRef.current.scrollTo({ top: canvasContainerRef.current.scrollHeight, behavior: "smooth" });
         }
         return;
       }
 
+      if (elemId) {
+        const targetedElem = document.querySelector(`[data-section-id="${secId}"][data-element-id="${elemId}"]`);
+        if (targetedElem) {
+          targetedElem.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
+        }
+      }
+
       const targetId = `canvas-section-${secId}`;
       const elem = document.getElementById(targetId);
-      const container = canvasContainerRef.current;
 
-      if (elem && container) {
-        const containerRect = container.getBoundingClientRect();
-        const elemRect = elem.getBoundingClientRect();
-
-        // Calculate exact scroll offset to align section top directly under sticky website navbar (64px clearance)
-        const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 64;
-
-        container.scrollTo({
-          top: Math.max(0, targetScrollTop),
-          behavior: "smooth",
-        });
+      if (elem) {
+        elem.scrollIntoView({ behavior: "smooth", block: "center" });
       }
-    }, 60);
+    }, 50);
   }, []);
+
+  // Auto-scroll the sidebar layer row & center canvas section when selection changes
+  useEffect(() => {
+    if (selectedSidebarRef.current) {
+      selectedSidebarRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    if (selectedSectionId) {
+      scrollToCanvasSection(selectedSectionId, selectedElementId);
+    }
+  }, [selectedSectionId, selectedElementId, scrollToCanvasSection]);
 
   // AI Assistant State
   const [aiPrompt, setAiPrompt] = useState("");
