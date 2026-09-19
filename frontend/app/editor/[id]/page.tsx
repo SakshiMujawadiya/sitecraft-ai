@@ -247,24 +247,35 @@ export default function EditorPage({ params }: EditorPageProps) {
     }
 
     setTimeout(() => {
+      const container = canvasContainerRef.current;
+
       if (secId === "header") {
-        canvasContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+        container?.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
       if (secId === "footer") {
         const footerElem = document.getElementById("canvas-section-footer");
-        if (footerElem) {
-          footerElem.scrollIntoView({ behavior: "smooth", block: "center" });
-        } else if (canvasContainerRef.current) {
-          canvasContainerRef.current.scrollTo({ top: canvasContainerRef.current.scrollHeight, behavior: "smooth" });
+        if (footerElem && container) {
+          const containerRect = container.getBoundingClientRect();
+          const elemRect = footerElem.getBoundingClientRect();
+          const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 16;
+          container.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
+        } else if (container) {
+          container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
         }
         return;
       }
 
       if (elemId) {
         const targetedElem = document.querySelector(`[data-section-id="${secId}"][data-element-id="${elemId}"]`);
-        if (targetedElem) {
-          targetedElem.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (targetedElem && container) {
+          const containerRect = container.getBoundingClientRect();
+          const elemRect = targetedElem.getBoundingClientRect();
+          const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 24;
+          container.scrollTo({
+            top: Math.max(0, targetScrollTop),
+            behavior: "smooth",
+          });
           return;
         }
       }
@@ -272,10 +283,21 @@ export default function EditorPage({ params }: EditorPageProps) {
       const targetId = `canvas-section-${secId}`;
       const elem = document.getElementById(targetId);
 
-      if (elem) {
-        elem.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (elem && container) {
+        const containerRect = container.getBoundingClientRect();
+        const elemRect = elem.getBoundingClientRect();
+
+        // Exact vertical alignment: align section top directly to container top edge (matching Inspector top)
+        const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 12;
+
+        container.scrollTo({
+          top: Math.max(0, targetScrollTop),
+          behavior: "smooth",
+        });
+      } else if (elem) {
+        elem.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-    }, 50);
+    }, 40);
   }, []);
 
   // Auto-scroll the sidebar layer row & center canvas section when selection changes
