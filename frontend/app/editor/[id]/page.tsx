@@ -385,17 +385,20 @@ export default function EditorPage({ params }: EditorPageProps) {
   /* ================= STATE UPDATE WITH AUTOSAVE ================= */
 
   const updateWebsiteData = (updater: (prev: WebsiteData) => WebsiteData) => {
-    if (!project) return;
-    const nextData = updater(project.websiteData);
-    setProject({ ...project, websiteData: nextData });
-    pushToHistory(nextData);
+    setProject((prevProject) => {
+      if (!prevProject) return null;
+      const nextData = updater(prevProject.websiteData);
 
-    // Save to local storage immediately
-    if (typeof window !== "undefined") {
-      localStorage.setItem(`sitecraft_backup_${projectId}`, JSON.stringify(nextData));
-    }
+      // Save to local storage immediately
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`sitecraft_backup_${projectId}`, JSON.stringify(nextData));
+      }
 
-    triggerAutosave(nextData);
+      pushToHistory(nextData);
+      triggerAutosave(nextData);
+
+      return { ...prevProject, websiteData: nextData };
+    });
   };
 
   const triggerAutosave = (dataToSave: WebsiteData) => {
@@ -517,7 +520,16 @@ export default function EditorPage({ params }: EditorPageProps) {
         updateWebsiteData((prev) => ({
           ...prev,
           sections: prev.sections.map((sec, idx) =>
-            idx === existingFooterIdx ? { ...sec, ...updates } : sec
+            idx === existingFooterIdx
+              ? {
+                  ...sec,
+                  ...updates,
+                  customStyles: {
+                    ...sec.customStyles,
+                    ...updates.customStyles,
+                  },
+                }
+              : sec
           ),
         }));
       } else {
@@ -528,6 +540,9 @@ export default function EditorPage({ params }: EditorPageProps) {
           subtitle: updates.subtitle || `© ${new Date().getFullYear()} ${project?.websiteData.businessName || "SiteCraft AI"}. Powered by SiteCraft AI.`,
           description: updates.description || "Building the next generation of web applications.",
           ...updates,
+          customStyles: {
+            ...updates.customStyles,
+          },
         };
         updateWebsiteData((prev) => ({
           ...prev,
@@ -539,7 +554,16 @@ export default function EditorPage({ params }: EditorPageProps) {
     updateWebsiteData((prev) => ({
       ...prev,
       sections: prev.sections.map((sec) =>
-        sec.id === selectedSectionId ? { ...sec, ...updates } : sec
+        sec.id === selectedSectionId
+          ? {
+              ...sec,
+              ...updates,
+              customStyles: {
+                ...sec.customStyles,
+                ...updates.customStyles,
+              },
+            }
+          : sec
       ),
     }));
   };
