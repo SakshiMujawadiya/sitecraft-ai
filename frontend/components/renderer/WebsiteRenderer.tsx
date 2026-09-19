@@ -278,8 +278,8 @@ export default function WebsiteRenderer({
               )}
 
               {/* Render by Section Type */}
-              {section.type === "Hero" && renderHero(section, colors, getBorderRadius(), style)}
-              {section.type === "Features" && renderFeatures(section, colors, getBorderRadius(), style)}
+              {section.type === "Hero" && renderHero(section, colors, getBorderRadius(), style, data.websiteType, data.businessName)}
+              {section.type === "Features" && renderFeatures(section, colors, getBorderRadius(), style, data.websiteType)}
               {section.type === "About" && renderAbout(section, colors, getBorderRadius())}
               {section.type === "Testimonials" && renderTestimonials(section, colors, getBorderRadius())}
               {section.type === "Pricing" && renderPricing(section, colors, getBorderRadius())}
@@ -334,115 +334,543 @@ function SafeImage({
 
 /* ================= SECTION RENDERERS ================= */
 
-function renderHero(section: SectionContent, colors: any, radius: string, style: WebsiteStyle) {
+function renderHero(
+  section: SectionContent,
+  colors: any,
+  radius: string,
+  style: WebsiteStyle,
+  websiteType?: string,
+  businessName?: string
+) {
+  // 1. MINIMAL & LUXURY & PORTFOLIO: Editorial Asymmetric Hero
+  if (style === "Minimal" || style === "Luxury" || websiteType === "Portfolio") {
+    return (
+      <section className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-28 md:py-36 overflow-hidden">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
+            {section.badge && (
+              <div
+                className="inline-flex items-center space-x-2 px-3 py-1 mb-6 text-xs font-semibold tracking-widest uppercase border border-current/20"
+                style={{ color: colors.primary }}
+              >
+                <span>— {section.badge}</span>
+              </div>
+            )}
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.08] break-words">
+              {section.title || `Crafting the Future with ${businessName}`}
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl font-light mb-8 max-w-xl leading-relaxed break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "Thoughtful aesthetics, intentional typography, and timeless digital execution."}
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4 mb-10">
+              {section.ctaText && (
+                <a
+                  href={section.ctaLink || "#contact"}
+                  className={`inline-flex items-center space-x-2 px-7 py-3.5 text-sm font-semibold tracking-wide transition-all shadow-md active:scale-95 ${radius}`}
+                  style={{ backgroundColor: colors.primary, color: "#ffffff" }}
+                >
+                  <span>{section.ctaText}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              )}
+              {section.secondaryCtaText && (
+                <a
+                  href={section.secondaryCtaLink || "#work"}
+                  className={`inline-flex items-center space-x-2 px-6 py-3.5 text-sm font-medium border transition-all hover:bg-white/5 active:scale-95 ${radius}`}
+                  style={{ borderColor: colors.border, color: colors.text }}
+                >
+                  <span>{section.secondaryCtaText}</span>
+                </a>
+              )}
+            </div>
+
+            {section.items && section.items.length > 0 && (
+              <div className="flex flex-wrap gap-8 pt-8 border-t w-full" style={{ borderColor: `${colors.border}80` }}>
+                {section.items.map((stat, idx) => (
+                  <div key={idx} className="flex flex-col">
+                    <span className="text-2xl sm:text-3xl font-extrabold" style={{ color: colors.primary }}>
+                      {stat.title}
+                    </span>
+                    <span className="text-xs uppercase tracking-wider font-medium mt-0.5" style={{ color: colors.muted }}>
+                      {stat.description}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="lg:col-span-5 relative">
+            <div
+              className={`relative overflow-hidden border shadow-2xl aspect-[4/5] w-full group ${radius}`}
+              style={{ borderColor: colors.border, backgroundColor: colors.surface }}
+            >
+              <SafeImage
+                src={section.imageUrl || "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80"}
+                alt={section.imageAlt || "Featured visual"}
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute bottom-4 left-4 right-4 p-3 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 text-xs flex items-center justify-between">
+                <span className="font-mono text-zinc-300">Selected Works & Systems</span>
+                <span className="font-mono text-amber-400 font-bold">2026 Edition</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // 2. NEON & DARK & AI TOOL: Cyber Spotlight Hero with Prompt Command Bar
+  if (style === "Neon" || style === "Dark" || websiteType === "AI Tool") {
+    return (
+      <section className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-28 md:py-36 overflow-hidden">
+        {/* Neon glowing backlights */}
+        <div
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[170px] opacity-35 pointer-events-none"
+          style={{ backgroundColor: colors.primary }}
+        />
+
+        <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
+          {section.badge && (
+            <div
+              className="inline-flex items-center space-x-2 px-3.5 py-1.5 mb-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full border shadow-[0_0_15px_rgba(99,102,241,0.25)] backdrop-blur-md"
+              style={{
+                borderColor: colors.primary,
+                color: colors.primary,
+                backgroundColor: `${colors.surface}90`,
+              }}
+            >
+              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+              <span>{section.badge}</span>
+            </div>
+          )}
+
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl leading-[1.1] break-words">
+            {section.title || `Empower Your Vision with ${businessName}`}
+          </h1>
+
+          <p className="text-base sm:text-lg md:text-xl font-normal mb-8 max-w-2xl leading-relaxed break-words" style={{ color: colors.muted }}>
+            {section.subtitle || "The modern generative platform engineered for unmatched speed, flexibility, and creative freedom."}
+          </p>
+
+          {/* Interactive Prompt / CLI Simulation Bar */}
+          <div
+            className={`w-full max-w-2xl p-2 sm:p-2.5 mb-8 border backdrop-blur-xl flex items-center justify-between shadow-2xl ${radius}`}
+            style={{
+              borderColor: `${colors.primary}60`,
+              backgroundColor: `${colors.surface}95`,
+            }}
+          >
+            <div className="flex items-center space-x-3 px-3 overflow-hidden text-left">
+              <span className="font-mono text-xs text-indigo-400 font-bold shrink-0">&gt;_</span>
+              <span className="font-mono text-xs sm:text-sm truncate" style={{ color: colors.muted }}>
+                model.generate("{businessName?.toLowerCase() || "sitecraft"}", mode="ultra-speed")
+              </span>
+            </div>
+            <a
+              href={section.ctaLink || "#pricing"}
+              className={`shrink-0 px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 ${radius}`}
+              style={{ backgroundColor: colors.primary, color: "#ffffff" }}
+            >
+              Run Prompt
+            </a>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 w-full sm:w-auto">
+            {section.ctaText && (
+              <a
+                href={section.ctaLink || "#pricing"}
+                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all ${radius}`}
+                style={{ backgroundColor: colors.primary, color: "#ffffff" }}
+              >
+                <span>{section.ctaText}</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            )}
+            {section.secondaryCtaText && (
+              <a
+                href={section.secondaryCtaLink || "#features"}
+                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3.5 text-base font-semibold border transition-all hover:bg-white/5 active:scale-95 ${radius}`}
+                style={{ borderColor: colors.border, color: colors.text }}
+              >
+                <span>{section.secondaryCtaText}</span>
+              </a>
+            )}
+          </div>
+
+          {/* Stats Badges Row */}
+          {section.items && section.items.length > 0 && (
+            <div
+              className={`grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-6 border backdrop-blur-md mb-12 max-w-3xl w-full shadow-2xl ${radius}`}
+              style={{
+                borderColor: `${colors.border}`,
+                backgroundColor: `${colors.surface}80`,
+              }}
+            >
+              {section.items.map((stat, idx) => (
+                <div key={idx} className="flex flex-col items-center">
+                  <span className="text-2xl md:text-3xl font-black" style={{ color: colors.primary }}>
+                    {stat.title}
+                  </span>
+                  <span className="text-xs md:text-sm font-medium mt-1 text-center" style={{ color: colors.muted }}>
+                    {stat.description}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Large Screen Visual with Glowing Neon Border */}
+          {section.imageUrl && (
+            <div
+              className={`w-full max-w-5xl p-2 sm:p-3 border shadow-[0_0_40px_rgba(0,0,0,0.8)] relative overflow-hidden group ${radius}`}
+              style={{
+                borderColor: `${colors.primary}50`,
+                backgroundColor: colors.surface,
+              }}
+            >
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-zinc-950">
+                <SafeImage
+                  src={section.imageUrl}
+                  alt={section.imageAlt || "Showcase visual"}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // 3. RESTAURANT & GYM & ECOMMERCE & AGENCY: Immersive Visual Banner Hero
+  if (
+    websiteType === "Restaurant" ||
+    websiteType === "Gym" ||
+    websiteType === "Ecommerce" ||
+    websiteType === "Agency"
+  ) {
+    return (
+      <section className="relative min-h-[85vh] sm:min-h-[88vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
+        {/* Full-bleed background image with dark vignette */}
+        <div className="absolute inset-0 z-0">
+          <SafeImage
+            src={section.imageUrl || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&auto=format&fit=crop&q=80"}
+            alt="Hero background"
+            className="w-full h-full object-cover object-center scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/85 to-zinc-950/60" />
+        </div>
+
+        <div className="max-w-5xl mx-auto flex flex-col items-center text-center relative z-10">
+          {section.badge && (
+            <div
+              className="inline-flex items-center space-x-2 px-4 py-1.5 mb-6 text-xs font-bold uppercase tracking-widest rounded-full border shadow-lg backdrop-blur-md"
+              style={{
+                borderColor: `${colors.primary}90`,
+                backgroundColor: "rgba(0,0,0,0.65)",
+                color: colors.primary,
+              }}
+            >
+              <span>{section.badge}</span>
+            </div>
+          )}
+
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl text-white leading-[1.1] drop-shadow-lg break-words">
+            {section.title || `Welcome to ${businessName}`}
+          </h1>
+
+          <p className="text-base sm:text-lg md:text-xl font-normal mb-10 max-w-2xl text-zinc-300 leading-relaxed drop-shadow break-words">
+            {section.subtitle || "An extraordinary standard of excellence, designed for those who settle for nothing less than the best."}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 w-full sm:w-auto">
+            {section.ctaText && (
+              <a
+                href={section.ctaLink || "#pricing"}
+                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-4 text-base font-bold shadow-2xl active:scale-95 transition-all ${radius}`}
+                style={{ backgroundColor: colors.primary, color: "#ffffff" }}
+              >
+                <span>{section.ctaText}</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            )}
+            {section.secondaryCtaText && (
+              <a
+                href={section.secondaryCtaLink || "#features"}
+                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-4 text-base font-semibold border backdrop-blur-md bg-black/40 hover:bg-black/60 active:scale-95 transition-all ${radius}`}
+                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#ffffff" }}
+              >
+                <span>{section.secondaryCtaText}</span>
+              </a>
+            )}
+          </div>
+
+          {section.items && section.items.length > 0 && (
+            <div
+              className={`grid grid-cols-2 md:grid-cols-3 gap-6 p-5 sm:p-7 border backdrop-blur-xl bg-black/50 max-w-3xl w-full shadow-2xl ${radius}`}
+              style={{ borderColor: "rgba(255,255,255,0.15)" }}
+            >
+              {section.items.map((stat, idx) => (
+                <div key={idx} className="flex flex-col items-center">
+                  <span className="text-2xl sm:text-3xl font-extrabold" style={{ color: colors.primary }}>
+                    {stat.title}
+                  </span>
+                  <span className="text-xs sm:text-sm text-zinc-300 font-medium mt-1 text-center">
+                    {stat.description}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // 4. MODERN & GLASSMORPHISM & SAAS & STARTUP: High-Conversion Split Hero with Interactive App Mockup & Floating Glass Badges
   return (
     <section className="relative px-4 sm:px-6 lg:px-8 py-16 sm:py-24 md:py-32 overflow-hidden">
       {/* Glow Backdrop */}
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] rounded-full blur-[140px] opacity-25 pointer-events-none"
+        className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] rounded-full blur-[140px] opacity-25 pointer-events-none"
         style={{ backgroundColor: colors.primary }}
       />
 
-      <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
-        {section.badge && (
-          <div
-            className={`inline-flex items-center space-x-2 px-3.5 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider border shadow-sm ${radius}`}
-            style={{
-              borderColor: colors.border,
-              backgroundColor: `${colors.surface}80`,
-              color: colors.primary,
-            }}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{section.badge}</span>
-          </div>
-        )}
-
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15] max-w-4xl mb-6 break-words hyphens-auto">
-          {section.title || "Build Faster with AI"}
-        </h1>
-
-        <p className="text-base sm:text-lg md:text-xl max-w-2xl mb-8 leading-relaxed break-words" style={{ color: colors.muted }}>
-          {section.subtitle || section.description || "The modern platform built to accelerate your workflow."}
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-12 w-full sm:w-auto">
-          {section.ctaText && (
-            <a
-              href={section.ctaLink || "#"}
-              className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3.5 text-base font-bold transition-all shadow-xl active:scale-95 ${radius}`}
-              style={{
-                backgroundColor: colors.primary,
-                color: "#ffffff",
-              }}
-            >
-              <span>{section.ctaText}</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          )}
-
-          {section.secondaryCtaText && (
-            <a
-              href={section.secondaryCtaLink || "#"}
-              className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3.5 text-base font-semibold border transition-all hover:bg-white/5 active:scale-95 ${radius}`}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center relative z-10">
+        <div className="lg:col-span-6 flex flex-col items-start text-left">
+          {section.badge && (
+            <div
+              className={`inline-flex items-center space-x-2 px-3.5 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider border shadow-sm ${radius}`}
               style={{
                 borderColor: colors.border,
-                color: colors.text,
+                color: colors.primary,
+                backgroundColor: `${colors.surface}90`,
               }}
             >
-              <span>{section.secondaryCtaText}</span>
-            </a>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: colors.primary }} />
+                <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: colors.primary }} />
+              </span>
+              <span>{section.badge}</span>
+            </div>
           )}
+
+          <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-5 leading-[1.12] break-words">
+            {section.title || `Scale Seamlessly With ${businessName}`}
+          </h1>
+
+          <p className="text-base sm:text-lg mb-8 leading-relaxed break-words" style={{ color: colors.muted }}>
+            {section.subtitle || "The modern operational platform built for high-growth teams. Accelerate performance and simplify execution."}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center gap-3.5 mb-8 w-full sm:w-auto">
+            {section.ctaText && (
+              <a
+                href={section.ctaLink || "#pricing"}
+                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all ${radius}`}
+                style={{ backgroundColor: colors.primary, color: "#ffffff" }}
+              >
+                <span>{section.ctaText}</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            )}
+            {section.secondaryCtaText && (
+              <a
+                href={section.secondaryCtaLink || "#features"}
+                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 text-base font-semibold border transition-all hover:bg-white/5 active:scale-95 ${radius}`}
+                style={{ borderColor: colors.border, color: colors.text }}
+              >
+                <span>{section.secondaryCtaText}</span>
+              </a>
+            )}
+          </div>
+
+          {/* Social Proof Trust Stack */}
+          <div className="flex items-center space-x-3 pt-4 border-t w-full" style={{ borderColor: `${colors.border}70` }}>
+            <div className="flex -space-x-2 overflow-hidden">
+              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80" alt="Customer" />
+              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80" alt="Customer" />
+              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&auto=format&fit=crop&q=80" alt="Customer" />
+              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80" alt="Customer" />
+            </div>
+            <span className="text-xs font-medium" style={{ color: colors.muted }}>
+              Trusted by <strong className="text-white">12,000+</strong> leaders worldwide
+            </span>
+          </div>
         </div>
 
-        {/* Stats Row */}
-        {section.items && section.items.length > 0 && (
+        {/* Right column: Interactive Application Window Mockup with Floating Glass Cards */}
+        <div className="lg:col-span-6 relative">
           <div
-            className={`grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-6 border backdrop-blur-md mb-12 max-w-3xl w-full ${radius}`}
-            style={{
-              borderColor: colors.border,
-              backgroundColor: `${colors.surface}70`,
-            }}
+            className={`p-2.5 sm:p-3 border shadow-2xl relative overflow-hidden group ${radius}`}
+            style={{ borderColor: colors.border, backgroundColor: colors.surface }}
           >
-            {section.items.map((stat, idx) => (
-              <div key={idx} className="flex flex-col items-center">
-                <span className="text-2xl md:text-3xl font-extrabold break-words" style={{ color: colors.primary }}>
-                  {stat.title}
-                </span>
-                <span className="text-xs md:text-sm font-medium mt-1 break-words text-center" style={{ color: colors.muted }}>
-                  {stat.description}
-                </span>
+            {/* macOS window top bar */}
+            <div className="flex items-center space-x-2 px-3 py-2 border-b mb-2" style={{ borderColor: `${colors.border}80` }}>
+              <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+              <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+              <div className="ml-4 flex-1 bg-black/40 rounded px-2.5 py-0.5 text-[10px] font-mono truncate" style={{ color: colors.muted }}>
+                https://{businessName ? businessName.toLowerCase().replace(/[^a-z0-9]/g, "") : "preview"}.app
               </div>
-            ))}
-          </div>
-        )}
+            </div>
 
-        {/* Hero Visual / Mockup Preview with SafeImage Fallback */}
-        {section.imageUrl && (
-          <div
-            className={`w-full max-w-4xl p-2 sm:p-3 border shadow-2xl relative overflow-hidden group ${radius}`}
-            style={{
-              borderColor: colors.border,
-              backgroundColor: colors.surface,
-            }}
-          >
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-zinc-950">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-zinc-950">
               <SafeImage
-                src={section.imageUrl}
-                alt={section.imageAlt || "Hero visual"}
+                src={section.imageUrl || "https://images.unsplash.com/photo-1551434678-e076c223a692?w=900&auto=format&fit=crop&q=80"}
+                alt={section.imageAlt || "Platform Dashboard Preview"}
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
             </div>
+
+            {/* Floating Glass Micro-Badge 1 */}
+            <div className="absolute top-12 right-6 bg-black/75 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg shadow-xl hidden sm:flex items-center space-x-2">
+              <span className="text-emerald-400 font-mono font-bold text-xs">▲ 99.99%</span>
+              <span className="text-zinc-300 text-[11px] font-medium">Uptime SLA</span>
+            </div>
+
+            {/* Floating Glass Micro-Badge 2 */}
+            <div className="absolute bottom-6 left-6 bg-black/75 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg shadow-xl hidden sm:flex items-center space-x-2">
+              <span className="text-indigo-400 font-mono font-bold text-xs">⚡ 10x</span>
+              <span className="text-zinc-300 text-[11px] font-medium">Faster Output</span>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );
 }
 
-function renderFeatures(section: SectionContent, colors: any, radius: string, style: WebsiteStyle) {
+function renderFeatures(
+  section: SectionContent,
+  colors: any,
+  radius: string,
+  style: WebsiteStyle,
+  websiteType?: string
+) {
   const items = section.items || [];
-  // Dynamic grid adapting to item counts (2, 3, 4, 6)
+
+  // BENTO GRID LAYOUT for Modern, Glassmorphism, SaaS, and AI Tool
+  if (style === "Modern" || style === "Glassmorphism" || websiteType === "SaaS" || websiteType === "AI Tool") {
+    return (
+      <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16">
+            {section.badge && (
+              <span
+                className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
+                style={{
+                  borderColor: colors.border,
+                  color: colors.primary,
+                  backgroundColor: `${colors.surface}60`,
+                }}
+              >
+                {section.badge}
+              </span>
+            )}
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4 break-words">
+              {section.title || "Engineered for Unmatched Precision"}
+            </h2>
+            <p className="text-base md:text-lg break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "Every capability built to give you a definitive competitive advantage."}
+            </p>
+          </div>
+
+          {/* Bento Grid: 1st card is large 2-span */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {items.map((feat, idx) => {
+              const isFirst = idx === 0;
+              return (
+                <div
+                  key={feat.id || idx}
+                  className={`p-6 sm:p-8 border transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl h-full flex flex-col justify-between break-words ${
+                    isFirst ? "md:col-span-2 lg:col-span-2" : ""
+                  } ${radius}`}
+                  style={{
+                    borderColor: colors.border,
+                    backgroundColor: colors.surface,
+                  }}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div
+                        className="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md shrink-0"
+                        style={{ backgroundColor: colors.primary }}
+                      >
+                        {ICON_MAP[feat.icon || "Sparkles"] || <Sparkles className="w-5 h-5" />}
+                      </div>
+                      {isFirst && (
+                        <span
+                          className="text-[11px] font-mono uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border"
+                          style={{ borderColor: colors.primary, color: colors.primary }}
+                        >
+                          Featured Flagship
+                        </span>
+                      )}
+                    </div>
+                    <h3 className={`font-bold mb-2.5 break-words ${isFirst ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`}>
+                      {feat.title}
+                    </h3>
+                    <p className={`leading-relaxed break-words ${isFirst ? "text-sm sm:text-base max-w-xl" : "text-sm"}`} style={{ color: colors.muted }}>
+                      {feat.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // NUMBERED EDITORIAL LIST for Minimal & Luxury & Portfolio
+  if (style === "Minimal" || style === "Luxury" || websiteType === "Portfolio") {
+    return (
+      <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-14 max-w-2xl">
+            {section.badge && (
+              <span className="text-xs font-semibold tracking-widest uppercase mb-3 block" style={{ color: colors.primary }}>
+                — {section.badge}
+              </span>
+            )}
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 break-words">
+              {section.title || "Disciplines & Core Focus"}
+            </h2>
+            <p className="text-base break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "A rigorous approach to design, engineering, and digital systems."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {items.map((feat, idx) => (
+              <div
+                key={feat.id || idx}
+                className="border-t pt-6 flex flex-col justify-between"
+                style={{ borderColor: colors.border }}
+              >
+                <div>
+                  <span className="font-mono text-xs font-bold mb-3 block" style={{ color: colors.primary }}>
+                    0{idx + 1}
+                  </span>
+                  <h3 className="text-lg font-bold mb-2 break-words">{feat.title}</h3>
+                  <p className="text-sm leading-relaxed break-words" style={{ color: colors.muted }}>
+                    {feat.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // STANDARD ICON GRID for other styles
   const gridCols =
     items.length === 2 || items.length === 4
       ? "grid-cols-1 md:grid-cols-2"
