@@ -230,8 +230,10 @@ export default function EditorPage({ params }: EditorPageProps) {
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [editingTitleId, setEditingTitleId] = useState<string | null>(null);
 
-  // Ref for the selected sidebar item — used to scroll it into view
+  // Refs for scrolling synchronization
   const selectedSidebarRef = useRef<HTMLDivElement | null>(null);
+  const canvasContainerRef = useRef<HTMLElement | null>(null);
+  const inspectorScrollRef = useRef<HTMLDivElement | null>(null);
 
   // Auto-scroll the sidebar layer row to keep it visible when selection changes
   useEffect(() => {
@@ -242,19 +244,32 @@ export default function EditorPage({ params }: EditorPageProps) {
 
   const scrollToCanvasSection = useCallback((secId: string | null) => {
     if (!secId) return;
+
+    // Reset Right Inspector panel scroll position to top on selection
+    if (inspectorScrollRef.current) {
+      inspectorScrollRef.current.scrollTop = 0;
+    }
+
     setTimeout(() => {
       let targetId = `canvas-section-${secId}`;
       if (secId === "header") targetId = "canvas-header";
-      if (secId === "footer") {
-        const footerElem = document.getElementById("canvas-section-footer") || document.querySelector('[id*="footer"]');
-        if (footerElem) {
-          footerElem.scrollIntoView({ behavior: "smooth", block: "start" });
-          return;
-        }
-      }
+      if (secId === "footer") targetId = "canvas-section-footer";
+
       const elem = document.getElementById(targetId);
-      if (elem) {
-        elem.scrollIntoView({ behavior: "smooth", block: "start" });
+      const container = canvasContainerRef.current;
+
+      if (elem && container) {
+        const containerRect = container.getBoundingClientRect();
+        const elemRect = elem.getBoundingClientRect();
+
+        // Calculate exact scroll offset relative to canvas container
+        const targetScrollTop =
+          container.scrollTop + (elemRect.top - containerRect.top) - (secId === "header" ? 0 : 20);
+
+        container.scrollTo({
+          top: Math.max(0, targetScrollTop),
+          behavior: "smooth",
+        });
       }
     }, 60);
   }, []);
@@ -1093,7 +1108,7 @@ export default function EditorPage({ params }: EditorPageProps) {
         )}
 
         {/* ================= CENTER CANVAS: RESPONSIVE PREVIEW ================= */}
-        <main className="flex-1 bg-zinc-950/95 overflow-y-auto p-4 md:p-8 flex justify-center items-start min-h-0">
+        <main ref={canvasContainerRef} className="flex-1 bg-zinc-950/95 overflow-y-auto p-4 md:p-8 flex justify-center items-start min-h-0">
           <div
             className={`transition-all duration-300 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden bg-black ${
               isPreviewMode
@@ -1165,7 +1180,7 @@ export default function EditorPage({ params }: EditorPageProps) {
 
             {/* Tab 1: Section Content & Design Inspector */}
             {activeTab === "content" && (
-              <div className="p-4 space-y-5 overflow-y-auto flex-1 text-xs">
+              <div ref={inspectorScrollRef} className="p-4 space-y-5 overflow-y-auto flex-1 text-xs">
                 {selectedSection ? (
                   <>
                     <div className="flex items-center justify-between pb-3 border-b border-zinc-800 bg-indigo-950/20 p-2.5 rounded-xl border border-indigo-900/40">
