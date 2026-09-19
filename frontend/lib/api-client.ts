@@ -1,6 +1,7 @@
 // Universal API client with automatic token refresh and stale token recovery
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+const rawApiBase = process.env.NEXT_PUBLIC_API_URL || "";
+const API_BASE = rawApiBase.replace(/\/api\/?$/, "").replace(/\/+$/, "");
 
 interface FetchOptions extends RequestInit {
   data?: any;

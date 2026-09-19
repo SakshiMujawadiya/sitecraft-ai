@@ -18,6 +18,17 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function syncAuthToken(token?: string | null) {
+  if (typeof window === "undefined") return;
+  if (token) {
+    localStorage.setItem("lp_access_token", token);
+    document.cookie = `lp_access_token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+  } else {
+    localStorage.removeItem("lp_access_token");
+    document.cookie = "lp_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -29,15 +40,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(res.user);
       } else {
         setUser(null);
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("lp_access_token");
-        }
+        syncAuthToken(null);
       }
     } catch {
       setUser(null);
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("lp_access_token");
-      }
+      syncAuthToken(null);
     } finally {
       setLoading(false);
     }
@@ -59,9 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (res.success && res.user) {
-      if (res.accessToken && typeof window !== "undefined") {
-        localStorage.setItem("lp_access_token", res.accessToken);
-      }
+      syncAuthToken(res.accessToken);
       setUser(res.user);
     }
     return res;
@@ -79,9 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (res.success && res.user) {
-      if (res.accessToken && typeof window !== "undefined") {
-        localStorage.setItem("lp_access_token", res.accessToken);
-      }
+      syncAuthToken(res.accessToken);
       setUser(res.user);
     }
     return res;
@@ -110,9 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (res.success && res.user) {
-      if (res.accessToken && typeof window !== "undefined") {
-        localStorage.setItem("lp_access_token", res.accessToken);
-      }
+      syncAuthToken(res.accessToken);
       setUser(res.user);
     }
     return res;
@@ -145,9 +146,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("lp_access_token");
-      }
+      syncAuthToken(null);
       setUser(null);
       window.location.href = "/";
     }

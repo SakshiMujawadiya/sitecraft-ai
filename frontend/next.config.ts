@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
-const backendUrl =
+const rawBackend =
   process.env.BACKEND_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+  (process.env.NODE_ENV === "production"
+    ? "https://sitecraft-ai-aorg.onrender.com"
+    : "http://localhost:5000");
+
+const backendUrl = rawBackend.replace(/\/api\/?$/, "").replace(/\/+$/, "");
 
 const nextConfig: NextConfig = {
   images: {
