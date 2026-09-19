@@ -37,7 +37,19 @@ export async function apiRequest<T = any>(endpoint: string, options: FetchOption
   let res = await fetch(url, config);
 
   // If 401 Unauthorized and not already refreshing
-  if (res.status === 401 && !options._retry && endpoint !== "/api/auth/refresh" && endpoint !== "/api/auth/login") {
+  if (
+    res.status === 401 &&
+    !options._retry &&
+    endpoint !== "/api/auth/refresh" &&
+    endpoint !== "/api/auth/login" &&
+    endpoint !== "/api/auth/logout"
+  ) {
+    // If client has no access token, do not attempt auto-refresh on /me
+    const hasLocalToken = typeof window !== "undefined" && !!localStorage.getItem("lp_access_token");
+    if (!hasLocalToken && endpoint === "/api/auth/me") {
+      return { success: false, user: null } as T;
+    }
+
     try {
       // Attempt token refresh via HTTP-only cookie
       const refreshRes = await fetch(`${API_BASE}/api/auth/refresh`, {

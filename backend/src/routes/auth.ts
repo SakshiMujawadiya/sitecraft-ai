@@ -339,8 +339,14 @@ router.post("/refresh", async (req: Request, res: Response): Promise<void> => {
 
 // 5. Logout
 router.post("/logout", (_req: Request, res: Response): void => {
-  res.clearCookie("lp_access_token", { path: "/" });
-  res.clearCookie("lp_refresh_token", { path: "/" });
+  const isProd = process.env.NODE_ENV === "production";
+  const cookieOpts = {
+    path: "/",
+    secure: isProd,
+    sameSite: (isProd ? "none" : "lax") as "none" | "lax",
+  };
+  res.clearCookie("lp_access_token", cookieOpts);
+  res.clearCookie("lp_refresh_token", cookieOpts);
   res.json({ success: true, message: "Logged out successfully" });
 });
 

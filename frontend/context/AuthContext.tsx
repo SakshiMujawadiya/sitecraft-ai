@@ -12,7 +12,7 @@ interface AuthContextType {
   sendOtp: (email: string, recaptchaToken?: string) => Promise<{ success: boolean; message: string; previewOtp?: string }>;
   verifyOtp: (email: string, otp: string) => Promise<{ success: boolean; message: string }>;
   loginWithDemo: (email?: string, name?: string, redirectUrl?: string) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: (redirectUrl?: string) => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
@@ -26,6 +26,7 @@ function syncAuthToken(token?: string | null) {
   } else {
     localStorage.removeItem("lp_access_token");
     document.cookie = "lp_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "lp_refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   }
 }
 
@@ -35,6 +36,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshUser = async () => {
     try {
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("lp_access_token");
+        if (!token) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+      }
+
       const res = await apiRequest<{ success: boolean; user: User }>("/api/auth/me");
       if (res.success && res.user) {
         setUser(res.user);
@@ -140,7 +150,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     window.location.href = `/api/auth/google?${params.toString()}`;
   };
 
-  const logout = async () => {
+  const logout = async (redirectUrl?: string | unknown) => {
+    const target = typeof redirectUrl === "string" && redirectUrl.startsWith("/") ? redirectUrl : "/";
+    // 1. Immediately purge client tokens so UI reflects logged-out state instantly
+    syncAuthToken(null);
+    setUser(null);
+
     try {
       await apiRequest("/api/auth/logout", { method: "POST" });
     } catch (err) {
@@ -148,7 +163,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       syncAuthToken(null);
       setUser(null);
-      window.location.href = "/";
+      window.location.href = target;
     }
   };
 

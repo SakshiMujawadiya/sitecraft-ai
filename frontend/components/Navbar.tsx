@@ -125,7 +125,7 @@ export default function Navbar() {
                   className="w-8 h-8 rounded-full border border-zinc-700 object-cover"
                 />
                 <button
-                  onClick={logout}
+                  onClick={() => logout()}
                   title="Logout"
                   className="p-1.5 rounded-lg text-zinc-400 hover:text-rose-400 hover:bg-zinc-900 transition-colors cursor-pointer"
                 >
