@@ -91,6 +91,19 @@ const COLOR_PALETTES: Record<ColorTheme, { primary: string; secondary: string; a
 };
 
 export async function generateWebsite(input: GenerationPromptInput): Promise<WebsiteData> {
+  const safeInput: GenerationPromptInput = {
+    businessName: input?.businessName || "My Project",
+    businessDescription: input?.businessDescription || (input as any)?.description || "Modern AI-powered web platform",
+    targetAudience: input?.targetAudience || "Tech professionals and modern teams",
+    websiteType: input?.websiteType || "SaaS",
+    websiteStyle: input?.websiteStyle || (input as any)?.style || "Modern",
+    colorTheme: input?.colorTheme || "Electric Indigo",
+    animationPreference: input?.animationPreference || "Modern",
+    requiredSections: Array.isArray(input?.requiredSections) && input.requiredSections.length > 0
+      ? input.requiredSections
+      : ["Hero", "Features", "About", "Pricing", "CTA", "Footer"],
+  };
+
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (apiKey) {
@@ -114,14 +127,14 @@ Create compelling, persuasive, highly realistic copy for each section requested.
             {
               role: "user",
               content: `Generate a complete landing page JSON for:
-- Business Name: ${input.businessName}
-- Website Type: ${input.websiteType}
-- Business Description: ${input.businessDescription}
-- Target Audience: ${input.targetAudience}
-- Website Style: ${input.websiteStyle}
-- Color Theme: ${input.colorTheme}
-- Required Sections: ${input.requiredSections.join(", ")}
-- Animation Preference: ${input.animationPreference}
+- Business Name: ${safeInput.businessName}
+- Website Type: ${safeInput.websiteType}
+- Business Description: ${safeInput.businessDescription}
+- Target Audience: ${safeInput.targetAudience}
+- Website Style: ${safeInput.websiteStyle}
+- Color Theme: ${safeInput.colorTheme}
+- Required Sections: ${safeInput.requiredSections.join(", ")}
+- Animation Preference: ${safeInput.animationPreference}
 
 Return JSON with this exact shape:
 {
@@ -129,13 +142,13 @@ Return JSON with this exact shape:
   "tagline": string,
   "description": string,
   "targetAudience": string,
-  "websiteType": "${input.websiteType}",
+  "websiteType": "${safeInput.websiteType}",
   "theme": {
-    "colorTheme": "${input.colorTheme}",
+    "colorTheme": "${safeInput.colorTheme}",
     "fontFamily": "Inter" | "Outfit" | "Playfair Display" | "Plus Jakarta Sans" | "Space Grotesk",
     "borderRadius": "sm" | "md" | "lg" | "full",
-    "animation": "${input.animationPreference}",
-    "style": "${input.websiteStyle}"
+    "animation": "${safeInput.animationPreference}",
+    "style": "${safeInput.websiteStyle}"
   },
   "sections": Array<SectionContent>,
   "seo": {
@@ -168,22 +181,22 @@ For each section in requiredSections, include relevant realistic headlines, subh
   }
 
   // High-Grade Smart Contextual Engine Fallback
-  return buildSmartGeneratedWebsite(input);
+  return buildSmartGeneratedWebsite(safeInput);
 }
 
 function buildSmartGeneratedWebsite(input: GenerationPromptInput): WebsiteData {
-  const {
-    businessName,
-    businessDescription,
-    targetAudience,
-    websiteType,
-    websiteStyle,
-    colorTheme,
-    requiredSections,
-    animationPreference,
-  } = input;
+  const businessName = input?.businessName || "My Project";
+  const businessDescription = input?.businessDescription || (input as any)?.description || "Modern AI-powered web platform";
+  const targetAudience = input?.targetAudience || "Tech professionals and modern teams";
+  const websiteType = input?.websiteType || "SaaS";
+  const websiteStyle = input?.websiteStyle || (input as any)?.style || "Modern";
+  const colorTheme = input?.colorTheme || "Electric Indigo";
+  const animationPreference = input?.animationPreference || "Modern";
+  const requiredSections = Array.isArray(input?.requiredSections) && input.requiredSections.length > 0
+    ? input.requiredSections
+    : ["Hero", "Features", "About", "Pricing", "CTA", "Footer"];
 
-  const fontMap: Record<WebsiteStyle, WebsiteData["theme"]["fontFamily"]> = {
+  const fontMap: Record<string, WebsiteData["theme"]["fontFamily"]> = {
     Modern: "Plus Jakarta Sans",
     Minimal: "Inter",
     Dark: "Space Grotesk",
@@ -193,7 +206,7 @@ function buildSmartGeneratedWebsite(input: GenerationPromptInput): WebsiteData {
     Neon: "Space Grotesk",
   };
 
-  const radiusMap: Record<WebsiteStyle, WebsiteData["theme"]["borderRadius"]> = {
+  const radiusMap: Record<string, WebsiteData["theme"]["borderRadius"]> = {
     Modern: "lg",
     Minimal: "sm",
     Dark: "md",
@@ -202,6 +215,9 @@ function buildSmartGeneratedWebsite(input: GenerationPromptInput): WebsiteData {
     Corporate: "md",
     Neon: "none",
   };
+
+  const fontFamily = fontMap[websiteStyle] || "Inter";
+  const borderRadius = radiusMap[websiteStyle] || "md";
 
   const sections: SectionContent[] = [];
 

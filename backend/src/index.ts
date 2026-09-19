@@ -52,15 +52,19 @@ app.use(cookieParser());
 app.use(express.json({ limit: "15mb" }));
 app.use(express.urlencoded({ extended: true, limit: "15mb" }));
 
-// Health Check
-app.get("/api/health", (_req: Request, res: Response) => {
-  res.json({
+// Health Check endpoints (supports /api/health, /health, and /)
+const healthHandler = (_req: Request, res: Response) => {
+  res.status(200).json({
     status: "ok",
     timestamp: new Date().toISOString(),
-    service: "AI Landing Page Builder API",
+    service: "SiteCraft AI Landing Page Builder API",
     customDomainRouting: true,
   });
-});
+};
+
+app.get("/api/health", healthHandler);
+app.get("/health", healthHandler);
+app.get("/", healthHandler);
 
 // Mount Routes
 app.use("/api/auth", authRoutes);
@@ -126,6 +130,16 @@ app.listen(PORT, async () => {
 ────────────────────────────────────────────────────────────────
 `);
   await seedDemoData();
+
+  // Keepalive mechanism on Render to prevent free-tier 15-minute inactivity spin-down
+  if (process.env.NODE_ENV === "production") {
+    const targetUrl = process.env.RENDER_EXTERNAL_URL || "https://sitecraft-ai-aorg.onrender.com";
+    setInterval(() => {
+      fetch(`${targetUrl}/api/health`)
+        .then(() => console.log(`[Keepalive] Self-pinged ${targetUrl}/api/health`))
+        .catch((err) => console.warn(`[Keepalive] Ping failed:`, (err as Error).message));
+    }, 9 * 60 * 1000); // every 9 mins
+  }
 });
 
 export default app;
