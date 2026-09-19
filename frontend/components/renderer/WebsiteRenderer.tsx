@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { WebsiteData, SectionContent, ColorTheme, WebsiteStyle } from "@/lib/types";
+import { WebsiteData, SectionContent, ColorTheme, WebsiteStyle, SectionType } from "@/lib/types";
 import {
   Sparkles,
   ArrowRight,
   Check,
   ChevronDown,
+  ChevronUp,
   Star,
   ExternalLink,
   Shield,
@@ -27,6 +28,15 @@ import {
   Sun,
   ShieldCheck,
   AlertTriangle,
+  Play,
+  HelpCircle,
+  Phone,
+  Award,
+  Quote,
+  Copy,
+  Trash2,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 interface WebsiteRendererProps {
@@ -34,6 +44,10 @@ interface WebsiteRendererProps {
   isEditable?: boolean;
   selectedSectionId?: string | null;
   onSelectSection?: (sectionId: string) => void;
+  onMoveSection?: (sectionId: string, direction: "up" | "down") => void;
+  onDuplicateSection?: (sectionId: string) => void;
+  onDeleteSection?: (sectionId: string) => void;
+  onToggleVisibility?: (sectionId: string) => void;
 }
 
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -56,6 +70,9 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   Sun: <Sun className="w-5 h-5" />,
   ShieldCheck: <ShieldCheck className="w-5 h-5" />,
   AlertTriangle: <AlertTriangle className="w-5 h-5" />,
+  Play: <Play className="w-5 h-5" />,
+  Award: <Award className="w-5 h-5" />,
+  HelpCircle: <HelpCircle className="w-5 h-5" />,
 };
 
 export default function WebsiteRenderer({
@@ -63,10 +80,20 @@ export default function WebsiteRenderer({
   isEditable = false,
   selectedSectionId = null,
   onSelectSection,
+  onMoveSection,
+  onDuplicateSection,
+  onDeleteSection,
+  onToggleVisibility,
 }: WebsiteRendererProps) {
   const [faqOpen, setFaqOpen] = useState<Record<string, boolean>>({ "0": true });
 
-  const theme = data.theme;
+  const theme = data.theme || {
+    colorTheme: "Electric Indigo",
+    fontFamily: "Inter",
+    borderRadius: "md",
+    animation: "Modern",
+    style: "Modern",
+  };
   const colorTheme = theme.colorTheme || "Electric Indigo";
   const style = theme.style || "Modern";
 
@@ -173,7 +200,20 @@ export default function WebsiteRenderer({
     }
   };
 
-  const colors = getThemeColors(colorTheme);
+  const baseColors = getThemeColors(colorTheme);
+  const custom = theme.customPalette || {};
+  const colors = {
+    bg: custom.background || baseColors.bg,
+    surface: custom.surface || baseColors.surface,
+    surfaceHover: baseColors.surfaceHover,
+    primary: custom.primary || baseColors.primary,
+    primaryHover: baseColors.primaryHover,
+    accent: custom.accent || baseColors.accent,
+    text: custom.text || baseColors.text,
+    muted: custom.mutedText || baseColors.muted,
+    border: custom.border || baseColors.border,
+    button: custom.button || custom.primary || baseColors.primary,
+  };
 
   const getBorderRadius = () => {
     switch (theme.borderRadius) {
@@ -191,63 +231,96 @@ export default function WebsiteRenderer({
     }
   };
 
-  const getFontClass = () => {
-    switch (theme.fontFamily) {
-      case "Space Grotesk":
-        return "font-mono";
+  const getFontFamilyStyle = () => {
+    const f = theme.fontFamily || "Inter";
+    switch (f) {
       case "Playfair Display":
-        return "font-serif";
+        return "Georgia, Cambria, serif";
+      case "Space Grotesk":
+        return "'Space Grotesk', monospace";
       case "Outfit":
+        return "'Outfit', sans-serif";
       case "Plus Jakarta Sans":
+        return "'Plus Jakarta Sans', sans-serif";
+      case "Geist":
+        return "'Geist', sans-serif";
+      case "Poppins":
+        return "'Poppins', sans-serif";
+      case "Roboto":
+        return "'Roboto', sans-serif";
+      case "DM Sans":
+        return "'DM Sans', sans-serif";
       case "Inter":
       default:
-        return "font-sans";
+        return "'Inter', sans-serif";
     }
   };
 
-  const toggleFaq = (idx: string) => {
-    setFaqOpen((prev) => ({ ...prev, [idx]: !prev[idx] }));
+  const toggleFaq = (id: string) => {
+    setFaqOpen((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${getFontClass()}`}
-      style={{
-        backgroundColor: colors.bg,
-        color: colors.text,
-      }}
+      className="min-h-screen transition-colors duration-300 antialiased selection:bg-indigo-500/20 selection:text-indigo-200"
+      style={
+        {
+          backgroundColor: colors.bg,
+          color: colors.text,
+          fontFamily: getFontFamilyStyle(),
+          "--site-primary": colors.primary,
+          "--site-secondary": colors.accent,
+          "--site-accent": colors.accent,
+          "--site-bg": colors.bg,
+          "--site-surface": colors.surface,
+          "--site-text": colors.text,
+          "--site-muted": colors.muted,
+          "--site-border": colors.border,
+          "--site-button": colors.button,
+        } as React.CSSProperties
+      }
     >
-      {/* Top Navbar Component */}
+      {/* Sticky Global Navigation Bar */}
       <header
-        className="sticky top-0 z-30 border-b backdrop-blur-md px-6 py-4 flex items-center justify-between transition-all"
+        className="sticky top-0 z-30 border-b backdrop-blur-xl transition-all"
         style={{
           borderColor: colors.border,
-          backgroundColor: `${colors.bg}cc`,
+          backgroundColor: `${colors.bg}e6`,
         }}
       >
-        <div className="flex items-center space-x-3">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white shadow-lg"
-            style={{ backgroundColor: colors.primary }}
-          >
-            {data.businessName ? data.businessName.charAt(0).toUpperCase() : "A"}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shrink-0"
+              style={{
+                backgroundColor: colors.primary,
+              }}
+            >
+              {(data.businessName || "Site").charAt(0).toUpperCase()}
+            </div>
+            <span className="font-bold text-lg tracking-tight break-words">{data.businessName}</span>
           </div>
-          <span className="font-bold text-lg tracking-tight">{data.businessName || "Landing Page"}</span>
-        </div>
 
-        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium" style={{ color: colors.muted }}>
-          <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="#about" className="hover:text-white transition-colors">About</a>
-          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-          <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-        </nav>
+          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
+            <a href="#features" className="hover:opacity-80 transition-opacity" style={{ color: colors.muted }}>
+              Features
+            </a>
+            <a href="#pricing" className="hover:opacity-80 transition-opacity" style={{ color: colors.muted }}>
+              Pricing
+            </a>
+            <a href="#testimonials" className="hover:opacity-80 transition-opacity" style={{ color: colors.muted }}>
+              Testimonials
+            </a>
+            <a href="#faq" className="hover:opacity-80 transition-opacity" style={{ color: colors.muted }}>
+              FAQ
+            </a>
+          </nav>
 
-        <div className="flex items-center space-x-3">
           <a
             href="#pricing"
-            className={`px-4 py-2 text-sm font-semibold transition-all shadow-md active:scale-95 ${getBorderRadius()}`}
+            className={`px-4 py-2 text-sm font-bold shadow-lg transition-all active:scale-95 ${getBorderRadius()}`}
             style={{
-              backgroundColor: colors.primary,
+              backgroundColor: colors.button,
               color: "#ffffff",
             }}
           >
@@ -259,10 +332,17 @@ export default function WebsiteRenderer({
       {/* Sections Container */}
       <main className="flex flex-col">
         {data.sections.map((section, idx) => {
+          const isHidden = section.visible === false;
+          if (isHidden && !isEditable) {
+            return null;
+          }
+
           const isSelected = selectedSectionId === section.id;
           const sectionClasses = `relative transition-all duration-200 ${
             isEditable ? "cursor-pointer group hover:ring-2 hover:ring-indigo-500/60" : ""
-          } ${isSelected ? "ring-2 ring-indigo-500 shadow-2xl z-10" : ""}`;
+          } ${isSelected ? "ring-2 ring-indigo-500 shadow-2xl z-20" : ""} ${
+            isHidden ? "opacity-45 grayscale-[30%]" : ""
+          }`;
 
           return (
             <div
@@ -270,29 +350,156 @@ export default function WebsiteRenderer({
               onClick={() => isEditable && onSelectSection?.(section.id)}
               className={sectionClasses}
             >
-              {/* Editable badge indicator */}
+              {/* Editable badge indicator on hover */}
               {isEditable && (
                 <div className="absolute top-3 left-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-600/90 text-white text-xs px-2.5 py-1 rounded-full font-medium shadow-md backdrop-blur-sm pointer-events-none">
                   {section.type} Section • Click to edit
                 </div>
               )}
 
+              {/* Hidden indicator banner */}
+              {isEditable && isHidden && (
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-zinc-900/95 border border-amber-500/40 text-amber-300 text-xs px-3 py-1 rounded-full flex items-center space-x-2 shadow-lg backdrop-blur-md">
+                  <EyeOff className="w-3.5 h-3.5" />
+                  <span>Hidden from live site</span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleVisibility?.(section.id);
+                    }}
+                    className="ml-2 font-bold underline hover:text-white"
+                  >
+                    Unhide
+                  </button>
+                </div>
+              )}
+
+              {/* Floating Section Quick-Action Toolbar on Selection */}
+              {isEditable && isSelected && (
+                <div className="absolute -top-4 right-6 z-40 bg-zinc-900 border border-indigo-500/80 rounded-lg px-2 py-1 flex items-center space-x-1.5 shadow-2xl backdrop-blur-md text-white text-xs">
+                  <span className="font-bold text-[11px] text-indigo-300 px-1.5 py-0.5 rounded bg-indigo-950/80 border border-indigo-800/60 uppercase tracking-wider">
+                    {section.type} {section.variant || section.layout ? `• ${section.variant || section.layout}` : ""}
+                  </span>
+                  <div className="h-3.5 w-px bg-zinc-700 mx-0.5" />
+                  <button
+                    title="Move Up"
+                    disabled={idx === 0}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onMoveSection?.(section.id, "up");
+                    }}
+                    className="p-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white disabled:opacity-25"
+                  >
+                    <ChevronUp className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    title="Move Down"
+                    disabled={idx === data.sections.length - 1}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onMoveSection?.(section.id, "down");
+                    }}
+                    className="p-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white disabled:opacity-25"
+                  >
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    title="Duplicate"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDuplicateSection?.(section.id);
+                    }}
+                    className="p-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    title={section.visible === false ? "Show Section" : "Hide Section"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleVisibility?.(section.id);
+                    }}
+                    className="p-1 hover:bg-zinc-800 rounded text-zinc-300 hover:text-white"
+                  >
+                    {section.visible === false ? (
+                      <Eye className="w-3.5 h-3.5 text-amber-400" />
+                    ) : (
+                      <EyeOff className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                  <button
+                    title="Delete Section"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteSection?.(section.id);
+                    }}
+                    className="p-1 hover:bg-rose-950/80 rounded text-rose-400 hover:text-rose-300"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+
               {/* Render by Section Type */}
-              {section.type === "Hero" && renderHero(section, colors, getBorderRadius(), style, data.websiteType, data.businessName)}
-              {section.type === "Features" && renderFeatures(section, colors, getBorderRadius(), style, data.websiteType)}
-              {section.type === "About" && renderAbout(section, colors, getBorderRadius())}
-              {section.type === "Testimonials" && renderTestimonials(section, colors, getBorderRadius())}
-              {section.type === "Pricing" && renderPricing(section, colors, getBorderRadius())}
-              {section.type === "FAQ" && renderFAQ(section, colors, getBorderRadius(), faqOpen, toggleFaq)}
-              {section.type === "CTA" && renderCTA(section, colors, getBorderRadius())}
-              {section.type === "Contact" && renderContact(section, colors, getBorderRadius())}
-              {section.type === "Footer" && renderFooter(section, colors, data.businessName)}
+              {renderSectionByType(section, colors, getBorderRadius(), style, data.websiteType, data.businessName, faqOpen, toggleFaq)}
             </div>
           );
         })}
       </main>
     </div>
   );
+}
+
+/* ================= SECTION DISPATCHER ================= */
+
+function renderSectionByType(
+  section: SectionContent,
+  colors: any,
+  radius: string,
+  style: WebsiteStyle,
+  websiteType?: string,
+  businessName?: string,
+  faqOpen?: Record<string, boolean>,
+  toggleFaq?: (id: string) => void
+) {
+  switch (section.type) {
+    case "Hero":
+      return renderHero(section, colors, radius, style, websiteType, businessName);
+    case "Features":
+      return renderFeatures(section, colors, radius, style, websiteType);
+    case "About":
+      return renderAbout(section, colors, radius);
+    case "Services":
+      return renderServices(section, colors, radius);
+    case "Team":
+      return renderTeam(section, colors, radius);
+    case "Stats":
+      return renderStats(section, colors, radius);
+    case "Logo Cloud":
+      return renderLogoCloud(section, colors, radius);
+    case "Process":
+      return renderProcess(section, colors, radius);
+    case "Gallery":
+    case "Product Showcase":
+      return renderProductShowcase(section, colors, radius);
+    case "Newsletter":
+      return renderNewsletter(section, colors, radius);
+    case "Testimonials":
+      return renderTestimonials(section, colors, radius);
+    case "Pricing":
+      return renderPricing(section, colors, radius);
+    case "FAQ":
+      return renderFAQ(section, colors, radius, faqOpen || {}, toggleFaq || (() => {}));
+    case "CTA":
+      return renderCTA(section, colors, radius);
+    case "Contact":
+      return renderContact(section, colors, radius);
+    case "Footer":
+      return renderFooter(section, colors, businessName || "");
+    default:
+      return renderFeatures(section, colors, radius, style, websiteType);
+  }
 }
 
 /* ================= SAFE IMAGE COMPONENT ================= */
@@ -332,8 +539,64 @@ function SafeImage({
   );
 }
 
+/* ================= CUSTOM STYLING HELPERS ================= */
+
+function getSectionPaddingClass(paddingY?: string) {
+  switch (paddingY) {
+    case "compact":
+    case "small":
+      return "py-10 sm:py-14";
+    case "spacious":
+    case "xlarge":
+      return "py-24 sm:py-36";
+    case "large":
+      return "py-20 sm:py-28";
+    case "normal":
+    case "medium":
+    default:
+      return "py-16 sm:py-24";
+  }
+}
+
+function getSectionBackgroundStyle(sec: SectionContent) {
+  const styles = sec.customStyles || {};
+  if (styles.backgroundType === "solid" && styles.backgroundColor) {
+    return { backgroundColor: styles.backgroundColor };
+  }
+  if (styles.backgroundType === "gradient" && styles.gradientConfig) {
+    const { type, color1, color2, angle } = styles.gradientConfig;
+    if (type === "radial") {
+      return { backgroundImage: `radial-gradient(circle at center, ${color1}, ${color2})` };
+    }
+    return { backgroundImage: `linear-gradient(${angle || 135}deg, ${color1}, ${color2})` };
+  }
+  if (styles.backgroundType === "transparent") {
+    return { backgroundColor: "transparent" };
+  }
+  if (styles.backgroundColor) {
+    return { backgroundColor: styles.backgroundColor };
+  }
+  return {};
+}
+
+function getButtonRadius(styleRadius?: string, defaultRadius = "rounded-xl") {
+  switch (styleRadius) {
+    case "none":
+      return "rounded-none";
+    case "sm":
+      return "rounded-sm";
+    case "lg":
+      return "rounded-2xl";
+    case "full":
+      return "rounded-full";
+    default:
+      return defaultRadius;
+  }
+}
+
 /* ================= SECTION RENDERERS ================= */
 
+/* 1. HERO COMPONENT (Polymorphic Layouts) */
 function renderHero(
   section: SectionContent,
   colors: any,
@@ -342,58 +605,145 @@ function renderHero(
   websiteType?: string,
   businessName?: string
 ) {
-  // 1. MINIMAL & LUXURY & PORTFOLIO: Editorial Asymmetric Hero
-  if (style === "Minimal" || style === "Luxury" || websiteType === "Portfolio") {
+  const variant = section.variant || section.layout;
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+
+  // Variant A: Centered Hero
+  if (variant === "Centered") {
     return (
-      <section className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-28 md:py-36 overflow-hidden">
+      <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} text-center overflow-hidden`} style={bgStyle}>
+        <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
+          {section.badge && (
+            <div
+              className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border shadow-sm"
+              style={{
+                borderColor: `${colors.primary}50`,
+                backgroundColor: `${colors.primary}15`,
+                color: colors.primary,
+              }}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{section.badge}</span>
+            </div>
+          )}
+
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 break-words max-w-3xl leading-[1.15]">
+            {section.title || `Elevate Your Experience with ${businessName}`}
+          </h1>
+
+          <p className="text-base sm:text-lg md:text-xl max-w-2xl mb-8 break-words leading-relaxed" style={{ color: colors.muted }}>
+            {section.subtitle || "The modern platform designed to empower high-velocity teams and ambitious creators."}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 w-full sm:w-auto">
+            <a
+              href={section.ctaLink || "#pricing"}
+              className={`w-full sm:w-auto px-8 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all text-center flex items-center justify-center space-x-2 ${radius}`}
+              style={{
+                backgroundColor: colors.button,
+                color: "#ffffff",
+              }}
+            >
+              <span>{section.ctaText || "Get Started"}</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            {section.secondaryCtaText && (
+              <a
+                href={section.secondaryCtaLink || "#features"}
+                className={`w-full sm:w-auto px-7 py-3.5 text-base font-semibold border hover:bg-white/5 active:scale-95 transition-all text-center ${radius}`}
+                style={{
+                  borderColor: colors.border,
+                  color: colors.text,
+                }}
+              >
+                {section.secondaryCtaText}
+              </a>
+            )}
+          </div>
+
+          {section.imageUrl && (
+            <div
+              className={`w-full max-w-4xl border p-2 shadow-2xl relative overflow-hidden ${radius}`}
+              style={{
+                borderColor: colors.border,
+                backgroundColor: colors.surface,
+              }}
+            >
+              <SafeImage
+                src={section.imageUrl}
+                alt={section.imageAlt || "Hero Showcase"}
+                className={`w-full h-auto max-h-[460px] object-cover ${radius}`}
+              />
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // Variant B: Asymmetric Hero (Minimal, Luxury, Portfolio)
+  if (variant === "Asymmetric" || (!variant && (style === "Minimal" || style === "Luxury" || websiteType === "Portfolio"))) {
+    return (
+      <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} overflow-hidden`} style={bgStyle}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-7 flex flex-col items-start text-left">
             {section.badge && (
               <div
-                className="inline-flex items-center space-x-2 px-3 py-1 mb-6 text-xs font-semibold tracking-widest uppercase border border-current/20"
-                style={{ color: colors.primary }}
+                className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-6 border"
+                style={{
+                  borderColor: colors.border,
+                  backgroundColor: `${colors.surface}80`,
+                  color: colors.accent,
+                }}
               >
-                <span>— {section.badge}</span>
+                <span>{section.badge}</span>
               </div>
             )}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.08] break-words">
-              {section.title || `Crafting the Future with ${businessName}`}
+
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-6 break-words leading-[1.1]">
+              {section.title || `Bespoke Design for ${businessName}`}
             </h1>
-            <p className="text-base sm:text-lg md:text-xl font-light mb-8 max-w-xl leading-relaxed break-words" style={{ color: colors.muted }}>
-              {section.subtitle || "Thoughtful aesthetics, intentional typography, and timeless digital execution."}
+
+            <p className="text-base sm:text-lg mb-8 leading-relaxed max-w-xl break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "Crafting digital elegance with unparalleled attention to detail."}
             </p>
 
             <div className="flex flex-wrap items-center gap-4 mb-10">
-              {section.ctaText && (
-                <a
-                  href={section.ctaLink || "#contact"}
-                  className={`inline-flex items-center space-x-2 px-7 py-3.5 text-sm font-semibold tracking-wide transition-all shadow-md active:scale-95 ${radius}`}
-                  style={{ backgroundColor: colors.primary, color: "#ffffff" }}
-                >
-                  <span>{section.ctaText}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              )}
+              <a
+                href={section.ctaLink || "#pricing"}
+                className={`px-8 py-3.5 text-sm font-bold shadow-lg transition-all active:scale-95 flex items-center space-x-2 ${radius}`}
+                style={{
+                  backgroundColor: colors.button,
+                  color: "#ffffff",
+                }}
+              >
+                <span>{section.ctaText || "Explore Works"}</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
               {section.secondaryCtaText && (
                 <a
-                  href={section.secondaryCtaLink || "#work"}
-                  className={`inline-flex items-center space-x-2 px-6 py-3.5 text-sm font-medium border transition-all hover:bg-white/5 active:scale-95 ${radius}`}
-                  style={{ borderColor: colors.border, color: colors.text }}
+                  href={section.secondaryCtaLink || "#features"}
+                  className={`px-6 py-3.5 text-sm font-semibold border hover:bg-white/5 transition-all ${radius}`}
+                  style={{
+                    borderColor: colors.border,
+                    color: colors.text,
+                  }}
                 >
-                  <span>{section.secondaryCtaText}</span>
+                  {section.secondaryCtaText}
                 </a>
               )}
             </div>
 
             {section.items && section.items.length > 0 && (
-              <div className="flex flex-wrap gap-8 pt-8 border-t w-full" style={{ borderColor: `${colors.border}80` }}>
-                {section.items.map((stat, idx) => (
-                  <div key={idx} className="flex flex-col">
-                    <span className="text-2xl sm:text-3xl font-extrabold" style={{ color: colors.primary }}>
-                      {stat.title}
+              <div className="grid grid-cols-3 gap-6 pt-6 border-t w-full" style={{ borderColor: colors.border }}>
+                {section.items.slice(0, 3).map((item, i) => (
+                  <div key={i} className="flex flex-col">
+                    <span className="text-xl sm:text-2xl font-black tracking-tight" style={{ color: colors.primary }}>
+                      {item.title}
                     </span>
-                    <span className="text-xs uppercase tracking-wider font-medium mt-0.5" style={{ color: colors.muted }}>
-                      {stat.description}
+                    <span className="text-xs mt-1 break-words" style={{ color: colors.muted }}>
+                      {item.description}
                     </span>
                   </div>
                 ))}
@@ -403,18 +753,17 @@ function renderHero(
 
           <div className="lg:col-span-5 relative">
             <div
-              className={`relative overflow-hidden border shadow-2xl aspect-[4/5] w-full group ${radius}`}
-              style={{ borderColor: colors.border, backgroundColor: colors.surface }}
+              className={`relative border p-3 shadow-2xl backdrop-blur-md overflow-hidden ${radius}`}
+              style={{
+                borderColor: colors.border,
+                backgroundColor: `${colors.surface}99`,
+              }}
             >
               <SafeImage
-                src={section.imageUrl || "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=900&auto=format&fit=crop&q=80"}
-                alt={section.imageAlt || "Featured visual"}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                src={section.imageUrl || "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80"}
+                alt={section.imageAlt || "Portfolio Showcase"}
+                className={`w-full h-80 sm:h-96 object-cover ${radius}`}
               />
-              <div className="absolute bottom-4 left-4 right-4 p-3 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 text-xs flex items-center justify-between">
-                <span className="font-mono text-zinc-300">Selected Works & Systems</span>
-                <span className="font-mono text-amber-400 font-bold">2026 Edition</span>
-              </div>
             </div>
           </div>
         </div>
@@ -422,321 +771,289 @@ function renderHero(
     );
   }
 
-  // 2. NEON & DARK & AI TOOL: Cyber Spotlight Hero with Prompt Command Bar
-  if (style === "Neon" || style === "Dark" || websiteType === "AI Tool") {
+  // Variant C: Product Preview / Cyber Spotlight (Neon, Dark, AI Tool)
+  if (variant === "Product Preview" || (!variant && (style === "Neon" || style === "Dark" || websiteType === "AI Tool"))) {
     return (
-      <section className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-28 md:py-36 overflow-hidden">
-        {/* Neon glowing backlights */}
+      <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} text-center overflow-hidden`} style={bgStyle}>
         <div
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[170px] opacity-35 pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] opacity-25 pointer-events-none"
           style={{ backgroundColor: colors.primary }}
         />
 
-        <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
+        <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
           {section.badge && (
             <div
-              className="inline-flex items-center space-x-2 px-3.5 py-1.5 mb-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full border shadow-[0_0_15px_rgba(99,102,241,0.25)] backdrop-blur-md"
+              className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6 border shadow-inner"
               style={{
-                borderColor: colors.primary,
+                borderColor: `${colors.primary}60`,
+                backgroundColor: `${colors.surface}cc`,
                 color: colors.primary,
-                backgroundColor: `${colors.surface}90`,
               }}
             >
-              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+              <Cpu className="w-3.5 h-3.5" />
               <span>{section.badge}</span>
             </div>
           )}
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl leading-[1.1] break-words">
-            {section.title || `Empower Your Vision with ${businessName}`}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6 break-words max-w-3xl leading-[1.15]">
+            {section.title || `Next-Gen Intelligence by ${businessName}`}
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl font-normal mb-8 max-w-2xl leading-relaxed break-words" style={{ color: colors.muted }}>
-            {section.subtitle || "The modern generative platform engineered for unmatched speed, flexibility, and creative freedom."}
+          <p className="text-base sm:text-lg md:text-xl max-w-2xl mb-8 break-words" style={{ color: colors.muted }}>
+            {section.subtitle || "Synthesize intelligence, automate workflows, and deploy with confidence."}
           </p>
 
-          {/* Interactive Prompt / CLI Simulation Bar */}
-          <div
-            className={`w-full max-w-2xl p-2 sm:p-2.5 mb-8 border backdrop-blur-xl flex items-center justify-between shadow-2xl ${radius}`}
-            style={{
-              borderColor: `${colors.primary}60`,
-              backgroundColor: `${colors.surface}95`,
-            }}
-          >
-            <div className="flex items-center space-x-3 px-3 overflow-hidden text-left">
-              <span className="font-mono text-xs text-indigo-400 font-bold shrink-0">&gt;_</span>
-              <span className="font-mono text-xs sm:text-sm truncate" style={{ color: colors.muted }}>
-                model.generate("{businessName?.toLowerCase() || "sitecraft"}", mode="ultra-speed")
-              </span>
-            </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 w-full sm:w-auto">
             <a
               href={section.ctaLink || "#pricing"}
-              className={`shrink-0 px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 ${radius}`}
-              style={{ backgroundColor: colors.primary, color: "#ffffff" }}
+              className={`w-full sm:w-auto px-8 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all text-center flex items-center justify-center space-x-2 ${radius}`}
+              style={{
+                backgroundColor: colors.button,
+                color: "#ffffff",
+              }}
             >
-              Run Prompt
+              <span>{section.ctaText || "Try Generator Free"}</span>
+              <ArrowRight className="w-4 h-4" />
             </a>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 w-full sm:w-auto">
-            {section.ctaText && (
-              <a
-                href={section.ctaLink || "#pricing"}
-                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all ${radius}`}
-                style={{ backgroundColor: colors.primary, color: "#ffffff" }}
-              >
-                <span>{section.ctaText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            )}
             {section.secondaryCtaText && (
               <a
                 href={section.secondaryCtaLink || "#features"}
-                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3.5 text-base font-semibold border transition-all hover:bg-white/5 active:scale-95 ${radius}`}
-                style={{ borderColor: colors.border, color: colors.text }}
+                className={`w-full sm:w-auto px-7 py-3.5 text-base font-semibold border hover:bg-white/5 active:scale-95 transition-all text-center ${radius}`}
+                style={{
+                  borderColor: colors.border,
+                  color: colors.text,
+                }}
               >
-                <span>{section.secondaryCtaText}</span>
+                {section.secondaryCtaText}
               </a>
             )}
           </div>
 
-          {/* Stats Badges Row */}
-          {section.items && section.items.length > 0 && (
-            <div
-              className={`grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-6 border backdrop-blur-md mb-12 max-w-3xl w-full shadow-2xl ${radius}`}
-              style={{
-                borderColor: `${colors.border}`,
-                backgroundColor: `${colors.surface}80`,
-              }}
-            >
-              {section.items.map((stat, idx) => (
-                <div key={idx} className="flex flex-col items-center">
-                  <span className="text-2xl md:text-3xl font-black" style={{ color: colors.primary }}>
-                    {stat.title}
-                  </span>
-                  <span className="text-xs md:text-sm font-medium mt-1 text-center" style={{ color: colors.muted }}>
-                    {stat.description}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Large Screen Visual with Glowing Neon Border */}
-          {section.imageUrl && (
-            <div
-              className={`w-full max-w-5xl p-2 sm:p-3 border shadow-[0_0_40px_rgba(0,0,0,0.8)] relative overflow-hidden group ${radius}`}
-              style={{
-                borderColor: `${colors.primary}50`,
-                backgroundColor: colors.surface,
-              }}
-            >
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-zinc-950">
-                <SafeImage
-                  src={section.imageUrl}
-                  alt={section.imageAlt || "Showcase visual"}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-    );
-  }
-
-  // 3. RESTAURANT & GYM & ECOMMERCE & AGENCY: Immersive Visual Banner Hero
-  if (
-    websiteType === "Restaurant" ||
-    websiteType === "Gym" ||
-    websiteType === "Ecommerce" ||
-    websiteType === "Agency"
-  ) {
-    return (
-      <section className="relative min-h-[85vh] sm:min-h-[88vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
-        {/* Full-bleed background image with dark vignette */}
-        <div className="absolute inset-0 z-0">
-          <SafeImage
-            src={section.imageUrl || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&auto=format&fit=crop&q=80"}
-            alt="Hero background"
-            className="w-full h-full object-cover object-center scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/85 to-zinc-950/60" />
-        </div>
-
-        <div className="max-w-5xl mx-auto flex flex-col items-center text-center relative z-10">
-          {section.badge && (
-            <div
-              className="inline-flex items-center space-x-2 px-4 py-1.5 mb-6 text-xs font-bold uppercase tracking-widest rounded-full border shadow-lg backdrop-blur-md"
-              style={{
-                borderColor: `${colors.primary}90`,
-                backgroundColor: "rgba(0,0,0,0.65)",
-                color: colors.primary,
-              }}
-            >
-              <span>{section.badge}</span>
-            </div>
-          )}
-
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl text-white leading-[1.1] drop-shadow-lg break-words">
-            {section.title || `Welcome to ${businessName}`}
-          </h1>
-
-          <p className="text-base sm:text-lg md:text-xl font-normal mb-10 max-w-2xl text-zinc-300 leading-relaxed drop-shadow break-words">
-            {section.subtitle || "An extraordinary standard of excellence, designed for those who settle for nothing less than the best."}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 w-full sm:w-auto">
-            {section.ctaText && (
-              <a
-                href={section.ctaLink || "#pricing"}
-                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-4 text-base font-bold shadow-2xl active:scale-95 transition-all ${radius}`}
-                style={{ backgroundColor: colors.primary, color: "#ffffff" }}
-              >
-                <span>{section.ctaText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            )}
-            {section.secondaryCtaText && (
-              <a
-                href={section.secondaryCtaLink || "#features"}
-                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-4 text-base font-semibold border backdrop-blur-md bg-black/40 hover:bg-black/60 active:scale-95 transition-all ${radius}`}
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#ffffff" }}
-              >
-                <span>{section.secondaryCtaText}</span>
-              </a>
-            )}
-          </div>
-
-          {section.items && section.items.length > 0 && (
-            <div
-              className={`grid grid-cols-2 md:grid-cols-3 gap-6 p-5 sm:p-7 border backdrop-blur-xl bg-black/50 max-w-3xl w-full shadow-2xl ${radius}`}
-              style={{ borderColor: "rgba(255,255,255,0.15)" }}
-            >
-              {section.items.map((stat, idx) => (
-                <div key={idx} className="flex flex-col items-center">
-                  <span className="text-2xl sm:text-3xl font-extrabold" style={{ color: colors.primary }}>
-                    {stat.title}
-                  </span>
-                  <span className="text-xs sm:text-sm text-zinc-300 font-medium mt-1 text-center">
-                    {stat.description}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-    );
-  }
-
-  // 4. MODERN & GLASSMORPHISM & SAAS & STARTUP: High-Conversion Split Hero with Interactive App Mockup & Floating Glass Badges
-  return (
-    <section className="relative px-4 sm:px-6 lg:px-8 py-16 sm:py-24 md:py-32 overflow-hidden">
-      {/* Glow Backdrop */}
-      <div
-        className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] rounded-full blur-[140px] opacity-25 pointer-events-none"
-        style={{ backgroundColor: colors.primary }}
-      />
-
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center relative z-10">
-        <div className="lg:col-span-6 flex flex-col items-start text-left">
-          {section.badge && (
-            <div
-              className={`inline-flex items-center space-x-2 px-3.5 py-1.5 mb-6 text-xs font-semibold uppercase tracking-wider border shadow-sm ${radius}`}
-              style={{
-                borderColor: colors.border,
-                color: colors.primary,
-                backgroundColor: `${colors.surface}90`,
-              }}
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: colors.primary }} />
-                <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: colors.primary }} />
-              </span>
-              <span>{section.badge}</span>
-            </div>
-          )}
-
-          <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-5 leading-[1.12] break-words">
-            {section.title || `Scale Seamlessly With ${businessName}`}
-          </h1>
-
-          <p className="text-base sm:text-lg mb-8 leading-relaxed break-words" style={{ color: colors.muted }}>
-            {section.subtitle || "The modern operational platform built for high-growth teams. Accelerate performance and simplify execution."}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center gap-3.5 mb-8 w-full sm:w-auto">
-            {section.ctaText && (
-              <a
-                href={section.ctaLink || "#pricing"}
-                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all ${radius}`}
-                style={{ backgroundColor: colors.primary, color: "#ffffff" }}
-              >
-                <span>{section.ctaText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            )}
-            {section.secondaryCtaText && (
-              <a
-                href={section.secondaryCtaLink || "#features"}
-                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 text-base font-semibold border transition-all hover:bg-white/5 active:scale-95 ${radius}`}
-                style={{ borderColor: colors.border, color: colors.text }}
-              >
-                <span>{section.secondaryCtaText}</span>
-              </a>
-            )}
-          </div>
-
-          {/* Social Proof Trust Stack */}
-          <div className="flex items-center space-x-3 pt-4 border-t w-full" style={{ borderColor: `${colors.border}70` }}>
-            <div className="flex -space-x-2 overflow-hidden">
-              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80" alt="Customer" />
-              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80" alt="Customer" />
-              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&auto=format&fit=crop&q=80" alt="Customer" />
-              <img className="inline-block h-7 w-7 rounded-full ring-2 ring-zinc-950 object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80" alt="Customer" />
-            </div>
-            <span className="text-xs font-medium" style={{ color: colors.muted }}>
-              Trusted by <strong className="text-white">12,000+</strong> leaders worldwide
-            </span>
-          </div>
-        </div>
-
-        {/* Right column: Interactive Application Window Mockup with Floating Glass Cards */}
-        <div className="lg:col-span-6 relative">
           <div
-            className={`p-2.5 sm:p-3 border shadow-2xl relative overflow-hidden group ${radius}`}
-            style={{ borderColor: colors.border, backgroundColor: colors.surface }}
+            className={`w-full max-w-3xl border p-4 text-left shadow-2xl relative backdrop-blur-xl ${radius}`}
+            style={{
+              borderColor: colors.border,
+              backgroundColor: `${colors.surface}dd`,
+            }}
           >
-            {/* macOS window top bar */}
-            <div className="flex items-center space-x-2 px-3 py-2 border-b mb-2" style={{ borderColor: `${colors.border}80` }}>
-              <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-              <div className="ml-4 flex-1 bg-black/40 rounded px-2.5 py-0.5 text-[10px] font-mono truncate" style={{ color: colors.muted }}>
-                https://{businessName ? businessName.toLowerCase().replace(/[^a-z0-9]/g, "") : "preview"}.app
+            <div className="flex items-center justify-between pb-3 mb-3 border-b" style={{ borderColor: colors.border }}>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
               </div>
+              <span className="text-xs font-mono" style={{ color: colors.muted }}>
+                engine.run(&apos;prompt&apos;)
+              </span>
             </div>
+            <p className="font-mono text-sm leading-relaxed" style={{ color: colors.primary }}>
+              &gt; sitecraft generate --model transformer-3.0 --industry {websiteType || "Tech"}
+            </p>
+            <p className="font-mono text-xs mt-1" style={{ color: colors.muted }}>
+              ✓ Generated 9 high-converting sections in 1.4s with 99.8% design match
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-zinc-950">
+  // Variant D: Full Width Banner (Restaurant, Gym, Ecommerce, Agency)
+  if (variant === "Full Width" || (!variant && (websiteType === "Restaurant" || websiteType === "Gym" || websiteType === "Ecommerce" || websiteType === "Agency"))) {
+    return (
+      <section className={`relative min-h-[500px] flex items-center justify-center px-4 sm:px-6 lg:px-8 ${paddingClass} overflow-hidden`} style={bgStyle}>
+        {section.imageUrl && (
+          <div className="absolute inset-0 z-0">
+            <SafeImage
+              src={section.imageUrl}
+              alt={section.imageAlt || "Hero Background"}
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0 backdrop-blur-[2px]"
+              style={{
+                background: `linear-gradient(to top, ${colors.bg} 15%, ${colors.bg}dd 60%, ${colors.bg}aa 100%)`,
+              }}
+            />
+          </div>
+        )}
+
+        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center">
+          {section.badge && (
+            <span
+              className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6 border shadow-lg"
+              style={{
+                borderColor: `${colors.primary}60`,
+                backgroundColor: `${colors.bg}cc`,
+                color: colors.primary,
+              }}
+            >
+              {section.badge}
+            </span>
+          )}
+
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6 break-words max-w-3xl leading-[1.1]">
+            {section.title || `Experience ${businessName}`}
+          </h1>
+
+          <p className="text-base sm:text-lg md:text-xl max-w-2xl mb-8 break-words text-zinc-300">
+            {section.subtitle || "Crafted to deliver extraordinary satisfaction with every interaction."}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <a
+              href={section.ctaLink || "#pricing"}
+              className={`w-full sm:w-auto px-8 py-3.5 text-base font-bold shadow-2xl active:scale-95 transition-all text-center ${radius}`}
+              style={{
+                backgroundColor: colors.button,
+                color: "#ffffff",
+              }}
+            >
+              {section.ctaText || "Book / Reserve Now"}
+            </a>
+            {section.secondaryCtaText && (
+              <a
+                href={section.secondaryCtaLink || "#features"}
+                className={`w-full sm:w-auto px-7 py-3.5 text-base font-semibold border hover:bg-white/10 active:scale-95 transition-all text-center backdrop-blur-sm ${radius}`}
+                style={{
+                  borderColor: "rgba(255,255,255,0.25)",
+                  color: "#ffffff",
+                }}
+              >
+                {section.secondaryCtaText}
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Variant E: Image Left or Image Right
+  if (variant === "Image Left" || variant === "Image Right") {
+    const isImageLeft = variant === "Image Left";
+    return (
+      <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} overflow-hidden`} style={bgStyle}>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className={`lg:col-span-6 ${isImageLeft ? "order-2 lg:order-2" : "order-2 lg:order-1"}`}>
+            {section.badge && (
+              <span
+                className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border"
+                style={{
+                  borderColor: colors.border,
+                  backgroundColor: `${colors.surface}80`,
+                  color: colors.primary,
+                }}
+              >
+                {section.badge}
+              </span>
+            )}
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-6 leading-tight break-words">
+              {section.title || `Empower Your Workflow with ${businessName}`}
+            </h1>
+            <p className="text-base sm:text-lg mb-8 leading-relaxed break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "The modern software solution crafted to simplify complexity."}
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href={section.ctaLink || "#pricing"}
+                className={`px-8 py-3.5 text-sm font-bold shadow-xl active:scale-95 transition-all ${radius}`}
+                style={{ backgroundColor: colors.button, color: "#ffffff" }}
+              >
+                {section.ctaText || "Get Started"}
+              </a>
+              {section.secondaryCtaText && (
+                <a
+                  href={section.secondaryCtaLink || "#features"}
+                  className={`px-6 py-3.5 text-sm font-semibold border hover:bg-white/5 transition-all ${radius}`}
+                  style={{ borderColor: colors.border, color: colors.text }}
+                >
+                  {section.secondaryCtaText}
+                </a>
+              )}
+            </div>
+          </div>
+          <div className={`lg:col-span-6 ${isImageLeft ? "order-1 lg:order-1" : "order-1 lg:order-2"}`}>
+            <div className={`border p-2 shadow-2xl overflow-hidden ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
               <SafeImage
-                src={section.imageUrl || "https://images.unsplash.com/photo-1551434678-e076c223a692?w=900&auto=format&fit=crop&q=80"}
-                alt={section.imageAlt || "Platform Dashboard Preview"}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                src={section.imageUrl || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=80"}
+                alt={section.imageAlt || "Hero Display"}
+                className={`w-full h-80 sm:h-96 object-cover ${radius}`}
               />
             </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-            {/* Floating Glass Micro-Badge 1 */}
-            <div className="absolute top-12 right-6 bg-black/75 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg shadow-xl hidden sm:flex items-center space-x-2">
-              <span className="text-emerald-400 font-mono font-bold text-xs">▲ 99.99%</span>
-              <span className="text-zinc-300 text-[11px] font-medium">Uptime SLA</span>
+  // Variant F: Split SaaS / Startup (Default fallback)
+  return (
+    <section className={`relative px-4 sm:px-6 lg:px-8 ${paddingClass} overflow-hidden`} style={bgStyle}>
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="lg:col-span-7 flex flex-col items-start text-left">
+          {section.badge && (
+            <div
+              className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border shadow-sm"
+              style={{
+                borderColor: `${colors.primary}50`,
+                backgroundColor: `${colors.primary}15`,
+                color: colors.primary,
+              }}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{section.badge}</span>
             </div>
+          )}
 
-            {/* Floating Glass Micro-Badge 2 */}
-            <div className="absolute bottom-6 left-6 bg-black/75 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg shadow-xl hidden sm:flex items-center space-x-2">
-              <span className="text-indigo-400 font-mono font-bold text-xs">⚡ 10x</span>
-              <span className="text-zinc-300 text-[11px] font-medium">Faster Output</span>
-            </div>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-6 break-words leading-[1.15]">
+            {section.title || `Scale Higher with ${businessName}`}
+          </h1>
+
+          <p className="text-base sm:text-lg mb-8 leading-relaxed max-w-xl break-words" style={{ color: colors.muted }}>
+            {section.subtitle || "Build and launch stunning web experiences in seconds with enterprise resilience."}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-10 w-full sm:w-auto">
+            <a
+              href={section.ctaLink || "#pricing"}
+              className={`w-full sm:w-auto px-8 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all text-center flex items-center justify-center space-x-2 ${radius}`}
+              style={{
+                backgroundColor: colors.button,
+                color: "#ffffff",
+              }}
+            >
+              <span>{section.ctaText || "Start 14-Day Free Trial"}</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            {section.secondaryCtaText && (
+              <a
+                href={section.secondaryCtaLink || "#features"}
+                className={`w-full sm:w-auto px-7 py-3.5 text-base font-semibold border hover:bg-white/5 active:scale-95 transition-all text-center ${radius}`}
+                style={{
+                  borderColor: colors.border,
+                  color: colors.text,
+                }}
+              >
+                {section.secondaryCtaText}
+              </a>
+            )}
+          </div>
+        </div>
+
+        <div className="lg:col-span-5 relative">
+          <div
+            className={`relative border p-3 shadow-2xl overflow-hidden ${radius}`}
+            style={{
+              borderColor: colors.border,
+              backgroundColor: colors.surface,
+            }}
+          >
+            <SafeImage
+              src={section.imageUrl || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&auto=format&fit=crop&q=80"}
+              alt={section.imageAlt || "SaaS App Dashboard"}
+              className={`w-full h-80 sm:h-96 object-cover ${radius}`}
+            />
           </div>
         </div>
       </div>
@@ -744,122 +1061,82 @@ function renderHero(
   );
 }
 
-function renderFeatures(
-  section: SectionContent,
-  colors: any,
-  radius: string,
-  style: WebsiteStyle,
-  websiteType?: string
-) {
-  const items = section.items || [];
+/* 2. FEATURES COMPONENT (Polymorphic Layouts) */
+function renderFeatures(section: SectionContent, colors: any, radius: string, style: WebsiteStyle, websiteType?: string) {
+  const variant = section.variant || section.layout;
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const items = section.items && section.items.length > 0 ? section.items : [
+    { title: "Intelligent Synthesis", description: "Harness modern AI to generate tailored copy, layout, and visual hierarchy." },
+    { title: "Real-time Visual Customizer", description: "Fine-tune every headline, button, and layout variant in seconds." },
+    { title: "Instant Edge Deployment", description: "Publish instantly with ultra-fast latency and custom domain routing." },
+  ];
 
-  // BENTO GRID LAYOUT for Modern, Glassmorphism, SaaS, and AI Tool
-  if (style === "Modern" || style === "Glassmorphism" || websiteType === "SaaS" || websiteType === "AI Tool") {
+  // Variant A: Bento Grid
+  if (variant === "Bento" || (!variant && (style === "Modern" || style === "Glassmorphism" || websiteType === "SaaS"))) {
+    const flagship = items[0];
+    const subItems = items.slice(1);
     return (
-      <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+      <section id="features" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
         <div className="max-w-6xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             {section.badge && (
               <span
                 className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-                style={{
-                  borderColor: colors.border,
-                  color: colors.primary,
-                  backgroundColor: `${colors.surface}60`,
-                }}
+                style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
               >
                 {section.badge}
               </span>
             )}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4 break-words">
-              {section.title || "Engineered for Unmatched Precision"}
-            </h2>
-            <p className="text-base md:text-lg break-words" style={{ color: colors.muted }}>
-              {section.subtitle || "Every capability built to give you a definitive competitive advantage."}
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 break-words">{section.title || "Engineered for Excellence"}</h2>
+            <p className="text-base sm:text-lg break-words" style={{ color: colors.muted }}>
+              {section.subtitle || "Discover the breakthrough capabilities that empower fast-growing organizations."}
             </p>
           </div>
 
-          {/* Bento Grid: 1st card is large 2-span */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((feat, idx) => {
-              const isFirst = idx === 0;
-              return (
-                <div
-                  key={feat.id || idx}
-                  className={`p-6 sm:p-8 border transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl h-full flex flex-col justify-between break-words ${
-                    isFirst ? "md:col-span-2 lg:col-span-2" : ""
-                  } ${radius}`}
-                  style={{
-                    borderColor: colors.border,
-                    backgroundColor: colors.surface,
-                  }}
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-5">
-                      <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md shrink-0"
-                        style={{ backgroundColor: colors.primary }}
-                      >
-                        {ICON_MAP[feat.icon || "Sparkles"] || <Sparkles className="w-5 h-5" />}
-                      </div>
-                      {isFirst && (
-                        <span
-                          className="text-[11px] font-mono uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border"
-                          style={{ borderColor: colors.primary, color: colors.primary }}
-                        >
-                          Featured Flagship
-                        </span>
-                      )}
-                    </div>
-                    <h3 className={`font-bold mb-2.5 break-words ${isFirst ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`}>
-                      {feat.title}
-                    </h3>
-                    <p className={`leading-relaxed break-words ${isFirst ? "text-sm sm:text-base max-w-xl" : "text-sm"}`} style={{ color: colors.muted }}>
-                      {feat.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // NUMBERED EDITORIAL LIST for Minimal & Luxury & Portfolio
-  if (style === "Minimal" || style === "Luxury" || websiteType === "Portfolio") {
-    return (
-      <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-14 max-w-2xl">
-            {section.badge && (
-              <span className="text-xs font-semibold tracking-widest uppercase mb-3 block" style={{ color: colors.primary }}>
-                — {section.badge}
-              </span>
-            )}
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 break-words">
-              {section.title || "Disciplines & Core Focus"}
-            </h2>
-            <p className="text-base break-words" style={{ color: colors.muted }}>
-              {section.subtitle || "A rigorous approach to design, engineering, and digital systems."}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {items.map((feat, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {flagship && (
               <div
-                key={feat.id || idx}
-                className="border-t pt-6 flex flex-col justify-between"
-                style={{ borderColor: colors.border }}
+                className={`md:col-span-2 p-8 sm:p-10 border flex flex-col justify-between shadow-xl ${radius}`}
+                style={{ borderColor: colors.border, backgroundColor: colors.surface }}
               >
                 <div>
-                  <span className="font-mono text-xs font-bold mb-3 block" style={{ color: colors.primary }}>
-                    0{idx + 1}
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white mb-6 shadow-md"
+                    style={{ backgroundColor: colors.primary }}
+                  >
+                    {ICON_MAP[flagship.icon || ""] || <Sparkles className="w-6 h-6" />}
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold mb-3 break-words">{flagship.title}</h3>
+                  <p className="text-base leading-relaxed break-words" style={{ color: colors.muted }}>
+                    {flagship.description}
+                  </p>
+                </div>
+                <div className="mt-8 pt-6 border-t flex items-center justify-between" style={{ borderColor: colors.border }}>
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: colors.primary }}>
+                    Flagship Capability
                   </span>
-                  <h3 className="text-lg font-bold mb-2 break-words">{feat.title}</h3>
+                  <ArrowRight className="w-4 h-4 text-indigo-400" />
+                </div>
+              </div>
+            )}
+
+            {subItems.map((item, idx) => (
+              <div
+                key={idx}
+                className={`p-6 sm:p-8 border flex flex-col justify-between shadow-lg ${radius}`}
+                style={{ borderColor: colors.border, backgroundColor: colors.surface }}
+              >
+                <div>
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white mb-5 shadow-sm"
+                    style={{ backgroundColor: colors.primary }}
+                  >
+                    {ICON_MAP[item.icon || ""] || <Zap className="w-5 h-5" />}
+                  </div>
+                  <h4 className="text-lg font-bold mb-2 break-words">{item.title}</h4>
                   <p className="text-sm leading-relaxed break-words" style={{ color: colors.muted }}>
-                    {feat.description}
+                    {item.description}
                   </p>
                 </div>
               </div>
@@ -870,56 +1147,81 @@ function renderFeatures(
     );
   }
 
-  // STANDARD ICON GRID for other styles
-  const gridCols =
-    items.length === 2 || items.length === 4
-      ? "grid-cols-1 md:grid-cols-2"
-      : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+  // Variant B: Numbered Editorial List (Minimal, Luxury, Portfolio)
+  if (variant === "Vertical" || variant === "Numbered" || (!variant && (style === "Minimal" || style === "Luxury" || websiteType === "Portfolio"))) {
+    return (
+      <section id="features" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-left mb-16 pb-6 border-b" style={{ borderColor: colors.border }}>
+            {section.badge && (
+              <span className="text-xs font-bold uppercase tracking-widest mb-3 block" style={{ color: colors.primary }}>
+                {section.badge}
+              </span>
+            )}
+            <h2 className="text-3xl sm:text-4xl font-light tracking-tight mb-2 break-words">{section.title || "Selected Disciplines"}</h2>
+            <p className="text-base break-words" style={{ color: colors.muted }}>{section.subtitle}</p>
+          </div>
 
+          <div className="space-y-6">
+            {items.map((item, idx) => (
+              <div
+                key={idx}
+                className={`p-6 sm:p-8 border flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 transition-all hover:bg-white/5 ${radius}`}
+                style={{ borderColor: colors.border, backgroundColor: `${colors.surface}40` }}
+              >
+                <div className="flex items-baseline space-x-4">
+                  <span className="text-2xl sm:text-3xl font-mono font-bold" style={{ color: colors.primary }}>
+                    0{idx + 1}
+                  </span>
+                  <h3 className="text-xl font-bold tracking-tight break-words">{item.title}</h3>
+                </div>
+                <p className="text-sm sm:text-base max-w-md break-words" style={{ color: colors.muted }}>
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Variant C: Standard Grid Cards (Default)
   return (
-    <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+    <section id="features" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
       <div className="max-w-6xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           {section.badge && (
             <span
               className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-              style={{
-                borderColor: colors.border,
-                color: colors.primary,
-                backgroundColor: `${colors.surface}60`,
-              }}
+              style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
             >
               {section.badge}
             </span>
           )}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4 break-words">
-            {section.title || "Powerful Capabilities Built for Scale"}
-          </h2>
-          <p className="text-base md:text-lg break-words" style={{ color: colors.muted }}>
-            {section.subtitle || "Designed to provide unparalleled speed, flexibility, and performance."}
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 break-words">{section.title || "Core Capabilities"}</h2>
+          <p className="text-base sm:text-lg break-words" style={{ color: colors.muted }}>
+            {section.subtitle || "Everything you need to deliver world-class digital results."}
           </p>
         </div>
 
-        <div className={`grid ${gridCols} gap-6`}>
-          {items.map((feat, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {items.map((item, idx) => (
             <div
-              key={feat.id || idx}
-              className={`p-6 sm:p-7 border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col justify-between break-words ${radius}`}
-              style={{
-                borderColor: colors.border,
-                backgroundColor: colors.surface,
-              }}
+              key={idx}
+              className={`p-7 border flex flex-col justify-between shadow-lg transition-all hover:translate-y-[-2px] ${radius}`}
+              style={{ borderColor: colors.border, backgroundColor: colors.surface }}
             >
               <div>
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 text-white shadow-md shrink-0"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white mb-5 shadow-sm"
                   style={{ backgroundColor: colors.primary }}
                 >
-                  {ICON_MAP[feat.icon || "Sparkles"] || <Sparkles className="w-5 h-5" />}
+                  {ICON_MAP[item.icon || ""] || <Sparkles className="w-5 h-5" />}
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2.5 break-words">{feat.title}</h3>
+                <h3 className="text-lg font-bold mb-2.5 break-words">{item.title}</h3>
                 <p className="text-sm leading-relaxed break-words" style={{ color: colors.muted }}>
-                  {feat.description}
+                  {item.description}
                 </p>
               </div>
             </div>
@@ -930,138 +1232,101 @@ function renderFeatures(
   );
 }
 
-function renderAbout(section: SectionContent, colors: any, radius: string) {
-  return (
-    <section id="about" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
-        <div>
-          {section.badge && (
-            <span
-              className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-              style={{
-                borderColor: colors.border,
-                color: colors.primary,
-                backgroundColor: `${colors.surface}60`,
-              }}
-            >
-              {section.badge}
-            </span>
-          )}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-5 break-words">
-            {section.title || "Our Mission & Vision"}
-          </h2>
-          <p className="text-base md:text-lg leading-relaxed mb-8 break-words" style={{ color: colors.muted }}>
-            {section.description || "We are dedicated to building modern tools that transform creative work."}
-          </p>
-
-          {section.items && section.items.length > 0 && (
-            <div className="space-y-4">
-              {section.items.map((item, idx) => (
-                <div key={idx} className="flex items-start space-x-3.5">
-                  <div
-                    className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-white"
-                    style={{ backgroundColor: colors.primary }}
-                  >
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <div className="break-words">
-                    <h4 className="font-semibold text-sm sm:text-base">{item.title}</h4>
-                    <p className="text-xs sm:text-sm mt-0.5" style={{ color: colors.muted }}>
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {section.imageUrl && (
-          <div className="relative w-full">
-            <div
-              className={`overflow-hidden border shadow-2xl aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] w-full bg-zinc-950 ${radius}`}
-              style={{ borderColor: colors.border, backgroundColor: colors.surface }}
-            >
-              <SafeImage
-                src={section.imageUrl}
-                alt={section.imageAlt || "About visual"}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
+/* 3. TESTIMONIALS COMPONENT (Polymorphic Layouts) */
 function renderTestimonials(section: SectionContent, colors: any, radius: string) {
+  const variant = section.variant || section.layout;
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const items = section.items && section.items.length > 0 ? section.items : [
+    {
+      title: "Game Changer",
+      description: "SiteCraft AI cut our web development cycle by 80%. The visual customization is extraordinarily intuitive.",
+      author: "Sarah Lin",
+      role: "VP of Growth, HyperScale",
+      rating: 5,
+    },
+    {
+      title: "Incredible Speed",
+      description: "Our marketing team can spin up landing pages in minutes instead of waiting two weeks for engineering.",
+      author: "David Chen",
+      role: "Co-Founder, StackWave",
+      rating: 5,
+    },
+    {
+      title: "Unmatched Polish",
+      description: "The layout variants look like they were built by a bespoke design agency. Outstanding product.",
+      author: "Elena Rostova",
+      role: "Head of Product, Apex Studio",
+      rating: 5,
+    },
+  ];
+
+  // Variant A: Featured Single Giant Quote
+  if (variant === "Featured" || variant === "Quote") {
+    const featured = items[0];
+    return (
+      <section id="testimonials" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <Quote className="w-12 h-12 mx-auto mb-6 opacity-30" style={{ color: colors.primary }} />
+          <p className="text-xl sm:text-3xl font-medium tracking-tight leading-relaxed mb-8 break-words">
+            &ldquo;{featured.description}&rdquo;
+          </p>
+          <div className="flex flex-col items-center">
+            <span className="font-bold text-base">{featured.author}</span>
+            <span className="text-sm" style={{ color: colors.muted }}>{featured.role}</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Variant B: Cards Grid (Default)
   return (
-    <section className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+    <section id="testimonials" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
       <div className="max-w-6xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-16">
           {section.badge && (
             <span
               className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-              style={{
-                borderColor: colors.border,
-                color: colors.primary,
-                backgroundColor: `${colors.surface}60`,
-              }}
+              style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
             >
               {section.badge}
             </span>
           )}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4 break-words">
-            {section.title || "Loved by Forward-Thinking Teams"}
-          </h2>
-          <p className="text-base md:text-lg break-words" style={{ color: colors.muted }}>
-            {section.subtitle || "See what our customers have to say about their experience."}
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 break-words">{section.title || "Loved by Industry Leaders"}</h2>
+          <p className="text-base break-words" style={{ color: colors.muted }}>
+            {section.subtitle || "See what our partners and customers have to say."}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(section.items || []).map((test, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {items.map((item, idx) => (
             <div
-              key={test.id || idx}
-              className={`p-6 sm:p-7 border flex flex-col justify-between h-full transition-all duration-300 hover:-translate-y-1 break-words ${radius}`}
-              style={{
-                borderColor: colors.border,
-                backgroundColor: colors.surface,
-              }}
+              key={idx}
+              className={`p-7 border flex flex-col justify-between shadow-xl ${radius}`}
+              style={{ borderColor: colors.border, backgroundColor: colors.surface }}
             >
               <div>
                 <div className="flex items-center space-x-1 mb-4 text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  {Array.from({ length: item.rating || 5 }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <p className="text-sm md:text-base leading-relaxed mb-6 italic break-words" style={{ color: colors.text }}>
-                  "{test.description}"
+                <p className="text-sm sm:text-base leading-relaxed mb-6 italic break-words" style={{ color: colors.text }}>
+                  &ldquo;{item.description}&rdquo;
                 </p>
               </div>
 
-              <div className="flex items-center space-x-3.5 pt-4 border-t" style={{ borderColor: colors.border }}>
-                {test.avatar ? (
-                  <SafeImage
-                    src={test.avatar}
-                    alt={test.author || "User"}
-                    className="w-10 h-10 rounded-full object-cover border shrink-0"
-                    fallback={`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(test.author || "user")}`}
-                  />
-                ) : (
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-white shrink-0 shadow-sm"
-                    style={{ backgroundColor: colors.primary }}
-                  >
-                    {(test.author || "U").charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div className="break-words">
-                  <h4 className="font-bold text-sm">{test.author}</h4>
-                  <p className="text-xs" style={{ color: colors.muted }}>
-                    {test.role}
-                  </p>
+              <div className="flex items-center space-x-3 pt-4 border-t" style={{ borderColor: colors.border }}>
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-xs shrink-0"
+                  style={{ backgroundColor: colors.primary }}
+                >
+                  {(item.author || "U").charAt(0)}
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm break-words">{item.author}</h4>
+                  <p className="text-xs break-words" style={{ color: colors.muted }}>{item.role}</p>
                 </div>
               </div>
             </div>
@@ -1072,163 +1337,187 @@ function renderTestimonials(section: SectionContent, colors: any, radius: string
   );
 }
 
+/* 4. PRICING COMPONENT (Polymorphic Layouts) */
 function renderPricing(section: SectionContent, colors: any, radius: string) {
-  const plans = section.items || [];
-  const gridClass =
-    plans.length === 2
-      ? "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto"
-      : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+  const variant = section.variant || section.layout;
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const items = section.items && section.items.length > 0 ? section.items : [
+    {
+      title: "Starter",
+      price: "$29",
+      period: "/month",
+      description: "Perfect for solo entrepreneurs and test projects.",
+      popular: false,
+      features: ["Up to 3 active websites", "1,000 AI generations", "Custom domain support", "Standard CDN delivery"],
+    },
+    {
+      title: "Pro Scale",
+      price: "$79",
+      period: "/month",
+      description: "Our most popular plan for scaling organizations.",
+      popular: true,
+      features: ["Unlimited websites", "15,000 AI generations", "Custom CSS & layout variants", "Real-time analytics", "Priority 24/7 support"],
+    },
+    {
+      title: "Enterprise",
+      price: "$199",
+      period: "/month",
+      description: "Full compliance, dedicated infrastructure and SLA.",
+      popular: false,
+      features: ["Unlimited AI credits", "Dedicated account engineer", "Custom SSO & audit logs", "99.99% uptime guarantee"],
+    },
+  ];
+
+  const colGrid =
+    variant === "2 Columns"
+      ? "grid-cols-1 md:grid-cols-2 max-w-4xl"
+      : variant === "4 Columns"
+      ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl"
+      : "grid-cols-1 md:grid-cols-3 max-w-5xl";
 
   return (
-    <section id="pricing" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+    <section id="pricing" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
       <div className="max-w-6xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-16">
           {section.badge && (
             <span
               className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-              style={{
-                borderColor: colors.border,
-                color: colors.primary,
-                backgroundColor: `${colors.surface}60`,
-              }}
+              style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
             >
               {section.badge}
             </span>
           )}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4 break-words">
-            {section.title || "Transparent, Predictable Plans"}
-          </h2>
-          <p className="text-base md:text-lg break-words" style={{ color: colors.muted }}>
-            {section.subtitle || "No hidden fees. Start free and scale as you grow."}
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 break-words">{section.title || "Transparent, Predictable Pricing"}</h2>
+          <p className="text-base break-words" style={{ color: colors.muted }}>
+            {section.subtitle || "No hidden fees. Upgrade or cancel anytime with our 14-day guarantee."}
           </p>
         </div>
 
-        <div className={`grid ${gridClass} gap-8 items-stretch`}>
-          {plans.map((plan, idx) => (
-            <div
-              key={plan.id || idx}
-              className={`relative p-6 sm:p-8 border flex flex-col justify-between h-full transition-all duration-300 break-words ${
-                plan.popular ? "ring-2 shadow-2xl scale-[1.02] z-10" : "hover:-translate-y-1"
-              } ${radius}`}
-              style={{
-                borderColor: plan.popular ? colors.primary : colors.border,
-                backgroundColor: colors.surface,
-              }}
-            >
-              {plan.popular && (
-                <div
-                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md"
-                  style={{ backgroundColor: colors.primary }}
-                >
-                  Most Popular
-                </div>
-              )}
-
-              <div>
-                <h3 className="text-xl font-bold mb-2 break-words">{plan.title}</h3>
-                <p className="text-xs mb-6 break-words" style={{ color: colors.muted }}>
-                  {plan.description}
-                </p>
-
-                <div className="flex items-baseline mb-6 break-words">
-                  <span className="text-3xl sm:text-4xl font-black">{plan.price}</span>
-                  <span className="text-sm ml-1" style={{ color: colors.muted }}>
-                    {plan.period || "/month"}
-                  </span>
-                </div>
-
-                <div className="flex-1 space-y-3 mb-8">
-                  {(plan.features || []).map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-start space-x-2.5 text-sm">
-                      <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: colors.primary }} />
-                      <span className="break-words">{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <a
-                href={plan.link || "#"}
-                className={`w-full py-3 px-4 text-center font-bold text-sm transition-all shadow-md active:scale-95 ${radius}`}
+        <div className={`grid ${colGrid} mx-auto gap-8 items-stretch`}>
+          {items.map((plan, idx) => {
+            const isPopular = plan.popular || idx === 1;
+            return (
+              <div
+                key={idx}
+                className={`p-8 border flex flex-col justify-between relative shadow-xl transition-all ${radius} ${
+                  isPopular ? "ring-2 ring-indigo-500 scale-[1.03] z-10" : ""
+                }`}
                 style={{
-                  backgroundColor: plan.popular ? colors.primary : "transparent",
-                  border: plan.popular ? "none" : `1px solid ${colors.border}`,
-                  color: plan.popular ? "#ffffff" : colors.text,
+                  borderColor: isPopular ? colors.primary : colors.border,
+                  backgroundColor: colors.surface,
                 }}
               >
-                {plan.buttonText || "Choose Plan"}
-              </a>
-            </div>
-          ))}
+                {isPopular && (
+                  <div
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-md"
+                    style={{ backgroundColor: colors.primary }}
+                  >
+                    Most Popular
+                  </div>
+                )}
+
+                <div>
+                  <h3 className="text-xl font-bold mb-2 break-words">{plan.title}</h3>
+                  <p className="text-xs mb-6 break-words" style={{ color: colors.muted }}>{plan.description}</p>
+                  <div className="flex items-baseline mb-6">
+                    <span className="text-4xl font-extrabold tracking-tight">{plan.price}</span>
+                    <span className="text-sm ml-1.5" style={{ color: colors.muted }}>{plan.period || "/month"}</span>
+                  </div>
+
+                  <ul className="space-y-3 mb-8">
+                    {(plan.features || []).map((feat, fIdx) => (
+                      <li key={fIdx} className="flex items-start text-xs sm:text-sm">
+                        <Check className="w-4 h-4 mr-2.5 shrink-0 mt-0.5" style={{ color: colors.primary }} />
+                        <span className="break-words">{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <a
+                  href={plan.link || "#checkout"}
+                  className={`w-full py-3 px-4 text-center font-bold text-sm transition-all shadow-md active:scale-95 ${radius}`}
+                  style={{
+                    backgroundColor: isPopular ? colors.button : "transparent",
+                    color: isPopular ? "#ffffff" : colors.text,
+                    border: isPopular ? "none" : `1px solid ${colors.border}`,
+                  }}
+                >
+                  {plan.buttonText || "Choose Plan"}
+                </a>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
+/* 5. FAQ COMPONENT */
 function renderFAQ(
   section: SectionContent,
   colors: any,
   radius: string,
   faqOpen: Record<string, boolean>,
-  toggleFaq: (idx: string) => void
+  toggleFaq: (id: string) => void
 ) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const items = section.items && section.items.length > 0 ? section.items : [
+    {
+      question: "Can I connect my own custom domain?",
+      answer: "Yes! All paid and trial tiers include one-click custom domain configuration with automatic free SSL certificate provisioning.",
+    },
+    {
+      question: "Can I export or host the websites myself?",
+      answer: "Absolutely. You can publish directly to our ultra-fast global edge network or export structured JSON configuration at any time.",
+    },
+    {
+      question: "Is there a long-term contract or cancellation fee?",
+      answer: "None at all. You can cancel your subscription at any time directly from your billing portal with zero penalties.",
+    },
+  ];
+
   return (
-    <section id="faq" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+    <section id="faq" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-14 md:mb-16">
+        <div className="text-center mb-14">
           {section.badge && (
             <span
               className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-              style={{
-                borderColor: colors.border,
-                color: colors.primary,
-                backgroundColor: `${colors.surface}60`,
-              }}
+              style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
             >
               {section.badge}
             </span>
           )}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4 break-words">
-            {section.title || "Frequently Asked Questions"}
-          </h2>
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 break-words">{section.title || "Frequently Asked Questions"}</h2>
           <p className="text-base break-words" style={{ color: colors.muted }}>
-            {section.subtitle || "Have questions? We have answers."}
+            {section.subtitle || "Have questions? Everything you need to know about our platform."}
           </p>
         </div>
 
         <div className="space-y-4">
-          {(section.items || []).map((faq, idx) => {
-            const isOpen = Boolean(faqOpen[idx.toString()]);
+          {items.map((item, idx) => {
+            const isOpen = !!faqOpen[String(idx)];
             return (
               <div
-                key={faq.id || idx}
-                className={`border overflow-hidden transition-colors ${radius}`}
-                style={{
-                  borderColor: colors.border,
-                  backgroundColor: colors.surface,
-                }}
+                key={idx}
+                className={`border overflow-hidden transition-all ${radius}`}
+                style={{ borderColor: colors.border, backgroundColor: colors.surface }}
               >
                 <button
                   type="button"
-                  onClick={() => toggleFaq(idx.toString())}
-                  aria-expanded={isOpen}
-                  className="w-full p-4 sm:p-5 text-left font-semibold flex items-center justify-between transition-colors hover:bg-white/5 cursor-pointer"
+                  onClick={() => toggleFaq(String(idx))}
+                  className="w-full p-5 text-left flex items-center justify-between font-bold text-base"
                 >
-                  <span className="text-sm sm:text-base pr-4 break-words">{faq.question}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 shrink-0 transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                    style={{ color: colors.primary }}
-                  />
+                  <span className="break-words pr-4">{item.question}</span>
+                  <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
                 </button>
                 {isOpen && (
-                  <div
-                    className="px-4 sm:px-5 pb-4 sm:pb-5 text-sm leading-relaxed border-t pt-4 break-words"
-                    style={{ borderColor: `${colors.border}80`, color: colors.muted }}
-                  >
-                    {faq.answer}
+                  <div className="px-5 pb-5 text-sm leading-relaxed border-t pt-3 break-words" style={{ borderColor: colors.border, color: colors.muted }}>
+                    {item.answer}
                   </div>
                 )}
               </div>
@@ -1240,30 +1529,25 @@ function renderFAQ(
   );
 }
 
+/* 6. CTA COMPONENT */
 function renderCTA(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+
   return (
-    <section className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t relative overflow-hidden" style={{ borderColor: colors.border }}>
+    <section className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t relative overflow-hidden`} style={{ borderColor: colors.border, ...bgStyle }}>
       <div
-        className="absolute inset-0 opacity-10 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 50% 50%, ${colors.primary} 0%, transparent 60%)`,
-        }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full blur-[140px] opacity-20 pointer-events-none"
+        style={{ backgroundColor: colors.primary }}
       />
       <div
         className={`max-w-4xl mx-auto p-8 sm:p-12 md:p-16 text-center border shadow-2xl relative z-10 break-words ${radius}`}
-        style={{
-          borderColor: colors.border,
-          backgroundColor: colors.surface,
-        }}
+        style={{ borderColor: colors.border, backgroundColor: colors.surface }}
       >
         {section.badge && (
           <span
             className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-            style={{
-              borderColor: colors.border,
-              color: colors.primary,
-              backgroundColor: `${colors.bg}80`,
-            }}
+            style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.bg}80` }}
           >
             {section.badge}
           </span>
@@ -1279,10 +1563,7 @@ function renderCTA(section: SectionContent, colors: any, radius: string) {
           <a
             href={section.ctaLink || "#pricing"}
             className={`w-full sm:w-auto px-8 py-3.5 text-base font-bold shadow-xl active:scale-95 transition-all text-center ${radius}`}
-            style={{
-              backgroundColor: colors.primary,
-              color: "#ffffff",
-            }}
+            style={{ backgroundColor: colors.button, color: "#ffffff" }}
           >
             {section.ctaText || "Get Started Now"}
           </a>
@@ -1290,10 +1571,7 @@ function renderCTA(section: SectionContent, colors: any, radius: string) {
             <a
               href={section.secondaryCtaLink || "#contact"}
               className={`w-full sm:w-auto px-8 py-3.5 text-base font-semibold border hover:bg-white/5 active:scale-95 transition-all text-center ${radius}`}
-              style={{
-                borderColor: colors.border,
-                color: colors.text,
-              }}
+              style={{ borderColor: colors.border, color: colors.text }}
             >
               {section.secondaryCtaText}
             </a>
@@ -1304,19 +1582,19 @@ function renderCTA(section: SectionContent, colors: any, radius: string) {
   );
 }
 
+/* 7. CONTACT COMPONENT */
 function renderContact(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+
   return (
-    <section id="contact" className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 border-t" style={{ borderColor: colors.border }}>
+    <section id="contact" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
       <div className="max-w-5xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-14">
           {section.badge && (
             <span
               className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block"
-              style={{
-                borderColor: colors.border,
-                color: colors.primary,
-                backgroundColor: `${colors.surface}60`,
-              }}
+              style={{ borderColor: colors.border, color: colors.primary, backgroundColor: `${colors.surface}60` }}
             >
               {section.badge}
             </span>
@@ -1334,10 +1612,7 @@ function renderContact(section: SectionContent, colors: any, radius: string) {
             <div
               key={idx}
               className={`p-6 border text-center break-words h-full flex flex-col justify-between ${radius}`}
-              style={{
-                borderColor: colors.border,
-                backgroundColor: colors.surface,
-              }}
+              style={{ borderColor: colors.border, backgroundColor: colors.surface }}
             >
               <h4 className="font-bold text-base mb-2 break-words">{item.title}</h4>
               <p className="text-sm break-words" style={{ color: colors.muted }}>
@@ -1351,6 +1626,240 @@ function renderContact(section: SectionContent, colors: any, radius: string) {
   );
 }
 
+/* 8. ABOUT COMPONENT */
+function renderAbout(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+
+  return (
+    <section id="about" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          {section.badge && (
+            <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border mb-4 inline-block" style={{ borderColor: colors.border, color: colors.primary }}>
+              {section.badge}
+            </span>
+          )}
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">{section.title || "About Our Mission"}</h2>
+          <p className="text-base leading-relaxed mb-6" style={{ color: colors.muted }}>
+            {section.subtitle || "We believe great design and lightning-fast execution should be accessible to every creator and business."}
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: colors.muted }}>
+            {section.description || "Founded by veteran software builders and product designers, our platform bridges the gap between raw AI ideas and finished, enterprise-grade websites."}
+          </p>
+        </div>
+        <div>
+          <SafeImage
+            src={section.imageUrl || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&auto=format&fit=crop&q=80"}
+            alt="About showcase"
+            className={`w-full h-80 object-cover shadow-2xl border ${radius}`}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 9. SERVICES COMPONENT */
+function renderServices(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const items = section.items || [
+    { title: "Strategy & Positioning", description: "Market research, user interview synthesis, and competitive moats." },
+    { title: "Experience Architecture", description: "High-converting interaction models and responsive system tokens." },
+    { title: "Edge Performance", description: "Zero-latency worldwide delivery with instant SSL." },
+  ];
+
+  return (
+    <section id="services" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-3">{section.title || "Our Services"}</h2>
+          <p className="text-sm sm:text-base" style={{ color: colors.muted }}>{section.subtitle || "End-to-end capabilities tailored to your growth."}</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {items.map((item, i) => (
+            <div key={i} className={`p-6 border shadow-lg ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white mb-4" style={{ backgroundColor: colors.primary }}>
+                <Check className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: colors.muted }}>{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 10. TEAM COMPONENT */
+function renderTeam(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const items = section.items || [
+    { title: "Elena Rostova", description: "Founder & Chief Executive", role: "CEO", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" },
+    { title: "Marcus Vance", description: "Head of AI & Architecture", role: "CTO", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80" },
+    { title: "Alex Rivera", description: "Design Principal & Creative Lead", role: "Design Lead", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80" },
+  ];
+
+  return (
+    <section id="team" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className="max-w-5xl mx-auto text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4">{section.title || "Meet the Leaders"}</h2>
+        <p className="text-sm sm:text-base max-w-xl mx-auto mb-12" style={{ color: colors.muted }}>{section.subtitle || "The passionate minds driving our technology and vision."}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+          {items.map((m, i) => (
+            <div key={i} className={`p-6 border text-center shadow-lg ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
+              <SafeImage src={m.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"} alt={m.title || "Member"} className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2" />
+              <h3 className="font-bold text-base">{m.title}</h3>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: colors.primary }}>{m.role || m.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 11. STATS COMPONENT */
+function renderStats(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const items = section.items || [
+    { title: "99.99%", description: "Guaranteed Edge Uptime" },
+    { title: "< 20ms", description: "Global Latency" },
+    { title: "45,000+", description: "Websites Deployed" },
+    { title: "4.9 / 5", description: "Verified User Satisfaction" },
+  ];
+
+  return (
+    <section className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {items.map((stat, i) => (
+            <div key={i} className={`p-6 border ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
+              <span className="text-3xl sm:text-4xl font-black block mb-2" style={{ color: colors.primary }}>{stat.title}</span>
+              <span className="text-xs sm:text-sm font-medium" style={{ color: colors.muted }}>{stat.description}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 12. LOGO CLOUD COMPONENT */
+function renderLogoCloud(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const brands = ["HyperScale", "Stripe", "Vercel", "OpenAI", "Supabase", "Retool"];
+
+  return (
+    <section className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t text-center`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className="max-w-5xl mx-auto">
+        <p className="text-xs font-bold uppercase tracking-widest mb-8" style={{ color: colors.muted }}>
+          {section.title || "Trusted by forward-thinking teams worldwide"}
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 opacity-75">
+          {brands.map((b, i) => (
+            <span key={i} className="text-lg sm:text-xl font-bold font-mono tracking-tight" style={{ color: colors.muted }}>
+              {b}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 13. PROCESS COMPONENT */
+function renderProcess(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+  const steps = section.items || [
+    { title: "1. Define Business Intent", description: "Provide basic parameters, style preferences, and key conversion metrics." },
+    { title: "2. Generate AI Foundation", description: "Our multimodal engine writes custom copy and builds bespoke layout structures." },
+    { title: "3. Visual Refinement & Launch", description: "Modify anything in the visual studio editor and publish with one click." },
+  ];
+
+  return (
+    <section id="process" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-3">{section.title || "How It Works"}</h2>
+          <p className="text-sm sm:text-base" style={{ color: colors.muted }}>{section.subtitle || "A seamless three-step process from concept to live deployment."}</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {steps.map((st, i) => (
+            <div key={i} className={`p-6 border relative ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
+              <span className="text-3xl font-mono font-bold block mb-3" style={{ color: colors.primary }}>0{i + 1}</span>
+              <h3 className="font-bold text-lg mb-2">{st.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: colors.muted }}>{st.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 14. PRODUCT SHOWCASE COMPONENT */
+function renderProductShowcase(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+
+  return (
+    <section id="showcase" className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t text-center`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4">{section.title || "Visual Showcase"}</h2>
+        <p className="text-sm sm:text-base max-w-xl mx-auto mb-10" style={{ color: colors.muted }}>{section.subtitle || "Explore real screenshots and product workflows."}</p>
+        <div className={`border p-3 shadow-2xl overflow-hidden ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
+          <SafeImage
+            src={section.imageUrl || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1100&auto=format&fit=crop&q=80"}
+            alt="Showcase Preview"
+            className={`w-full max-h-[500px] object-cover ${radius}`}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 15. NEWSLETTER COMPONENT */
+function renderNewsletter(section: SectionContent, colors: any, radius: string) {
+  const paddingClass = getSectionPaddingClass(section.customStyles?.paddingY);
+  const bgStyle = getSectionBackgroundStyle(section);
+
+  return (
+    <section className={`px-4 sm:px-6 lg:px-8 ${paddingClass} border-t`} style={{ borderColor: colors.border, ...bgStyle }}>
+      <div className={`max-w-3xl mx-auto p-8 sm:p-12 border text-center shadow-xl ${radius}`} style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
+        <Mail className="w-10 h-10 mx-auto mb-4" style={{ color: colors.primary }} />
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">{section.title || "Join Our Weekly Dispatch"}</h2>
+        <p className="text-sm sm:text-base max-w-md mx-auto mb-6" style={{ color: colors.muted }}>
+          {section.subtitle || "Stay up to date with product updates, design trends, and AI innovations."}
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Enter your work email..."
+            className="flex-1 px-4 py-2.5 rounded-lg border bg-black/40 text-sm outline-none"
+            style={{ borderColor: colors.border }}
+          />
+          <button
+            type="button"
+            className={`px-6 py-2.5 text-sm font-bold text-white shadow-lg active:scale-95 ${radius}`}
+            style={{ backgroundColor: colors.button }}
+          >
+            {section.ctaText || "Subscribe"}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 16. FOOTER COMPONENT */
 function renderFooter(section: SectionContent, colors: any, fallbackName: string) {
   return (
     <footer className="px-4 sm:px-6 lg:px-8 py-12 border-t" style={{ borderColor: colors.border, backgroundColor: colors.bg }}>

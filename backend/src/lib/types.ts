@@ -31,11 +31,20 @@ export type SectionType =
   | "Hero"
   | "Features"
   | "About"
+  | "Services"
+  | "Team"
   | "Pricing"
   | "Testimonials"
   | "FAQ"
   | "Contact"
   | "CTA"
+  | "Stats"
+  | "Logo Cloud"
+  | "Process"
+  | "Gallery"
+  | "Video"
+  | "Product Showcase"
+  | "Newsletter"
   | "Footer";
 
 export type AnimationPreference = "None" | "Subtle" | "Modern";
@@ -50,11 +59,15 @@ export interface ColorPaletteConfig {
   text: string;
   mutedText: string;
   border: string;
+  button?: string;
 }
 
 export interface SectionContent {
   id: string;
   type: SectionType;
+  variant?: string;
+  layout?: string;
+  visible?: boolean;
   title?: string;
   subtitle?: string;
   description?: string;
@@ -85,16 +98,42 @@ export interface SectionContent {
   }>;
   customStyles?: {
     backgroundColor?: string;
+    backgroundType?: "solid" | "gradient" | "image" | "transparent";
+    gradientConfig?: {
+      type: "linear" | "radial";
+      color1: string;
+      color2: string;
+      angle: number;
+    };
     textColor?: string;
-    paddingY?: "small" | "medium" | "large" | "xlarge";
+    paddingY?: "compact" | "normal" | "spacious" | "custom" | "small" | "medium" | "large" | "xlarge";
     textAlign?: "left" | "center" | "right";
+    buttonStyle?: "filled" | "outline" | "ghost";
+    buttonRadius?: "none" | "sm" | "md" | "lg" | "full";
+    imageFit?: "cover" | "contain";
+    imageRadius?: "none" | "sm" | "md" | "lg" | "full";
   };
 }
 
 export interface WebsiteTheme {
   colorTheme: ColorTheme;
   customPalette?: Partial<ColorPaletteConfig>;
-  fontFamily: "Inter" | "Outfit" | "Playfair Display" | "Plus Jakarta Sans" | "Space Grotesk";
+  fontFamily:
+    | "Inter"
+    | "Outfit"
+    | "Playfair Display"
+    | "Plus Jakarta Sans"
+    | "Space Grotesk"
+    | "Geist"
+    | "Poppins"
+    | "Roboto"
+    | "DM Sans"
+    | string;
+  fontSize?: "small" | "medium" | "large" | "custom";
+  fontWeight?: 400 | 500 | 600 | 700 | 800;
+  lineHeight?: string;
+  letterSpacing?: string;
+  textAlign?: "left" | "center" | "right";
   borderRadius: "none" | "sm" | "md" | "lg" | "full";
   animation: AnimationPreference;
   style: WebsiteStyle;

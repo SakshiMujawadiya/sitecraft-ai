@@ -102,7 +102,7 @@ export async function generateWebsite(input: GenerationPromptInput): Promise<Web
     animationPreference: input?.animationPreference || "Modern",
     requiredSections: Array.isArray(input?.requiredSections) && input.requiredSections.length > 0
       ? input.requiredSections
-      : ["Hero", "Features", "About", "Pricing", "CTA", "Footer"],
+      : ["Hero", "Features", "About", "Testimonials", "Pricing", "FAQ", "CTA", "Footer"],
   };
 
   const apiKey = process.env.OPENAI_API_KEY;
@@ -195,7 +195,7 @@ function buildSmartGeneratedWebsite(input: GenerationPromptInput): WebsiteData {
   const animationPreference = input?.animationPreference || "Modern";
   const requiredSections = Array.isArray(input?.requiredSections) && input.requiredSections.length > 0
     ? input.requiredSections
-    : ["Hero", "Features", "About", "Pricing", "CTA", "Footer"];
+    : ["Hero", "Features", "About", "Testimonials", "Pricing", "FAQ", "CTA", "Footer"];
 
   const fontMap: Record<string, WebsiteData["theme"]["fontFamily"]> = {
     Modern: "Plus Jakarta Sans",
