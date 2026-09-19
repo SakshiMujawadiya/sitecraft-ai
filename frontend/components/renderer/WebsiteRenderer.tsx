@@ -428,8 +428,16 @@ export default function WebsiteRenderer({
 
               {/* Editable badge indicator on hover */}
               {isEditable && (
-                <div className="absolute top-3 left-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-600/90 text-white text-xs px-2.5 py-1 rounded-full font-medium shadow-md backdrop-blur-sm pointer-events-none">
-                  {section.type} Section • Click to edit
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectSection?.(section.id);
+                  }}
+                  className="absolute top-3 left-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl backdrop-blur-md cursor-pointer flex items-center space-x-1.5 active:scale-95"
+                  title="Click to inspect & edit section properties"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>{section.type} Section • Click to edit</span>
                 </div>
               )}
 
@@ -522,6 +530,32 @@ export default function WebsiteRenderer({
             </div>
           );
         })}
+
+        {/* Fallback Interactive Footer if not in sections array */}
+        {!data.sections.some((s) => s.type === "Footer") && (
+          <div
+            id="canvas-section-footer"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (isEditable) onSelectSection?.("footer");
+            }}
+            className={`relative transition-all duration-200 ${
+              isEditable ? "cursor-pointer group hover:ring-2 hover:ring-indigo-500/60" : ""
+            } ${selectedSectionId === "footer" ? "ring-2 ring-indigo-500 shadow-2xl z-20" : ""}`}
+          >
+            {renderFooter(
+              {
+                id: "footer",
+                type: "Footer",
+                title: data.businessName,
+                subtitle: `© ${new Date().getFullYear()} ${data.businessName}. Powered by SiteCraft AI.`,
+                description: "Building the next generation of web applications.",
+              },
+              colors,
+              data.businessName
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

@@ -243,9 +243,18 @@ export default function EditorPage({ params }: EditorPageProps) {
   const scrollToCanvasSection = useCallback((secId: string | null) => {
     if (!secId) return;
     setTimeout(() => {
-      const elem = document.getElementById(`canvas-section-${secId}`);
+      let targetId = `canvas-section-${secId}`;
+      if (secId === "header") targetId = "canvas-header";
+      if (secId === "footer") {
+        const footerElem = document.getElementById("canvas-section-footer") || document.querySelector('[id*="footer"]');
+        if (footerElem) {
+          footerElem.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+      }
+      const elem = document.getElementById(targetId);
       if (elem) {
-        elem.scrollIntoView({ behavior: "smooth", block: "center" });
+        elem.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }, 60);
   }, []);
@@ -1159,12 +1168,17 @@ export default function EditorPage({ params }: EditorPageProps) {
               <div className="p-4 space-y-5 overflow-y-auto flex-1 text-xs">
                 {selectedSection ? (
                   <>
-                    <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+                    <div className="flex items-center justify-between pb-3 border-b border-zinc-800 bg-indigo-950/20 p-2.5 rounded-xl border border-indigo-900/40">
                       <div>
-                        <span className="font-bold text-white text-sm uppercase tracking-wider block">
-                          {selectedSection.type} Section
-                        </span>
-                        <span className="text-[10px] text-zinc-500 font-mono">ID: {selectedSection.id}</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="font-bold text-white text-sm uppercase tracking-wider block">
+                            {selectedSection.type} Section
+                          </span>
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-600 text-white animate-pulse">
+                            Active
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-zinc-400 font-mono">ID: {selectedSection.id}</span>
                       </div>
                       <button
                         onClick={regenerateSectionDesign}
