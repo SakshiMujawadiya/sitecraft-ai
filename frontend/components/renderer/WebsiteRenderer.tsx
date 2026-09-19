@@ -346,8 +346,12 @@ export default function WebsiteRenderer({
 
           return (
             <div
+              id={`canvas-section-${section.id}`}
               key={section.id || `sec-${idx}`}
-              onClick={() => isEditable && onSelectSection?.(section.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (isEditable) onSelectSection?.(section.id);
+              }}
               className={sectionClasses}
             >
               {/* Editable badge indicator on hover */}

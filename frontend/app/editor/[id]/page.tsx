@@ -230,6 +230,26 @@ export default function EditorPage({ params }: EditorPageProps) {
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [editingTitleId, setEditingTitleId] = useState<string | null>(null);
 
+  // Ref for the selected sidebar item — used to scroll it into view
+  const selectedSidebarRef = useRef<HTMLDivElement | null>(null);
+
+  // Auto-scroll the sidebar layer row to keep it visible when selection changes
+  useEffect(() => {
+    if (selectedSidebarRef.current) {
+      selectedSidebarRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [selectedSectionId]);
+
+  const scrollToCanvasSection = useCallback((secId: string | null) => {
+    if (!secId) return;
+    setTimeout(() => {
+      const elem = document.getElementById(`canvas-section-${secId}`);
+      if (elem) {
+        elem.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 60);
+  }, []);
+
   // AI Assistant State
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
@@ -848,9 +868,11 @@ export default function EditorPage({ params }: EditorPageProps) {
                   return (
                     <div
                       key={sec.id}
+                      ref={isSelected ? selectedSidebarRef : null}
                       onClick={() => {
                         setSelectedSectionId(sec.id);
                         setActiveTab("content");
+                        scrollToCanvasSection(sec.id);
                       }}
                       className={`group px-3 py-2.5 rounded-xl border text-xs font-semibold cursor-pointer flex items-center justify-between transition-all ${
                         isSelected
@@ -974,6 +996,7 @@ export default function EditorPage({ params }: EditorPageProps) {
               onSelectSection={(id) => {
                 setSelectedSectionId(id);
                 setActiveTab("content");
+                scrollToCanvasSection(id);
               }}
               onMoveSection={moveSection}
               onDuplicateSection={duplicateSection}
