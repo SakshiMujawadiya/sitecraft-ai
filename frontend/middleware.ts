@@ -47,23 +47,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(rewriteUrl);
   }
 
-  // 4. Protected Routes Check
-  const protectedPrefixes = ["/dashboard", "/reading", "/generate", "/editor"];
-  const isProtectedRoute = protectedPrefixes.some(
-    (prefix) => url.pathname === prefix || url.pathname.startsWith(`${prefix}/`)
-  );
-
-  if (isProtectedRoute) {
-    const accessToken = request.cookies.get("lp_access_token")?.value;
-    const refreshToken = request.cookies.get("lp_refresh_token")?.value;
-
-    if (!accessToken && !refreshToken) {
-      const loginUrl = new URL("/auth/login", request.url);
-      loginUrl.searchParams.set("redirect", url.pathname + (url.search || ""));
-      return NextResponse.redirect(loginUrl);
-    }
-  }
-
   return NextResponse.next();
 }
 

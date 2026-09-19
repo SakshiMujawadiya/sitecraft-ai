@@ -9,7 +9,7 @@ import Link from "next/link";
 function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, register } = useAuth();
+  const { user, loading: authLoading, logout, register } = useAuth();
 
   const redirectParam = searchParams.get("redirect");
   const redirectUrl =
@@ -26,12 +26,6 @@ function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (user) {
-      router.push(redirectUrl);
-    }
-  }, [user, router, redirectUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,7 +52,7 @@ function RegisterForm() {
       if (res.success) {
         setSuccessMsg("Account registered successfully! Redirecting...");
         setTimeout(() => {
-          router.push(redirectUrl);
+          window.location.href = redirectUrl;
         }, 500);
       } else {
         setError(res.message || "Registration failed. Please try again.");
@@ -69,6 +63,51 @@ function RegisterForm() {
       setLoading(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-zinc-400">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-500 mb-3" />
+        <p className="text-xs">Checking session...</p>
+      </div>
+    );
+  }
+
+  if (user) {
+    return (
+      <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-center items-center p-4 relative overflow-hidden">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/15 blur-[120px] rounded-full pointer-events-none" />
+        <div className="w-full max-w-md bg-zinc-900/90 border border-zinc-800/90 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl z-10 text-center">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center mx-auto mb-4 text-indigo-400">
+            <UserIcon className="w-6 h-6" />
+          </div>
+          <h2 className="text-xl font-bold text-white mb-1">Already Signed In</h2>
+          <p className="text-xs text-zinc-400 mb-6">
+            You are currently logged in as <span className="text-indigo-300 font-semibold">{user.email}</span>
+          </p>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => { window.location.href = redirectUrl; }}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs flex items-center justify-center space-x-2 shadow-lg shadow-indigo-600/25 transition-all cursor-pointer"
+            >
+              <span>Continue to Dashboard</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={async () => {
+                await logout();
+              }}
+              className="w-full py-2.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-800 border border-zinc-700/60 text-zinc-300 hover:text-white text-xs font-semibold transition-all cursor-pointer"
+            >
+              Sign Out & Register New Account
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-center items-center p-4 relative overflow-hidden">
