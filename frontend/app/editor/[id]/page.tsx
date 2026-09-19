@@ -254,6 +254,7 @@ export default function EditorPage({ params }: EditorPageProps) {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiMessage, setAiMessage] = useState<string | null>(null);
+  const [aiUpdatedSectionId, setAiUpdatedSectionId] = useState<string | null>(null);
 
   // Publish State
   const [publishing, setPublishing] = useState(false);
@@ -446,10 +447,63 @@ export default function EditorPage({ params }: EditorPageProps) {
 
   const getSelectedSection = (): SectionContent | null => {
     if (!project || !selectedSectionId) return null;
+    if (selectedSectionId === "header") {
+      return {
+        id: "header",
+        type: "Header" as any,
+        title: project.websiteData.businessName || "SiteCraft AI",
+        subtitle: "Global navigation header bar displayed at the top of all pages.",
+        ctaText: "Get Started",
+        ctaLink: "#pricing",
+      };
+    }
+    if (selectedSectionId === "footer") {
+      const existingFooter = project.websiteData.sections.find((s) => s.type === "Footer" || s.id === "footer");
+      if (existingFooter) return existingFooter;
+      return {
+        id: "footer",
+        type: "Footer",
+        title: project.websiteData.businessName || "SiteCraft AI",
+        subtitle: `© ${new Date().getFullYear()} ${project.websiteData.businessName || "SiteCraft AI"}. Powered by SiteCraft AI.`,
+        description: "Building the next generation of web applications.",
+      };
+    }
     return project.websiteData.sections.find((s) => s.id === selectedSectionId) || null;
   };
 
   const updateSelectedSection = (updates: Partial<SectionContent>) => {
+    if (selectedSectionId === "header") {
+      updateWebsiteData((prev) => ({
+        ...prev,
+        businessName: updates.title !== undefined ? updates.title : prev.businessName,
+      }));
+      return;
+    }
+    if (selectedSectionId === "footer") {
+      const existingFooterIdx = project?.websiteData.sections.findIndex((s) => s.type === "Footer" || s.id === "footer");
+      if (existingFooterIdx !== undefined && existingFooterIdx !== -1) {
+        updateWebsiteData((prev) => ({
+          ...prev,
+          sections: prev.sections.map((sec, idx) =>
+            idx === existingFooterIdx ? { ...sec, ...updates } : sec
+          ),
+        }));
+      } else {
+        const newFooter: SectionContent = {
+          id: "footer",
+          type: "Footer",
+          title: updates.title || project?.websiteData.businessName || "SiteCraft AI",
+          subtitle: updates.subtitle || `© ${new Date().getFullYear()} ${project?.websiteData.businessName || "SiteCraft AI"}. Powered by SiteCraft AI.`,
+          description: updates.description || "Building the next generation of web applications.",
+          ...updates,
+        };
+        updateWebsiteData((prev) => ({
+          ...prev,
+          sections: [...prev.sections, newFooter],
+        }));
+      }
+      return;
+    }
     updateWebsiteData((prev) => ({
       ...prev,
       sections: prev.sections.map((sec) =>
@@ -605,8 +659,11 @@ export default function EditorPage({ params }: EditorPageProps) {
 
       if (res.success && res.section) {
         updateSelectedSection(res.section);
-        setAiMessage(res.message || "Section updated with AI!");
-        setTimeout(() => setAiMessage(null), 3000);
+        setAiMessage(res.message || "Section upgraded with AI!");
+        setAiUpdatedSectionId(activeSec.id);
+        scrollToCanvasSection(activeSec.id);
+        setTimeout(() => setAiMessage(null), 4000);
+        setTimeout(() => setAiUpdatedSectionId(null), 5000);
       }
     } catch (err: any) {
       setError(err.message || "AI copilot failed");
@@ -832,13 +889,13 @@ export default function EditorPage({ params }: EditorPageProps) {
       )}
 
       {/* ================= MAIN STUDIO WORKSPACE ================= */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden min-h-0">
         {/* ================= LEFT SIDEBAR: SECTIONS / LAYERS ================= */}
         {!isPreviewMode && (
-          <aside className="w-64 border-r border-zinc-800 bg-zinc-900/80 shrink-0 flex flex-col justify-between hidden md:flex">
-            <div>
+          <aside className="w-64 border-r border-zinc-800 bg-zinc-900/80 shrink-0 flex flex-col justify-between hidden md:flex min-h-0 overflow-hidden">
+            <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
               {/* Pages Selector */}
-              <div className="p-3 border-b border-zinc-800 bg-zinc-950/40 flex items-center justify-between text-xs">
+              <div className="p-3 border-b border-zinc-800 bg-zinc-950/40 flex items-center justify-between text-xs shrink-0">
                 <span className="font-bold text-zinc-400 uppercase tracking-wider text-[10px]">Pages</span>
                 <span className="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-800/60 text-indigo-300 font-semibold">
                   Home (/)
@@ -846,7 +903,7 @@ export default function EditorPage({ params }: EditorPageProps) {
               </div>
 
               {/* Sections Header */}
-              <div className="p-3.5 border-b border-zinc-800 flex items-center justify-between">
+              <div className="p-3.5 border-b border-zinc-800 flex items-center justify-between shrink-0">
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center space-x-1.5">
                   <Layers className="w-4 h-4 text-indigo-400" />
                   <span>Sections &amp; Layers</span>
@@ -861,7 +918,32 @@ export default function EditorPage({ params }: EditorPageProps) {
               </div>
 
               {/* Layers List */}
-              <div className="p-2 space-y-1 overflow-y-auto max-h-[calc(100vh-210px)]">
+              <div className="p-2 space-y-1 overflow-y-auto flex-1 min-h-0">
+                {/* Header Layer Item */}
+                <div
+                  ref={selectedSectionId === "header" ? selectedSidebarRef : null}
+                  onClick={() => {
+                    setSelectedSectionId("header");
+                    setActiveTab("content");
+                    scrollToCanvasSection("header");
+                  }}
+                  className={`group px-3 py-2.5 rounded-xl border text-xs font-semibold cursor-pointer flex items-center justify-between transition-all ${
+                    selectedSectionId === "header"
+                      ? "bg-indigo-600/20 border-indigo-500/80 text-white shadow-sm"
+                      : "border-transparent hover:bg-zinc-800/60 text-zinc-400 hover:text-zinc-200"
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 truncate">
+                    <span className="text-indigo-400 font-bold">⚡</span>
+                    <span className="truncate select-none font-bold">
+                      Header: {project.websiteData.businessName || "Site"}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-indigo-300 bg-indigo-950 px-1.5 py-0.5 rounded border border-indigo-800/60">
+                    Sticky
+                  </span>
+                </div>
+
                 {project.websiteData.sections.map((sec, idx) => {
                   const isSelected = selectedSectionId === sec.id;
                   const isHidden = sec.visible === false;
@@ -960,11 +1042,36 @@ export default function EditorPage({ params }: EditorPageProps) {
                     </div>
                   );
                 })}
+
+                {/* Footer Layer Item */}
+                <div
+                  ref={selectedSectionId === "footer" ? selectedSidebarRef : null}
+                  onClick={() => {
+                    setSelectedSectionId("footer");
+                    setActiveTab("content");
+                    scrollToCanvasSection("footer");
+                  }}
+                  className={`group px-3 py-2.5 rounded-xl border text-xs font-semibold cursor-pointer flex items-center justify-between transition-all ${
+                    selectedSectionId === "footer"
+                      ? "bg-indigo-600/20 border-indigo-500/80 text-white shadow-sm"
+                      : "border-transparent hover:bg-zinc-800/60 text-zinc-400 hover:text-zinc-200"
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 truncate">
+                    <span className="text-emerald-400 font-bold">⚓</span>
+                    <span className="truncate select-none font-bold">
+                      Footer: {project.websiteData.businessName || "Site"}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-emerald-300 bg-emerald-950 px-1.5 py-0.5 rounded border border-emerald-800/60">
+                    Footer
+                  </span>
+                </div>
               </div>
             </div>
 
             {/* Add Section Bottom Button */}
-            <div className="p-3.5 border-t border-zinc-800 bg-zinc-950/40">
+            <div className="p-3.5 border-t border-zinc-800 bg-zinc-950/40 shrink-0">
               <button
                 onClick={() => setIsAddSectionOpen(true)}
                 className="w-full py-2.5 px-3 rounded-xl border border-dashed border-zinc-700 hover:border-indigo-500 hover:bg-indigo-950/20 text-xs font-semibold text-zinc-400 hover:text-indigo-300 flex items-center justify-center space-x-2 transition-all shadow-sm"
@@ -977,7 +1084,7 @@ export default function EditorPage({ params }: EditorPageProps) {
         )}
 
         {/* ================= CENTER CANVAS: RESPONSIVE PREVIEW ================= */}
-        <main className="flex-1 bg-zinc-950/95 overflow-y-auto p-4 md:p-8 flex justify-center items-start">
+        <main className="flex-1 bg-zinc-950/95 overflow-y-auto p-4 md:p-8 flex justify-center items-start min-h-0">
           <div
             className={`transition-all duration-300 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden bg-black ${
               isPreviewMode
@@ -993,6 +1100,7 @@ export default function EditorPage({ params }: EditorPageProps) {
               data={project.websiteData}
               isEditable={!isPreviewMode}
               selectedSectionId={selectedSectionId}
+              aiUpdatedSectionId={aiUpdatedSectionId}
               onSelectSection={(id) => {
                 setSelectedSectionId(id);
                 setActiveTab("content");
@@ -1008,9 +1116,9 @@ export default function EditorPage({ params }: EditorPageProps) {
 
         {/* ================= RIGHT SIDEBAR: PROPERTIES INSPECTOR ================= */}
         {!isPreviewMode && (
-          <aside className="w-80 border-l border-zinc-800 bg-zinc-900/90 shrink-0 flex flex-col z-20">
+          <aside className="w-80 border-l border-zinc-800 bg-zinc-900/90 shrink-0 flex flex-col z-20 min-h-0 overflow-hidden">
             {/* Inspector Tabs header */}
-            <div className="h-12 border-b border-zinc-800 px-2 flex items-center justify-between text-xs font-bold">
+            <div className="h-12 border-b border-zinc-800 px-2 flex items-center justify-between text-xs font-bold shrink-0">
               <button
                 onClick={() => setActiveTab("content")}
                 className={`flex-1 py-2 text-center rounded-lg transition-all ${

@@ -43,6 +43,7 @@ interface WebsiteRendererProps {
   data: WebsiteData;
   isEditable?: boolean;
   selectedSectionId?: string | null;
+  aiUpdatedSectionId?: string | null;
   onSelectSection?: (sectionId: string) => void;
   onMoveSection?: (sectionId: string, direction: "up" | "down") => void;
   onDuplicateSection?: (sectionId: string) => void;
@@ -79,6 +80,7 @@ export default function WebsiteRenderer({
   data,
   isEditable = false,
   selectedSectionId = null,
+  aiUpdatedSectionId = null,
   onSelectSection,
   onMoveSection,
   onDuplicateSection,
@@ -220,7 +222,7 @@ export default function WebsiteRenderer({
       case "none":
         return "rounded-none";
       case "sm":
-        return "rounded-sm";
+        return "rounded-md";
       case "lg":
         return "rounded-2xl";
       case "full":
@@ -230,6 +232,43 @@ export default function WebsiteRenderer({
         return "rounded-xl";
     }
   };
+
+  const getFontSizeStyle = () => {
+    switch (theme.fontSize) {
+      case "small":
+        return {
+          h1: "2.25rem", // 36px
+          h2: "1.5rem",   // 24px
+          h3: "1.25rem",  // 20px
+          body: "0.875rem", // 14px
+        };
+      case "large":
+        return {
+          h1: "3.75rem", // 60px
+          h2: "2.5rem",   // 40px
+          h3: "1.75rem",  // 28px
+          body: "1.125rem", // 18px
+        };
+      case "xl":
+        return {
+          h1: "4.5rem",  // 72px
+          h2: "3rem",    // 48px
+          h3: "2rem",    // 32px
+          body: "1.25rem", // 20px
+        };
+      case "medium":
+      default:
+        return {
+          h1: "3rem",    // 48px
+          h2: "2rem",    // 32px
+          h3: "1.5rem",  // 24px
+          body: "1rem",   // 16px
+        };
+    }
+  };
+
+  const fs = getFontSizeStyle();
+  const fw = theme.fontWeight || 600;
 
   const getFontFamilyStyle = () => {
     const f = theme.fontFamily || "Inter";
@@ -268,6 +307,7 @@ export default function WebsiteRenderer({
           backgroundColor: colors.bg,
           color: colors.text,
           fontFamily: getFontFamilyStyle(),
+          fontWeight: fw,
           "--site-primary": colors.primary,
           "--site-secondary": colors.accent,
           "--site-accent": colors.accent,
@@ -277,12 +317,36 @@ export default function WebsiteRenderer({
           "--site-muted": colors.muted,
           "--site-border": colors.border,
           "--site-button": colors.button,
+          "--site-h1-size": fs.h1,
+          "--site-h2-size": fs.h2,
+          "--site-h3-size": fs.h3,
+          "--site-body-size": fs.body,
+          "--site-weight": `${fw}`,
+          "--site-radius":
+            theme.borderRadius === "none"
+              ? "0px"
+              : theme.borderRadius === "sm"
+              ? "6px"
+              : theme.borderRadius === "lg"
+              ? "20px"
+              : theme.borderRadius === "full"
+              ? "9999px"
+              : "12px",
         } as React.CSSProperties
       }
     >
       {/* Sticky Global Navigation Bar */}
       <header
-        className="sticky top-0 z-30 border-b backdrop-blur-xl transition-all"
+        id="canvas-header"
+        onClick={(e) => {
+          if (isEditable) {
+            e.stopPropagation();
+            onSelectSection?.("header");
+          }
+        }}
+        className={`sticky top-0 z-30 border-b backdrop-blur-xl transition-all ${
+          isEditable ? "cursor-pointer group hover:ring-2 hover:ring-indigo-500/60" : ""
+        } ${selectedSectionId === "header" ? "ring-2 ring-indigo-500 shadow-2xl z-40" : ""}`}
         style={{
           borderColor: colors.border,
           backgroundColor: `${colors.bg}e6`,
@@ -291,14 +355,14 @@ export default function WebsiteRenderer({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shrink-0"
+              className={`w-8 h-8 flex items-center justify-center font-bold text-white shadow-lg shrink-0 ${getBorderRadius()}`}
               style={{
                 backgroundColor: colors.primary,
               }}
             >
               {(data.businessName || "Site").charAt(0).toUpperCase()}
             </div>
-            <span className="font-bold text-lg tracking-tight break-words">{data.businessName}</span>
+            <span className="font-bold text-lg tracking-tight break-words">{data.businessName || "SiteCraft"}</span>
           </div>
 
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
@@ -354,6 +418,14 @@ export default function WebsiteRenderer({
               }}
               className={sectionClasses}
             >
+              {/* AI Upgrade Highlight Notification Banner */}
+              {isEditable && aiUpdatedSectionId === section.id && (
+                <div className="absolute -top-4 left-6 z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-xs px-3.5 py-1.5 rounded-full font-bold shadow-2xl flex items-center space-x-2 animate-bounce border border-white/20">
+                  <Sparkles className="w-4 h-4 text-amber-300 animate-spin" />
+                  <span>✨ AI Improved Section</span>
+                </div>
+              )}
+
               {/* Editable badge indicator on hover */}
               {isEditable && (
                 <div className="absolute top-3 left-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-600/90 text-white text-xs px-2.5 py-1 rounded-full font-medium shadow-md backdrop-blur-sm pointer-events-none">

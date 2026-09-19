@@ -129,7 +129,7 @@ export interface WebsiteTheme {
     | "Roboto"
     | "DM Sans"
     | string;
-  fontSize?: "small" | "medium" | "large" | "custom";
+  fontSize?: "small" | "medium" | "large" | "xl" | "custom";
   fontWeight?: 400 | 500 | 600 | 700 | 800;
   lineHeight?: string;
   letterSpacing?: string;

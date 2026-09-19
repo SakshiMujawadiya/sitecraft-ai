@@ -7,8 +7,10 @@
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
       "role": "user",
       "subscriptionTier": "pro",
-      "credits": 30,
-      "createdAt": "2026-09-15T15:59:10.312Z"
+      "credits": 25,
+      "createdAt": "2026-09-15T15:59:10.312Z",
+      "passwordHash": "f36c164bffff95f940befe5ff254a57bf56028446ed7efe7e62cb646049936d479e7ed40fff5488a5ddcf7e02f12348ecaf89c229dc38f06767d9720162dc9b3",
+      "salt": "sitecraft-demo-2025"
     },
     "user-1789489459818-xodm5": {
       "id": "user-1789489459818-xodm5",
