@@ -1,7 +1,7 @@
-import { Template, WebsiteData } from "./types";
+import { Template } from "./types";
 
 export const PREBUILT_TEMPLATES: Template[] = [
-  // 1. SaaS - CloudScale AI
+  // 1. SaaS - CloudScale AI (Glassmorphism & Electric Indigo)
   {
     id: "tmpl-saas-cloudscale",
     name: "CloudScale AI",
@@ -26,6 +26,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "cs-hero",
           type: "Hero",
+          variant: "Modern Glass",
           badge: "Announcing CloudScale 3.0 with GPU Auto-tuning",
           title: "Scale Cloud Workloads With Autonomous AI",
           subtitle: "Deploy, monitor, and optimize your cloud instances automatically. Reduce AWS & GCP cloud spend by up to 48% with predictive capacity scaling.",
@@ -43,6 +44,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "cs-features",
           type: "Features",
+          variant: "Bento Box",
           badge: "Built for Mission-Critical Production",
           title: "Intelligent Infrastructure Without the Chaos",
           subtitle: "Everything modern DevOps and platform teams need to run compute at planet scale.",
@@ -76,6 +78,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "cs-pricing",
           type: "Pricing",
+          variant: "Cards",
           badge: "Predictable Pricing",
           title: "Simple, Transparent Infrastructure Plans",
           subtitle: "Scale your compute with confidence. No opaque per-seat penalties.",
@@ -115,6 +118,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "cs-cta",
           type: "CTA",
+          variant: "Centered",
           badge: "Get Started In 60 Seconds",
           title: "Stop Overpaying for Idle Cloud Servers",
           subtitle: "Connect your AWS, GCP, or Azure account in three CLI commands and see instant savings.",
@@ -138,7 +142,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 2. SaaS - SaaSFlow Metrics
+  // 2. SaaS - SaaSFlow Metrics (Modern & Ocean Azure)
   {
     id: "tmpl-saas-saasflow",
     name: "SaaSFlow Metrics",
@@ -163,6 +167,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "sf-hero",
           type: "Hero",
+          variant: "Split / Two Column",
           badge: "Revenue Intelligence Platform",
           title: "Know Exactly Where Your Revenue Is Flowing",
           subtitle: "SaaSFlow connects with Stripe, Paddle, and Chargebee to deliver crystal-clear cohort retention, expansion MRR, and predictive churn analytics in real time.",
@@ -180,6 +185,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "sf-features",
           type: "Features",
+          variant: "Grid",
           badge: "Unrivaled Clarity",
           title: "Stop Guessing Your Growth Levers",
           subtitle: "Drill down into any subscriber cohort with sub-second queries and automated executive summaries.",
@@ -192,6 +198,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "sf-testimonials",
           type: "Testimonials",
+          variant: "Single Focus",
           badge: "Founder Testimonials",
           title: "Trusted by Fast-Growing SaaS Brands",
           items: [
@@ -208,6 +215,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "sf-pricing",
           type: "Pricing",
+          variant: "Cards",
           badge: "Fair Scaled Pricing",
           title: "Priced by Tracked Revenue",
           items: [
@@ -225,7 +233,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 3. SaaS - DevPulse API
+  // 3. SaaS - DevPulse API (Dark & Cyberpunk Neon)
   {
     id: "tmpl-saas-devpulse",
     name: "DevPulse API",
@@ -250,6 +258,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "dp-hero",
           type: "Hero",
+          variant: "Headline Focus",
           badge: "Developer Preview — 0.2ms Edge Overhead",
           title: "Supercharge Your APIs With Zero Friction",
           subtitle: "Universal gateway with built-in token auth, rate limiting, and instant OpenTelemetry instrumentation for modern microservices.",
@@ -262,11 +271,24 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "dp-features",
           type: "Features",
+          variant: "Columns",
           badge: "Edge Architecture",
           title: "Speed Meets Unbreakable Reliability",
+          subtitle: "Designed to handle millions of requests per second without a single frame dropped.",
           items: [
             { id: "dpf-1", title: "Distributed Token Buckets", description: "Synchronize rate-limiting across 300+ edge cities without bottlenecking centralized databases.", icon: "Layers" },
             { id: "dpf-2", title: "GraphQL & REST Inspector", description: "Live payload diffing, query cost analysis, and automatic anomaly alerting in real-time.", icon: "Code" },
+          ],
+        },
+        {
+          id: "dp-pricing",
+          type: "Pricing",
+          variant: "Cards",
+          badge: "Developer Tier Included",
+          title: "Pay Only For Traced Requests",
+          items: [
+            { id: "dpp-1", title: "Free Tier", price: "$0", period: "/mo", description: "1 Million requests/mo", features: ["5 Edge locations", "24h Log retention", "Community Discord"] },
+            { id: "dpp-2", title: "Pro Gateway", price: "$79", period: "/mo", popular: true, description: "10 Million requests/mo", features: ["Global 300+ edge cities", "30-day tracing retention", "Webhooks & Alerting"] },
           ],
         },
         { id: "dp-footer", type: "Footer", title: "DevPulse API", description: "The next-generation edge API routing layer." },
@@ -275,7 +297,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 4. Portfolio - Alex Rivera Creative
+  // 4. Portfolio - Alex Rivera Creative (Minimal & Monochrome Minimal)
   {
     id: "tmpl-portfolio-alex",
     name: "Alex Rivera Creative",
@@ -300,6 +322,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "ar-hero",
           type: "Hero",
+          variant: "Minimal",
           badge: "Currently Available for Select Projects — Q3/Q4",
           title: "Designing Digital Experiences That Inspire and Endure",
           subtitle: "Over 8 years bridging the gap between human emotion, visual elegance, and engineering craftsmanship.",
@@ -317,6 +340,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "ar-about",
           type: "About",
+          variant: "Minimal",
           badge: "Selected Philosophy",
           title: "Simplicity is the Ultimate Sophistication",
           description: "I believe great design is not about what you add, but what you take away until only pure utility and quiet beauty remain.",
@@ -344,7 +368,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 5. Portfolio - DevStudio Showcase
+  // 5. Portfolio - DevStudio Showcase (Dark & Emerald Slate)
   {
     id: "tmpl-portfolio-devstudio",
     name: "DevStudio Showcase",
@@ -369,14 +393,27 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "ds-hero",
           type: "Hero",
+          variant: "Split / Two Column",
           badge: "Open Source Advocate",
           title: "Building Resilient Software at the Edge",
           subtitle: "Senior engineer shipping clean code, robust backend architectures, and delightful interactive user experiences.",
           ctaText: "Check My Repos",
-          ctaLink: "#about",
+          ctaLink: "#features",
           secondaryCtaText: "Download Resume",
           secondaryCtaLink: "#contact",
           imageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "ds-features",
+          type: "Features",
+          variant: "Bento Box",
+          badge: "Technical Expertise",
+          title: "Core Engineering Stack",
+          subtitle: "From low-level microservices to responsive frontend animation.",
+          items: [
+            { id: "dsf-1", title: "Distributed Cloud Architecture", description: "Designing serverless stateful pipelines with Redis and PostgreSQL.", icon: "Server" },
+            { id: "dsf-2", title: "High-FPS Canvas & WebGL", description: "Interactive 3D graphics rendering in Three.js and WebGL shaders.", icon: "Box" },
+          ],
         },
         { id: "ds-footer", type: "Footer", title: "DevStudio Showcase", description: "Code is poetry executed at the speed of silicon." },
       ],
@@ -384,7 +421,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 6. Agency - Apex Growth Digital
+  // 6. Agency - Apex Growth Digital (Modern & Sunset Amber)
   {
     id: "tmpl-agency-apex",
     name: "Apex Growth Digital",
@@ -409,6 +446,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "ag-hero",
           type: "Hero",
+          variant: "Centered",
           badge: "Over $180M in Client Revenue Generated",
           title: "We Turn Ad Spend Into Unstoppable Revenue",
           subtitle: "Tired of cookie-cutter agencies that report vanity metrics? We engineer predictable, ROAS-driven acquisition engines.",
@@ -426,6 +464,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "ag-features",
           type: "Features",
+          variant: "Grid",
           badge: "Full-Funnel Mastery",
           title: "Our Proven 3-Pillar Growth Engine",
           items: [
@@ -437,6 +476,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "ag-testimonials",
           type: "Testimonials",
+          variant: "Grid",
           badge: "Proven Results",
           title: "What Our Partners Say",
           items: [
@@ -456,7 +496,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 7. Agency - Vanguard Creative Agency
+  // 7. Agency - Vanguard Creative Agency (Luxury & Rose Quartz)
   {
     id: "tmpl-agency-vanguard",
     name: "Vanguard Creative",
@@ -481,6 +521,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "vg-hero",
           type: "Hero",
+          variant: "Minimal",
           badge: "Maison de Création",
           title: "Where Artistry Meets Timeless Distinction",
           subtitle: "We forge unforgettable brand narratives through bespoke typography, architectural aesthetics, and evocative digital craftsmanship.",
@@ -494,7 +535,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 8. Restaurant - L'Aura Bistro & Bar
+  // 8. Restaurant - L'Aura Bistro & Bar (Luxury & Sunset Amber)
   {
     id: "tmpl-restaurant-laura",
     name: "L'Aura Bistro & Bar",
@@ -519,6 +560,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "la-hero",
           type: "Hero",
+          variant: "Centered",
           badge: "Michelin Guide Selected 2025",
           title: "An Unforgettable Culinary Journey in the Heart of the City",
           subtitle: "Chef Laurent Dubois presents an innovative tasting menu celebrating organic coastal flavors and artisanal heritage.",
@@ -536,6 +578,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "la-about",
           type: "About",
+          variant: "Split",
           badge: "The Culinary Philosophy",
           title: "Rooted in Passion, Elevated by Technique",
           description: "Every plate is a tribute to the vibrant terroir of Provence and the Mediterranean coast, curated with obsessive reverence for simple, honest flavors.",
@@ -564,7 +607,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 9. Restaurant - Artisan Wood Fired Pizza
+  // 9. Restaurant - Artisan Wood Fired Pizza (Modern & Rose Quartz)
   {
     id: "tmpl-restaurant-pizza",
     name: "Artisan Wood Fired Pizza",
@@ -589,6 +632,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "pz-hero",
           type: "Hero",
+          variant: "Split / Two Column",
           badge: "72-Hour Naturally Fermented Dough",
           title: "Pure Neapolitan Tradition, Blistered to Perfection",
           subtitle: "San Marzano tomatoes, buffalo mozzarella imported weekly from Campania, and charred blistered crust that melts in your mouth.",
@@ -602,7 +646,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 10. Startup - HyperLoop Logistics
+  // 10. Startup - HyperLoop Logistics (Dark & Electric Indigo)
   {
     id: "tmpl-startup-hyperloop",
     name: "HyperLoop Logistics",
@@ -627,6 +671,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "hl-hero",
           type: "Hero",
+          variant: "Headline Focus",
           badge: "Series A Funded • $35M Raised",
           title: "The Zero-Carbon Hyper-Speed Logistics Network",
           subtitle: "Moving cargo 5x faster than freight trucks at 70% lower energy cost. Welcome to the future of continent-wide supply chains.",
@@ -639,6 +684,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "hl-features",
           type: "Features",
+          variant: "Bento Box",
           badge: "Breakthrough Physics",
           title: "Engineered for Exponential Velocity",
           items: [
@@ -652,7 +698,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 11. Startup - BioSync Wearables
+  // 11. Startup - BioSync Wearables (Glassmorphism & Emerald Slate)
   {
     id: "tmpl-startup-biosync",
     name: "BioSync Wearables",
@@ -677,6 +723,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "bs-hero",
           type: "Hero",
+          variant: "Modern Glass",
           badge: "Clinical Precision Bio-Telemetry",
           title: "Decode Your Biology Before Symptoms Emerge",
           subtitle: "BioSync monitors cellular stress and hormonal balance 24/7. Turn metabolic data into actionable daily longevity protocols.",
@@ -690,7 +737,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
     },
   },
 
-  // 12. AI Tool - NeuroCanvas AI
+  // 12. AI Tool - NeuroCanvas AI (Neon & Royal Purple)
   {
     id: "tmpl-aitool-neurocanvas",
     name: "NeuroCanvas AI",
@@ -715,6 +762,7 @@ export const PREBUILT_TEMPLATES: Template[] = [
         {
           id: "nc-hero",
           type: "Hero",
+          variant: "Centered",
           badge: "NeuroCanvas v2 Released",
           title: "Turn Prompts Into Cinematic Realities in Real Time",
           subtitle: "The all-in-one generative studio powered by diffusion transformers. Create concept art, motion graphics, and voice in one unified space.",
