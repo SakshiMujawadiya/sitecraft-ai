@@ -104,24 +104,13 @@ export default function EditorPage({ params }: EditorPageProps) {
         if (!targetElem) return;
 
         if (container) {
-          const containerRect = container.getBoundingClientRect();
-          const elemRect = targetElem.getBoundingClientRect();
-
-          // Calculate sticky header offset if present
-          let headerOffset = 0;
-          if (secId !== "header") {
-            const headerElem = document.getElementById("canvas-header");
-            if (headerElem) {
-              headerOffset = headerElem.getBoundingClientRect().height;
-            }
-          }
-
-          // Top-align selected section in preview canvas viewport (just below sticky header)
-          const relativeTop = elemRect.top - containerRect.top;
-          const targetScrollTop = container.scrollTop + relativeTop - headerOffset - 12;
+          const relativeTop =
+            targetElem.getBoundingClientRect().top -
+            container.getBoundingClientRect().top +
+            container.scrollTop;
 
           container.scrollTo({
-            top: Math.max(0, targetScrollTop),
+            top: Math.max(0, relativeTop - 8),
             behavior: "smooth",
           });
         } else {
@@ -732,7 +721,6 @@ export default function EditorPage({ params }: EditorPageProps) {
               setSelectedSectionId(secId);
               setSelectedElementId(null);
               setActiveTab("content");
-              scrollToCanvasSection(secId, null);
             }}
             onStartEditingTitle={setEditingTitleId}
             onStopEditingTitle={() => setEditingTitleId(null)}
@@ -759,13 +747,11 @@ export default function EditorPage({ params }: EditorPageProps) {
             setSelectedSectionId(id);
             setSelectedElementId(null);
             setActiveTab("content");
-            scrollToCanvasSection(id);
           }}
           onSelectElement={(secId, elemId) => {
             setSelectedSectionId(secId);
             setSelectedElementId(elemId);
             setActiveTab("content");
-            scrollToCanvasSection(secId);
           }}
           onMoveSection={moveSection}
           onDuplicateSection={duplicateSection}
