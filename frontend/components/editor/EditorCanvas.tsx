@@ -19,6 +19,7 @@ interface EditorCanvasProps {
   onDuplicateSection: (secId: string) => void;
   onDeleteSection: (secId: string) => void;
   onToggleVisibility: (secId: string) => void;
+  canvasTheme?: "dark" | "light";
 }
 
 export default function EditorCanvas({
@@ -36,6 +37,7 @@ export default function EditorCanvas({
   onDuplicateSection,
   onDeleteSection,
   onToggleVisibility,
+  canvasTheme = "dark",
 }: EditorCanvasProps) {
   return (
     <>
@@ -55,10 +57,14 @@ export default function EditorCanvas({
       {/* CENTER CANVAS WORKSPACE */}
       <main
         ref={canvasContainerRef}
-        className="flex-1 h-full bg-zinc-950/95 overflow-y-auto p-4 md:p-8 flex justify-center items-start min-h-0"
+        className={`flex-1 h-full overflow-y-auto p-4 md:p-8 flex justify-center items-start min-h-0 transition-colors duration-300 ${
+          canvasTheme === "light" ? "bg-zinc-200" : "bg-zinc-950/95"
+        }`}
       >
         <div
-          className={`transition-all duration-300 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden bg-black ${
+          className={`transition-all duration-300 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden ${
+            canvasTheme === "light" ? "bg-white text-zinc-900" : "bg-black text-white"
+          } ${
             isPreviewMode
               ? "w-full max-w-6xl my-4"
               : viewport === "desktop"

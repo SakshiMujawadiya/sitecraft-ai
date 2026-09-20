@@ -17,6 +17,10 @@ import {
   Copy,
   Save,
   Globe,
+  Keyboard,
+  Wand2,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Project } from "@/lib/types";
 
@@ -39,6 +43,10 @@ interface EditorHeaderProps {
   onExplicitSave: () => void;
   publishing: boolean;
   onPublishToggle: () => void;
+  canvasTheme?: "dark" | "light";
+  onToggleCanvasTheme?: () => void;
+  onOpenShortcutsModal?: () => void;
+  onOpenAiPresetsModal?: () => void;
 }
 
 export default function EditorHeader({
@@ -60,6 +68,10 @@ export default function EditorHeader({
   onExplicitSave,
   publishing,
   onPublishToggle,
+  canvasTheme = "dark",
+  onToggleCanvasTheme,
+  onOpenShortcutsModal,
+  onOpenAiPresetsModal,
 }: EditorHeaderProps) {
   return (
     <header className="h-16 border-b border-zinc-800 bg-zinc-900/95 backdrop-blur-xl px-4 flex items-center justify-between z-30 shrink-0">
@@ -150,6 +162,38 @@ export default function EditorHeader({
             <span>Unsaved changes</span>
           )}
         </span>
+
+        {/* AI Presets Button */}
+        <button
+          onClick={onOpenAiPresetsModal}
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-300 hover:text-white bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-700/60 transition-all shadow-sm"
+          title="1-Click AI Page Presets"
+        >
+          <Wand2 className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+          <span className="hidden sm:inline font-bold">AI Presets</span>
+        </button>
+
+        {/* Canvas Dark/Light Mode Toggle */}
+        <button
+          onClick={onToggleCanvasTheme}
+          className="p-1.5 rounded-lg text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all"
+          title={`Switch canvas preview to ${canvasTheme === "dark" ? "Light" : "Dark"} mode`}
+        >
+          {canvasTheme === "dark" ? (
+            <Sun className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Moon className="w-4 h-4 text-indigo-400" />
+          )}
+        </button>
+
+        {/* Keyboard Shortcuts Button */}
+        <button
+          onClick={onOpenShortcutsModal}
+          className="p-1.5 rounded-lg text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all hidden lg:inline-flex"
+          title="Keyboard Shortcuts (?)"
+        >
+          <Keyboard className="w-4 h-4 text-zinc-400" />
+        </button>
 
         {/* Live Preview Toggle */}
         <button

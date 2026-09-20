@@ -19,6 +19,8 @@ import EditorCanvas from "@/components/editor/EditorCanvas";
 import InspectorPanel from "@/components/editor/inspector/InspectorPanel";
 import AddSectionModal from "@/components/editor/modals/AddSectionModal";
 import PublishSuccessModal from "@/components/editor/modals/PublishSuccessModal";
+import KeyboardShortcutsModal from "@/components/editor/modals/KeyboardShortcutsModal";
+import AiPromptPresetsModal from "@/components/editor/modals/AiPromptPresetsModal";
 import { LAYOUT_VARIANTS } from "@/lib/editor-constants";
 import { Loader2 } from "lucide-react";
 
@@ -55,6 +57,9 @@ export default function EditorPage({ params }: EditorPageProps) {
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
   const [isAddSectionOpen, setIsAddSectionOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isAiPresetsOpen, setIsAiPresetsOpen] = useState(false);
+  const [canvasTheme, setCanvasTheme] = useState<"dark" | "light">("dark");
   const [editingTitleId, setEditingTitleId] = useState<string | null>(null);
 
   // Refs for scrolling synchronization
@@ -133,6 +138,45 @@ export default function EditorPage({ params }: EditorPageProps) {
       scrollToCanvasSection(selectedSectionId, selectedElementId);
     }
   }, [selectedSectionId, selectedElementId, scrollToCanvasSection]);
+
+  // Global Keyboard Shortcuts Listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore shortcut keys when user is typing inside input, textarea, or contentEditable
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) {
+        return;
+      }
+
+      const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+      const cmdOrCtrl = isMac ? e.metaKey : e.ctrlKey;
+
+      if (cmdOrCtrl && e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        if (e.shiftKey) {
+          handleRedo();
+        } else {
+          handleUndo();
+        }
+      } else if (cmdOrCtrl && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        handleExplicitSave();
+      } else if (cmdOrCtrl && e.key.toLowerCase() === "p") {
+        e.preventDefault();
+        setIsPreviewMode((prev) => !prev);
+      } else if (e.key === "?") {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+      } else if (e.key === "Escape") {
+        setSelectedElementId(null);
+        setIsShortcutsOpen(false);
+        setIsAiPresetsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // AI Assistant State
   const [aiLoading, setAiLoading] = useState(false);
@@ -705,6 +749,10 @@ export default function EditorPage({ params }: EditorPageProps) {
           onExplicitSave={handleExplicitSave}
           publishing={publishing}
           onPublishToggle={handlePublishToggle}
+          canvasTheme={canvasTheme}
+          onToggleCanvasTheme={() => setCanvasTheme((prev) => (prev === "dark" ? "light" : "dark"))}
+          onOpenShortcutsModal={() => setIsShortcutsOpen(true)}
+          onOpenAiPresetsModal={() => setIsAiPresetsOpen(true)}
         />
       )}
 
@@ -757,6 +805,7 @@ export default function EditorPage({ params }: EditorPageProps) {
           onDuplicateSection={duplicateSection}
           onDeleteSection={deleteSection}
           onToggleVisibility={toggleSectionVisibility}
+          canvasTheme={canvasTheme}
         />
 
         {/* RIGHT SIDEBAR: PROPERTIES INSPECTOR */}
@@ -800,6 +849,25 @@ export default function EditorPage({ params }: EditorPageProps) {
         isOpen={isMediaModalOpen}
         onClose={() => setIsMediaModalOpen(false)}
         onSelectImage={(url) => updateSelectedSection({ imageUrl: url })}
+      />
+
+      <KeyboardShortcutsModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
+      />
+
+      <AiPromptPresetsModal
+        isOpen={isAiPresetsOpen}
+        onClose={() => setIsAiPresetsOpen(false)}
+        onApplyPreset={(presetSections) => {
+          updateWebsiteData((prev) => ({
+            ...prev,
+            sections: [...prev.sections, ...presetSections],
+          }));
+          if (presetSections.length > 0) {
+            setSelectedSectionId(presetSections[0].id);
+          }
+        }}
       />
     </div>
   );
