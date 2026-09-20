@@ -63,70 +63,68 @@ export default function EditorPage({ params }: EditorPageProps) {
   const inspectorScrollRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToCanvasSection = useCallback((secId: string | null, elemId?: string | null) => {
-    if (!secId) return;
+    if (!secId && !elemId) return;
 
     if (inspectorScrollRef.current && !elemId) {
       inspectorScrollRef.current.scrollTop = 0;
     }
 
-    setTimeout(() => {
-      const container = canvasContainerRef.current;
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const container = canvasContainerRef.current;
+        let targetElem: HTMLElement | null = null;
 
-      if (secId === "header") {
-        container?.scrollTo({ top: 0, behavior: "smooth" });
-        return;
-      }
-      if (secId === "footer") {
-        const footerElem = document.getElementById("canvas-section-footer");
-        if (footerElem && container) {
-          const containerRect = container.getBoundingClientRect();
-          const elemRect = footerElem.getBoundingClientRect();
-          const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 16;
-          container.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
-        } else if (container) {
-          container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+        // 1. Try finding targeted element first if elemId is present
+        if (secId && elemId) {
+          targetElem = container?.querySelector(`[data-section-id="${secId}"][data-element-id="${elemId}"]`) as HTMLElement | null;
+          if (!targetElem) {
+            targetElem = container?.querySelector(`[data-element-id="${elemId}"]`) as HTMLElement | null;
+          }
+        } else if (elemId) {
+          targetElem = container?.querySelector(`[data-element-id="${elemId}"]`) as HTMLElement | null;
         }
-        return;
-      }
 
-      if (elemId) {
-        const targetedElem = document.querySelector(`[data-section-id="${secId}"][data-element-id="${elemId}"]`);
-        if (targetedElem && container) {
+        // 2. If no elemId or element not found, search for section container
+        if (!targetElem && secId) {
+          if (secId === "header") {
+            targetElem = (document.getElementById("canvas-header") || container?.querySelector('[data-section-id="header"]')) as HTMLElement | null;
+          } else if (secId === "footer") {
+            targetElem = (document.getElementById("canvas-section-footer") || container?.querySelector('[data-section-id="footer"]')) as HTMLElement | null;
+          } else {
+            targetElem = (document.getElementById(`canvas-section-${secId}`) || container?.querySelector(`[data-section-id="${secId}"]`)) as HTMLElement | null;
+          }
+        }
+
+        if (!targetElem) return;
+
+        if (container) {
           const containerRect = container.getBoundingClientRect();
-          const elemRect = targetedElem.getBoundingClientRect();
-          const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 24;
+          const elemRect = targetElem.getBoundingClientRect();
+
+          // Smooth scroll canvas container so target element/section is centered vertically in viewport
+          const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - (containerRect.height / 2) + (elemRect.height / 2);
+
           container.scrollTo({
             top: Math.max(0, targetScrollTop),
             behavior: "smooth",
           });
-          return;
+        } else {
+          targetElem.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "nearest",
+          });
         }
-      }
-
-      const targetId = `canvas-section-${secId}`;
-      const elem = document.getElementById(targetId);
-
-      if (elem && container) {
-        const containerRect = container.getBoundingClientRect();
-        const elemRect = elem.getBoundingClientRect();
-        const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 12;
-
-        container.scrollTo({
-          top: Math.max(0, targetScrollTop),
-          behavior: "smooth",
-        });
-      } else if (elem) {
-        elem.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 40);
+      }, 50);
+    });
   }, []);
 
-  // Auto-scroll the sidebar layer row & center canvas section when selection changes
+  // Auto-scroll the sidebar layer row & center canvas section/element when selection changes
   useEffect(() => {
     if (selectedSidebarRef.current) {
       selectedSidebarRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
-    if (selectedSectionId) {
+    if (selectedSectionId || selectedElementId) {
       scrollToCanvasSection(selectedSectionId, selectedElementId);
     }
   }, [selectedSectionId, selectedElementId, scrollToCanvasSection]);

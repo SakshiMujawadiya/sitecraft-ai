@@ -479,7 +479,7 @@ export function NewsletterSection({ section, colors, radius, extraProps }: Gener
 
 export function RenderFooterSection({ section, colors, fallbackName, extraProps }: GenericSectionProps & { fallbackName?: string }) {
   return (
-    <footer className="px-4 sm:px-6 lg:px-8 py-12 border-t" style={{ borderColor: colors.border, backgroundColor: colors.bg }}>
+    <footer id="canvas-section-footer" data-section-id="footer" className="px-4 sm:px-6 lg:px-8 py-12 border-t" style={{ borderColor: colors.border, backgroundColor: colors.bg }}>
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex items-center space-x-3">
           <div

@@ -32,6 +32,7 @@ export default function RenderHeader({
   return (
     <header
       id="canvas-header"
+      data-section-id="header"
       onClick={(e) => {
         if (isEditable) {
           e.stopPropagation();
