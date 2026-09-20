@@ -52,7 +52,11 @@ export default function SectionOverlay({
     >
       {/* AI Upgrade Highlight Notification Banner */}
       {isEditable && aiUpdatedSectionId === section.id && (
-        <div className="absolute -top-4 left-6 z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-xs px-3.5 py-1.5 rounded-full font-bold shadow-2xl flex items-center space-x-2 animate-bounce border border-white/20">
+        <div
+          className={`absolute ${
+            idx === 0 ? "top-12 left-4" : "-top-4 left-6"
+          } z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-xs px-3.5 py-1.5 rounded-full font-bold shadow-2xl flex items-center space-x-2 animate-bounce border border-white/20`}
+        >
           <Sparkles className="w-4 h-4 text-amber-300 animate-spin" />
           <span>✨ AI Improved Section</span>
         </div>
@@ -60,7 +64,11 @@ export default function SectionOverlay({
 
       {/* Active Section Selection Ring Badge */}
       {isEditable && isSelected && (
-        <div className="absolute top-3 left-4 z-40 bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl flex items-center space-x-2 border border-indigo-400/40">
+        <div
+          className={`absolute ${
+            idx === 0 ? "top-3 left-4" : "top-3 left-4"
+          } z-40 bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl flex items-center space-x-2 border border-indigo-400/40`}
+        >
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
           <span>Editing {section.type} Section</span>
         </div>
@@ -73,7 +81,9 @@ export default function SectionOverlay({
             e.stopPropagation();
             onSelectSection?.(section.id);
           }}
-          className="absolute top-3 left-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl backdrop-blur-md cursor-pointer flex items-center space-x-1.5 active:scale-95"
+          className={`absolute ${
+            idx === 0 ? "top-3 left-4" : "top-3 left-4"
+          } z-30 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl backdrop-blur-md cursor-pointer flex items-center space-x-1.5 active:scale-95`}
           title="Click to inspect & edit section properties"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -101,7 +111,11 @@ export default function SectionOverlay({
 
       {/* Floating Section Quick-Action Toolbar on Selection */}
       {isEditable && isSelected && (
-        <div className="absolute -top-4 right-6 z-40 bg-zinc-900 border border-indigo-500/80 rounded-lg px-2 py-1 flex items-center space-x-1.5 shadow-2xl backdrop-blur-md text-white text-xs">
+        <div
+          className={`absolute ${
+            idx === 0 ? "top-3 right-4" : "-top-4 right-6"
+          } z-40 bg-zinc-900 border border-indigo-500/80 rounded-lg px-2 py-1 flex items-center space-x-1.5 shadow-2xl backdrop-blur-md text-white text-xs`}
+        >
           <span className="font-bold text-[11px] text-indigo-300 px-1.5 py-0.5 rounded bg-indigo-950/80 border border-indigo-800/60 uppercase tracking-wider">
             {section.type} {section.variant || section.layout ? `• ${section.variant || section.layout}` : ""}
           </span>

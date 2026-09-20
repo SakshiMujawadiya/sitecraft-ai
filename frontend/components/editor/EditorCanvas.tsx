@@ -41,11 +41,11 @@ export default function EditorCanvas({
     <>
       {/* PREVIEW MODE BANNER */}
       {isPreviewMode && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-zinc-900/90 border border-zinc-700 backdrop-blur-xl px-4 py-2 rounded-full shadow-2xl flex items-center space-x-4 text-xs font-bold text-white">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-zinc-900/95 border border-zinc-700 backdrop-blur-xl px-4 py-2 rounded-full shadow-2xl flex items-center space-x-4 text-xs font-bold text-white">
           <span className="text-zinc-400">Live Visitor Simulation</span>
           <button
             onClick={onExitPreview}
-            className="px-3 py-1 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
+            className="px-3 py-1 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shadow-md"
           >
             ← Back to Editor
           </button>
