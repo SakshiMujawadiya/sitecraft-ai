@@ -749,10 +749,6 @@ export default function EditorPage({ params }: EditorPageProps) {
           onExplicitSave={handleExplicitSave}
           publishing={publishing}
           onPublishToggle={handlePublishToggle}
-          canvasTheme={canvasTheme}
-          onToggleCanvasTheme={() => setCanvasTheme((prev) => (prev === "dark" ? "light" : "dark"))}
-          onOpenShortcutsModal={() => setIsShortcutsOpen(true)}
-          onOpenAiPresetsModal={() => setIsAiPresetsOpen(true)}
         />
       )}
 
@@ -805,7 +801,6 @@ export default function EditorPage({ params }: EditorPageProps) {
           onDuplicateSection={duplicateSection}
           onDeleteSection={deleteSection}
           onToggleVisibility={toggleSectionVisibility}
-          canvasTheme={canvasTheme}
         />
 
         {/* RIGHT SIDEBAR: PROPERTIES INSPECTOR */}

@@ -17,10 +17,6 @@ import {
   Copy,
   Save,
   Globe,
-  Keyboard,
-  Wand2,
-  Sun,
-  Moon,
 } from "lucide-react";
 import { Project } from "@/lib/types";
 
@@ -43,10 +39,6 @@ interface EditorHeaderProps {
   onExplicitSave: () => void;
   publishing: boolean;
   onPublishToggle: () => void;
-  canvasTheme?: "dark" | "light";
-  onToggleCanvasTheme?: () => void;
-  onOpenShortcutsModal?: () => void;
-  onOpenAiPresetsModal?: () => void;
 }
 
 export default function EditorHeader({
@@ -68,14 +60,10 @@ export default function EditorHeader({
   onExplicitSave,
   publishing,
   onPublishToggle,
-  canvasTheme = "dark",
-  onToggleCanvasTheme,
-  onOpenShortcutsModal,
-  onOpenAiPresetsModal,
 }: EditorHeaderProps) {
   return (
-    <header className="h-16 border-b border-zinc-800 bg-zinc-900/95 backdrop-blur-xl px-4 flex items-center justify-between z-30 shrink-0">
-      {/* Left: Back & Project Title & Undo/Redo */}
+    <header className="h-16 border-b border-zinc-800 bg-zinc-900/95 backdrop-blur-xl px-4 flex items-center justify-between z-30 shrink-0 select-none">
+      {/* Left: Back Arrow, Project Name & Undo/Redo */}
       <div className="flex items-center space-x-3">
         <Link
           href="/dashboard"
@@ -84,12 +72,12 @@ export default function EditorHeader({
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <div className="h-6 w-px bg-zinc-800" />
+        <div className="h-5 w-px bg-zinc-800" />
         <input
           type="text"
           value={project.name}
           onChange={(e) => onProjectNameChange(e.target.value)}
-          className="bg-transparent text-sm font-bold text-white hover:bg-zinc-800/60 focus:bg-zinc-800 px-2.5 py-1.5 rounded-lg border border-transparent focus:border-indigo-500 outline-none transition-all max-w-[180px] sm:max-w-xs truncate"
+          className="bg-transparent text-sm font-bold text-white hover:bg-zinc-800/60 focus:bg-zinc-800 px-2 py-1 rounded-lg border border-transparent focus:border-indigo-500 outline-none transition-all max-w-[160px] sm:max-w-xs truncate"
         />
 
         {/* Undo / Redo controls */}
@@ -117,37 +105,37 @@ export default function EditorHeader({
       <div className="flex items-center space-x-1 p-1 rounded-xl bg-zinc-950 border border-zinc-800">
         <button
           onClick={() => onViewportChange("desktop")}
-          className={`p-2 rounded-lg transition-all ${
+          className={`p-1.5 rounded-lg transition-all ${
             viewport === "desktop" ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-white"
           }`}
-          title="Desktop View (100%)"
+          title="Desktop View"
         >
           <Monitor className="w-4 h-4" />
         </button>
         <button
           onClick={() => onViewportChange("tablet")}
-          className={`p-2 rounded-lg transition-all ${
+          className={`p-1.5 rounded-lg transition-all ${
             viewport === "tablet" ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-white"
           }`}
-          title="Tablet View (768px)"
+          title="Tablet View"
         >
           <Tablet className="w-4 h-4" />
         </button>
         <button
           onClick={() => onViewportChange("mobile")}
-          className={`p-2 rounded-lg transition-all ${
+          className={`p-1.5 rounded-lg transition-all ${
             viewport === "mobile" ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-white"
           }`}
-          title="Mobile View (375px)"
+          title="Mobile View"
         >
           <Smartphone className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Right: Autosave Status, Preview, Export, Save, Publish */}
-      <div className="flex items-center space-x-2.5">
+      {/* Right: Autosave Status, Preview, Domain, Export, Save, Publish */}
+      <div className="flex items-center space-x-2">
         {/* Autosave Pill */}
-        <span className="hidden md:inline-flex items-center space-x-1 text-[11px] font-mono px-2 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-400">
+        <span className="hidden lg:inline-flex items-center space-x-1 text-[11px] font-mono px-2 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-400">
           {autosaveStatus === "saving" ? (
             <>
               <Loader2 className="w-3 h-3 animate-spin text-amber-400" />
@@ -159,47 +147,15 @@ export default function EditorHeader({
               <span>Saved</span>
             </>
           ) : (
-            <span>Unsaved changes</span>
+            <span>Unsaved</span>
           )}
         </span>
-
-        {/* AI Presets Button */}
-        <button
-          onClick={onOpenAiPresetsModal}
-          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-300 hover:text-white bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-700/60 transition-all shadow-sm"
-          title="1-Click AI Page Presets"
-        >
-          <Wand2 className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-          <span className="hidden sm:inline font-bold">AI Presets</span>
-        </button>
-
-        {/* Canvas Dark/Light Mode Toggle */}
-        <button
-          onClick={onToggleCanvasTheme}
-          className="p-1.5 rounded-lg text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all"
-          title={`Switch canvas preview to ${canvasTheme === "dark" ? "Light" : "Dark"} mode`}
-        >
-          {canvasTheme === "dark" ? (
-            <Sun className="w-4 h-4 text-amber-400" />
-          ) : (
-            <Moon className="w-4 h-4 text-indigo-400" />
-          )}
-        </button>
-
-        {/* Keyboard Shortcuts Button */}
-        <button
-          onClick={onOpenShortcutsModal}
-          className="p-1.5 rounded-lg text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all hidden lg:inline-flex"
-          title="Keyboard Shortcuts (?)"
-        >
-          <Keyboard className="w-4 h-4 text-zinc-400" />
-        </button>
 
         {/* Live Preview Toggle */}
         <button
           onClick={onTogglePreview}
           className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all"
-          title="Full Visitor Preview"
+          title="Preview Site"
         >
           <Eye className="w-3.5 h-3.5 text-indigo-400" />
           <span className="hidden sm:inline">Preview</span>
@@ -209,7 +165,7 @@ export default function EditorHeader({
         <Link
           href="/dashboard/settings"
           className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all"
-          title="Configure Custom Domain & SSL"
+          title="Configure Custom Domain"
         >
           <Globe className="w-3.5 h-3.5 text-emerald-400" />
           <span className="hidden sm:inline">
@@ -217,19 +173,19 @@ export default function EditorHeader({
           </span>
         </Link>
 
-        {/* Export Dropdown Toggle */}
+        {/* Export Dropdown */}
         <div className="relative">
           <button
             onClick={onToggleExport}
             className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all"
-            title="Export Website Configuration"
+            title="Export Config"
           >
             <Download className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Export</span>
           </button>
 
           {isExportOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl p-1.5 z-50 text-xs">
+            <div className="absolute right-0 mt-2 w-44 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl p-1.5 z-50 text-xs">
               <button
                 onClick={onExportConfigJson}
                 className="w-full text-left p-2 rounded-lg hover:bg-zinc-800 text-zinc-200 flex items-center space-x-2"
@@ -242,17 +198,17 @@ export default function EditorHeader({
                 className="w-full text-left p-2 rounded-lg hover:bg-zinc-800 text-zinc-200 flex items-center space-x-2"
               >
                 <Copy className="w-4 h-4 text-emerald-400" />
-                <span>Copy Config JSON</span>
+                <span>Copy JSON</span>
               </button>
             </div>
           )}
         </div>
 
-        {/* Explicit Save Button */}
+        {/* Save Button */}
         <button
           onClick={onExplicitSave}
           disabled={saving}
-          className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-all active:scale-95"
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-all active:scale-95"
         >
           {saving ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400" />
@@ -266,14 +222,14 @@ export default function EditorHeader({
         <button
           onClick={onPublishToggle}
           disabled={publishing}
-          className={`flex items-center space-x-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all shadow-lg active:scale-95 ${
+          className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-lg active:scale-95 ${
             project.isPublished
               ? "bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border border-zinc-700"
               : "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-emerald-600/25"
           }`}
         >
           <Globe className="w-3.5 h-3.5" />
-          <span>{publishing ? "Updating..." : project.isPublished ? "Unpublish" : "Publish Site"}</span>
+          <span>{publishing ? "Updating..." : project.isPublished ? "Unpublish" : "Publish"}</span>
         </button>
       </div>
     </header>
