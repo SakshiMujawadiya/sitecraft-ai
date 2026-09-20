@@ -26,6 +26,7 @@ import { ExtraProps } from "./renderUtils";
 
 interface WebsiteRendererProps {
   data: WebsiteData;
+  viewport?: "desktop" | "tablet" | "mobile";
   isEditable?: boolean;
   selectedSectionId?: string | null;
   selectedElementId?: string | null;
@@ -40,6 +41,7 @@ interface WebsiteRendererProps {
 
 export default function WebsiteRenderer({
   data,
+  viewport = "desktop",
   isEditable = false,
   selectedSectionId = null,
   selectedElementId = null,
@@ -364,7 +366,13 @@ export default function WebsiteRenderer({
 
   return (
     <div
-      className="min-h-screen transition-colors duration-300 antialiased selection:bg-indigo-500/20 selection:text-indigo-200"
+      className={`min-h-screen transition-all duration-300 antialiased selection:bg-indigo-500/20 selection:text-indigo-200 ${
+        viewport === "mobile"
+          ? "viewport-mobile"
+          : viewport === "tablet"
+          ? "viewport-tablet"
+          : "viewport-desktop"
+      }`}
       style={
         {
           backgroundColor: colors.bg,

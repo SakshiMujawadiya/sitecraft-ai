@@ -55,7 +55,7 @@ export default function EditorCanvas({
       {/* CENTER CANVAS WORKSPACE */}
       <main
         ref={canvasContainerRef}
-        className="flex-1 h-full bg-zinc-950/95 overflow-y-auto p-4 md:p-8 flex justify-center items-start min-h-0"
+        className="flex-1 h-full bg-zinc-950/95 overflow-y-auto p-2 sm:p-4 md:p-8 flex justify-center items-start min-h-0"
       >
         <div
           className={`transition-all duration-300 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden bg-black ${
@@ -70,6 +70,7 @@ export default function EditorCanvas({
         >
           <WebsiteRenderer
             data={websiteData}
+            viewport={viewport}
             isEditable={!isPreviewMode}
             selectedSectionId={selectedSectionId}
             selectedElementId={selectedElementId}

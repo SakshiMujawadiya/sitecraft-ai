@@ -35,3 +35,121 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
+
+/* ==========================================
+   CANVAS PREVIEW MOBILE & TABLET RESPONSIVE OVERRIDES
+   Ensures authentic mobile & tablet layout rendering inside canvas preview
+   ========================================== */
+
+/* MOBILE VIEWPORT (375px) OVERRIDES */
+.viewport-mobile {
+  max-width: 375px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Force single column layout for grids in mobile viewport */
+.viewport-mobile [class*="grid-cols-"],
+.viewport-mobile .grid,
+.viewport-mobile .md\:grid-cols-2,
+.viewport-mobile .md\:grid-cols-3,
+.viewport-mobile .md\:grid-cols-4,
+.viewport-mobile .lg\:grid-cols-2,
+.viewport-mobile .lg\:grid-cols-3,
+.viewport-mobile .lg\:grid-cols-4,
+.viewport-mobile .sm\:grid-cols-2,
+.viewport-mobile .sm\:grid-cols-3 {
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+}
+
+/* Reset grid col spans to 1 */
+.viewport-mobile [class*="col-span-"],
+.viewport-mobile .md\:col-span-2,
+.viewport-mobile .md\:col-span-3,
+.viewport-mobile .lg\:col-span-2 {
+  grid-column: span 1 / span 1 !important;
+}
+
+/* Hide desktop navbar links in mobile preview header */
+.viewport-mobile #canvas-header nav,
+.viewport-mobile header nav {
+  display: none !important;
+}
+
+/* Stack flex row elements vertically on mobile */
+.viewport-mobile .md\:flex-row,
+.viewport-mobile .lg\:flex-row,
+.viewport-mobile .sm\:flex-row {
+  flex-direction: column !important;
+}
+
+/* Responsive Font Scaling for Mobile Viewport */
+.viewport-mobile h1,
+.viewport-mobile .text-5xl,
+.viewport-mobile .text-6xl,
+.viewport-mobile .text-4xl,
+.viewport-mobile .md\:text-6xl,
+.viewport-mobile .md\:text-5xl,
+.viewport-mobile .sm\:text-5xl {
+  font-size: 1.75rem !important; /* 28px */
+  line-height: 2.25rem !important;
+}
+
+.viewport-mobile h2,
+.viewport-mobile .text-3xl,
+.viewport-mobile .md\:text-3xl,
+.viewport-mobile .sm\:text-3xl {
+  font-size: 1.35rem !important; /* ~22px */
+  line-height: 1.85rem !important;
+}
+
+.viewport-mobile h3,
+.viewport-mobile .text-2xl,
+.viewport-mobile .md\:text-2xl {
+  font-size: 1.15rem !important;
+  line-height: 1.6rem !important;
+}
+
+.viewport-mobile p,
+.viewport-mobile .text-xl,
+.viewport-mobile .text-lg,
+.viewport-mobile .md\:text-xl,
+.viewport-mobile .sm\:text-lg {
+  font-size: 0.925rem !important;
+  line-height: 1.45rem !important;
+}
+
+/* Section Padding Optimization for Mobile */
+.viewport-mobile section {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+/* TABLET VIEWPORT (768px) OVERRIDES */
+.viewport-tablet {
+  max-width: 768px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+.viewport-tablet .lg\:grid-cols-4,
+.viewport-tablet .lg\:grid-cols-3 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.viewport-tablet h1,
+.viewport-tablet .text-6xl,
+.viewport-tablet .md\:text-6xl {
+  font-size: 2.5rem !important;
+  line-height: 3rem !important;
+}
+
+.viewport-tablet section {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
