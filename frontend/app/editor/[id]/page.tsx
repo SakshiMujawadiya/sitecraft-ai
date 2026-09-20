@@ -683,7 +683,7 @@ export default function EditorPage({ params }: EditorPageProps) {
   const selectedElement = getSelectedElement();
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col overflow-hidden">
+    <div className="h-screen w-screen bg-zinc-950 text-zinc-100 flex flex-col overflow-hidden">
       {/* TOP STUDIO CONTROL BAR */}
       {!isPreviewMode && (
         <EditorHeader
