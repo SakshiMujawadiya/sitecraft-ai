@@ -38,19 +38,33 @@ export default function PublishSuccessModal({
           Your landing page is now published globally with instant edge delivery.
         </p>
 
-        <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between mb-4">
-          <div className="text-left">
-            <span className="text-[10px] uppercase font-bold text-zinc-500 block">Default Edge URL</span>
-            <span className="text-xs font-mono text-emerald-400 truncate max-w-[240px] block">
-              {resolvedUrl}
-            </span>
+        <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-800 space-y-3 mb-5 text-left">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-[10px] uppercase font-bold text-zinc-500 block">
+                {project.customDomain?.domain ? "Custom Domain (Live)" : "Default Edge URL"}
+              </span>
+              <span className="text-xs font-mono text-emerald-400 truncate max-w-[240px] block">
+                {project.customDomain?.domain ? `https://${project.customDomain.domain}` : resolvedUrl}
+              </span>
+            </div>
+            <button
+              onClick={handleCopyLink}
+              className="px-2.5 py-1 text-xs font-bold text-zinc-300 hover:text-white bg-zinc-800 rounded-lg transition-colors"
+            >
+              Copy
+            </button>
           </div>
-          <button
-            onClick={handleCopyLink}
-            className="px-2.5 py-1 text-xs font-bold text-zinc-300 hover:text-white bg-zinc-800 rounded-lg transition-colors"
-          >
-            Copy
-          </button>
+
+          <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between">
+            <span className="text-xs text-zinc-400">Want a custom domain?</span>
+            <Link
+              href="/dashboard/settings"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 underline flex items-center space-x-1"
+            >
+              <span>Domain Settings →</span>
+            </Link>
+          </div>
         </div>
 
         <div className="flex items-center space-x-3">
@@ -61,7 +75,7 @@ export default function PublishSuccessModal({
             Keep Editing
           </button>
           <Link
-            href={`/p/${project.slug}`}
+            href={project.customDomain?.domain ? `https://${project.customDomain.domain}` : `/p/${project.slug}`}
             target="_blank"
             className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center space-x-1"
           >

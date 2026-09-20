@@ -161,6 +161,18 @@ export default function EditorHeader({
           <span className="hidden sm:inline">Preview</span>
         </button>
 
+        {/* Custom Domain Settings Link */}
+        <Link
+          href="/dashboard/settings"
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all"
+          title="Configure Custom Domain & SSL"
+        >
+          <Globe className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="hidden sm:inline">
+            {project.customDomain?.domain ? project.customDomain.domain : "Domain"}
+          </span>
+        </Link>
+
         {/* Export Dropdown Toggle */}
         <div className="relative">
           <button
