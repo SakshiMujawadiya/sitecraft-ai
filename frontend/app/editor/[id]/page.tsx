@@ -107,12 +107,18 @@ export default function EditorPage({ params }: EditorPageProps) {
           const containerRect = container.getBoundingClientRect();
           const elemRect = targetElem.getBoundingClientRect();
 
-          let targetScrollTop: number;
-          if (elemRect.height > containerRect.height) {
-            targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 16;
-          } else {
-            targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - (containerRect.height / 2) + (elemRect.height / 2);
+          // Calculate sticky header offset if present
+          let headerOffset = 0;
+          if (secId !== "header") {
+            const headerElem = document.getElementById("canvas-header");
+            if (headerElem) {
+              headerOffset = headerElem.getBoundingClientRect().height;
+            }
           }
+
+          // Top-align selected section in preview canvas viewport (just below sticky header)
+          const relativeTop = elemRect.top - containerRect.top;
+          const targetScrollTop = container.scrollTop + relativeTop - headerOffset - 12;
 
           container.scrollTo({
             top: Math.max(0, targetScrollTop),
@@ -121,7 +127,7 @@ export default function EditorPage({ params }: EditorPageProps) {
         } else {
           targetElem.scrollIntoView({
             behavior: "smooth",
-            block: "center",
+            block: "start",
             inline: "nearest",
           });
         }
