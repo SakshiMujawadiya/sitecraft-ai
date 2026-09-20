@@ -10,7 +10,7 @@ interface SectionOverlayProps {
   totalSections: number;
   isEditable: boolean;
   isSelected: boolean;
-  aiUpdatedSectionId: string | null;
+  aiUpdatedSectionId: string | null;  
   onSelectSection?: (id: string) => void;
   onMoveSection?: (id: string, direction: "up" | "down") => void;
   onDuplicateSection?: (id: string) => void;

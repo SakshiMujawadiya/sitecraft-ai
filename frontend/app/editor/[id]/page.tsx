@@ -61,6 +61,7 @@ export default function EditorPage({ params }: EditorPageProps) {
   const selectedSidebarRef = useRef<HTMLDivElement | null>(null);
   const canvasContainerRef = useRef<HTMLElement | null>(null);
   const inspectorScrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToCanvasSection = useCallback((secId: string | null, elemId?: string | null) => {
     if (!secId && !elemId) return;
@@ -69,8 +70,13 @@ export default function EditorPage({ params }: EditorPageProps) {
       inspectorScrollRef.current.scrollTop = 0;
     }
 
+    if (scrollTimerRef.current) {
+      clearTimeout(scrollTimerRef.current);
+      scrollTimerRef.current = null;
+    }
+
     requestAnimationFrame(() => {
-      setTimeout(() => {
+      scrollTimerRef.current = setTimeout(() => {
         const container = canvasContainerRef.current;
         let targetElem: HTMLElement | null = null;
 
@@ -101,8 +107,12 @@ export default function EditorPage({ params }: EditorPageProps) {
           const containerRect = container.getBoundingClientRect();
           const elemRect = targetElem.getBoundingClientRect();
 
-          // Smooth scroll canvas container so target element/section is centered vertically in viewport
-          const targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - (containerRect.height / 2) + (elemRect.height / 2);
+          let targetScrollTop: number;
+          if (elemRect.height > containerRect.height) {
+            targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - 16;
+          } else {
+            targetScrollTop = container.scrollTop + (elemRect.top - containerRect.top) - (containerRect.height / 2) + (elemRect.height / 2);
+          }
 
           container.scrollTo({
             top: Math.max(0, targetScrollTop),
@@ -122,7 +132,7 @@ export default function EditorPage({ params }: EditorPageProps) {
   // Auto-scroll the sidebar layer row & center canvas section/element when selection changes
   useEffect(() => {
     if (selectedSidebarRef.current) {
-      selectedSidebarRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      selectedSidebarRef.current.scrollIntoView({ behavior: "auto", block: "nearest" });
     }
     if (selectedSectionId || selectedElementId) {
       scrollToCanvasSection(selectedSectionId, selectedElementId);
@@ -714,8 +724,9 @@ export default function EditorPage({ params }: EditorPageProps) {
             editingTitleId={editingTitleId}
             onSelectSection={(secId) => {
               setSelectedSectionId(secId);
+              setSelectedElementId(null);
               setActiveTab("content");
-              scrollToCanvasSection(secId);
+              scrollToCanvasSection(secId, null);
             }}
             onStartEditingTitle={setEditingTitleId}
             onStopEditingTitle={() => setEditingTitleId(null)}
